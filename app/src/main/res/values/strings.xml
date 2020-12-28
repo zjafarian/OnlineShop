@@ -2,4 +2,12 @@
     <string name="app_name">OnlineShop</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_item_navigation_menu">خانه</string>
+    <string name="category_item_navigation_menu">دسته‌بندی‌ها</string>
+    <string name="shopping_cart_naviagtion_menu">سبد خرید</string>
+    <string name="user_item_navigation_menu">دیجی‌کالای من</string>
+    <string name="exit_user_from_app">برای خروج دوباره دکمه بازگشت را فشار دهید</string>
+    <string name="text_last_product">جدیدترین محصولات</string>
+    <string name="text_more_viewer_product">پربازدیدترین محصولات</string>
+    <string name="text_more_score_product">بهترین محصولات</string>
 </resources>

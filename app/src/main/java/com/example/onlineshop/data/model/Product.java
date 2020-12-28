@@ -14,10 +14,10 @@ public class Product {
     private String mDateCreatedGmtProduct;
     private String mDateModifiedProduct;
     private String mDateModifiedGmtProduct;
-    private long mPriceProduct;
+    private String mPriceProduct;
     private boolean mOnSaleProduct;
-    private long mRegularPriceProduct;
-    private long mSalePriceProduct;
+    private String mRegularPriceProduct;
+    private String mSalePriceProduct;
     private int[] mRelatedProducts;
     private int mRateProduct;
     private ProductPhotos[] mProductPhotos;
@@ -29,8 +29,8 @@ public class Product {
     public Product(int idProduct, String nameProduct, String slugProduct, String descriptionProduct,
                    String shortDescriptionProduct, String uriProduct, String dateCreatedProduct,
                    String dateCreatedGmtProduct, String dateModifiedProduct, String dateModifiedGmtProduct,
-                   long priceProduct, boolean onSaleProduct, long regularPriceProduct,
-                   long salePriceProduct, int[] relatedProducts, int rateProduct,
+                   String priceProduct, boolean onSaleProduct, String regularPriceProduct,
+                   String salePriceProduct, int[] relatedProducts, int rateProduct,
                    ProductPhotos[] productPhotos, Categories[] categories) {
 
 
@@ -94,7 +94,7 @@ public class Product {
         return mDateModifiedGmtProduct;
     }
 
-    public long getPriceProduct() {
+    public String getPriceProduct() {
         return mPriceProduct;
     }
 
@@ -102,11 +102,11 @@ public class Product {
         return mOnSaleProduct;
     }
 
-    public long getRegularPriceProduct() {
+    public String getRegularPriceProduct() {
         return mRegularPriceProduct;
     }
 
-    public long getSalePriceProduct() {
+    public String getSalePriceProduct() {
         return mSalePriceProduct;
     }
 

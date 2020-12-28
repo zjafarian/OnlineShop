@@ -1,4 +1,4 @@
-package com.example.onlineshop;
+package com.example.onlineshop.data.remote.retrofit;
 
 import com.example.onlineshop.data.model.Categories;
 import com.example.onlineshop.data.model.Product;
@@ -17,7 +17,8 @@ import java.util.List;
 
 public class GetProductsItemDeserializer implements JsonDeserializer<List<Product>> {
     @Override
-    public List<Product> deserialize(JsonElement json, Type typeOfT,
+    public List<Product> deserialize(JsonElement json,
+                                     Type typeOfT,
                                      JsonDeserializationContext context) throws JsonParseException {
 
         List<Product> productArrayList = new ArrayList<>();
@@ -25,6 +26,7 @@ public class GetProductsItemDeserializer implements JsonDeserializer<List<Produc
         ProductPhotos[] productPhotosList;
 
         JsonArray productArray = json.getAsJsonArray();
+
 
         for (int i = 0; i < productArray.size(); i++) {
             JsonObject productObject = productArray.get(i).getAsJsonObject();
@@ -35,7 +37,7 @@ public class GetProductsItemDeserializer implements JsonDeserializer<List<Produc
 
 
             for (int j = 0; j < categoryArray.size(); j++) {
-                JsonObject categoryObject = categoryArray.get(i).getAsJsonObject();
+                JsonObject categoryObject = categoryArray.get(j).getAsJsonObject();
                 int id = categoryObject.get("id").getAsInt();
                 String name = categoryObject.get("name").getAsString();
                 String slug = categoryObject.get("slug").getAsString();
@@ -43,12 +45,10 @@ public class GetProductsItemDeserializer implements JsonDeserializer<List<Produc
                 categoriesList[j] = categories;
             }
             for (int j = 0; j < photoArray.size(); j++) {
-                JsonObject photoObject = photoArray.get(i).getAsJsonObject();
+                JsonObject photoObject = photoArray.get(j).getAsJsonObject();
                 int id = photoObject.get("id").getAsInt();
                 String name = photoObject.get("name").getAsString();
                 String src = photoObject.get("src").getAsString();
-
-                productPhotosList = new ProductPhotos[photoArray.size()];
 
                 ProductPhotos productPhotos = new ProductPhotos(id, name, src);
                 productPhotosList[j] = productPhotos;
@@ -65,14 +65,14 @@ public class GetProductsItemDeserializer implements JsonDeserializer<List<Produc
             String dateCreatedGmtProduct = productObject.get("date_created_gmt").getAsString();
             String dateModifiedProduct= productObject.get("date_modified").getAsString();
             String dateModifiedGmtProduct = productObject.get("date_modified_gmt").getAsString();
-            long priceProduct = Long.parseLong(productObject.get("price").getAsString());
+            String priceProduct = productObject.get("price").getAsString();
             boolean onSaleProduct=productObject.get("on_sale").getAsBoolean();
-            long regularPriceProduct=Long.parseLong(productObject.get("regular_price").getAsString());
-            long salePriceProduct=Long.parseLong(productObject.get("sale_price").getAsString());
+            String regularPriceProduct=productObject.get("regular_price").getAsString();
+            String salePriceProduct = productObject.get("sale_price").getAsString();
             JsonArray array =productObject.get("related_ids").getAsJsonArray();
             int[] relatedProducts = new int[array.size()];
             for (int j = 0; j <array.size() ; j++) {
-                relatedProducts[j]=array.get(i).getAsInt();
+                relatedProducts[j]=array.get(j).getAsInt();
             }
 
             int rateProduct = productObject.get("rating_count").getAsInt();
@@ -88,8 +88,11 @@ public class GetProductsItemDeserializer implements JsonDeserializer<List<Produc
         }
 
 
-        return null;
+        return productArrayList;
     }
+
+
+
 
 
 

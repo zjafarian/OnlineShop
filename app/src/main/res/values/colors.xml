@@ -8,6 +8,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="grayLow">#BABABA</color>
+    <color name="grayLowLow">#DDDDDD</color>
+
+
+
     <color name="online_shop_red_dark">#B11315</color>
     <color name="online_shop_red">#e72f31</color>
     <color name="online_shop_red_origin">#ef384e</color>

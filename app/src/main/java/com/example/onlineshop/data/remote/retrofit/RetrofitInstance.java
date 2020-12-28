@@ -1,6 +1,5 @@
 package com.example.onlineshop.data.remote.retrofit;
 
-import com.example.onlineshop.GetProductsItemDeserializer;
 import com.example.onlineshop.data.model.Product;
 import com.example.onlineshop.data.remote.NetworkParams;
 import com.google.gson.Gson;
@@ -19,6 +18,13 @@ public class RetrofitInstance {
     private static RetrofitInstance sInstance;
     private final Retrofit mRetrofit;
 
+    private RetrofitInstance() {
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(NetworkParams.BASE_URL)
+                .addConverterFactory(createGsonConverter())
+                .build();
+    }
+
     public static RetrofitInstance getInstance() {
         if (sInstance == null)
             sInstance = new RetrofitInstance();
@@ -26,9 +32,12 @@ public class RetrofitInstance {
         return sInstance;
     }
 
+    public Retrofit getRetrofit() {
+        return mRetrofit;
+    }
+
     private static Converter.Factory createGsonConverter (){
-        Type type = new TypeToken<List<Product>>() {
-        }.getType();
+        Type type = new TypeToken<List<Product>>() {}.getType();
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(type, new GetProductsItemDeserializer());
@@ -38,14 +47,7 @@ public class RetrofitInstance {
 
     }
 
-    public Retrofit getRetrofit() {
-        return mRetrofit;
-    }
 
-    private RetrofitInstance() {
-        mRetrofit = new Retrofit.Builder()
-                .baseUrl(NetworkParams.BASE_URL)
-                .addConverterFactory(createGsonConverter())
-                .build();
-    }
+
+
 }
