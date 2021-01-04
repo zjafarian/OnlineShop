@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layoutDirection="rtl"
+        android:textDirection="rtl">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/product_item_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginRight="30sp"
+            android:layout_marginBottom="10sp"
+            app:cardCornerRadius="8sp"
+            app:cardElevation="5sp"
+            app:cardMaxElevation="5sp">
+
+            <ImageView
+
+                android:id="@+id/product_image_category"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="5dp"
+
+                android:src="@drawable/place_holder_online_shop"
+                android:gravity="center"
+                android:layout_gravity="center_vertical|right" />
+
+            <TextView
+                android:id="@+id/product_name_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iran_sans_mobile"
+                android:text="@string/product_name_category_label"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginRight="100dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_gravity="right" />
+
+            <TextView
+                android:id="@+id/product_owner_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iran_sans_mobile"
+                android:text="@string/product_owner_category_label"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginRight="100dp"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:layout_gravity="right" />
+
+            <TextView
+                android:id="@+id/product_count_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iran_sans_mobile"
+                android:text="@string/product_count_category_label"
+                android:textSize="12sp"
+                android:layout_marginRight="100dp"
+                android:layout_marginTop="90dp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="right" />
+
+            <TextView
+                android:id="@+id/product_price_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iran_sans_mobile"
+                android:text="@string/product_price_category_label"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="90dp"
+                android:layout_gravity="left"
+                android:gravity="center" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/product_item_card_view"
+            android:layout_margin="10dp"
+            android:background="@color/online_shop_red" />
+
+
+    </RelativeLayout>
+</layout>

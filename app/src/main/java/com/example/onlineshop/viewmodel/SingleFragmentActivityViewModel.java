@@ -17,7 +17,7 @@ import com.example.onlineshop.view.fragment.HomePageFragment;
 public class SingleFragmentActivityViewModel extends AndroidViewModel {
 
     public static final String FRAGMENT_TAG = "FragmentActivity";
-    public ShopRepository mShopRepository;
+
 
     private boolean mDoubleBackPressToExit;
     private boolean mHomeButtonClicked;
@@ -28,7 +28,6 @@ public class SingleFragmentActivityViewModel extends AndroidViewModel {
 
     public SingleFragmentActivityViewModel(@NonNull Application application) {
         super(application);
-        mShopRepository = new ShopRepository();
     }
 
     public boolean loadFragment(FragmentActivity activity, Fragment fragmentInput) {
@@ -92,9 +91,6 @@ public class SingleFragmentActivityViewModel extends AndroidViewModel {
         }, 2000);
     }
 
-    public void fetchProductsAsync() {
-        mShopRepository.getProductsAsync();
-    }
 
   /*  public int returnId (@NonNull MenuItem item){
         switch (item.getItemId()){

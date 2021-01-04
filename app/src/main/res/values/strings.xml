@@ -10,4 +10,87 @@
     <string name="text_last_product">جدیدترین محصولات</string>
     <string name="text_more_viewer_product">پربازدیدترین محصولات</string>
     <string name="text_more_score_product">بهترین محصولات</string>
+    <string name="text_search_menu_item">جست‌وجو در فروشگاه آنلاین</string>
+    <string name="text_category_one"> دسته‌بندی یک</string>
+    <string name="text_card_view_login">ورود یا ثبت نام</string>
+    <string name="text_description_card_view_login">برای تجربه بهتر خرید و بررسی روش ارسال کالاها لطفا وارد شوید.</string>
+    <string name="text_empty_basket">سبد خرید شما خالی است.</string>
+    <string name="text_empty_list_shop">شما می‌توانید لیست محصولاتی را که خریداری کرده‌اید در لیست خرید مشاهده کنید</string>
+    <string name="text_empty_list">لیست خرید شما خالی است!</string>
+    <string name="text_description_login">برای ورود و یا ثبت نام در فروشگاه آنلاین، نام کاربری و پسوردتان را وارد نمایید</string>
+    <string name="text_hint_user_name_login">نام کاربری</string>
+    <string name="text_hint_password_login">رمز عبور</string>
+    <string name="text_button_login">ورود به فروشگاه آنلاین</string>
+    <string name="text_view_submit">ثبت نام</string>
+    <string name="text_sign_up_button">ثبت نام در فروشگاه آنلاین</string>
+    <string name="message_success_submit">ثبت ‌نام شما با موفقیت‌آمیز انجام شد</string>
+    <string name="message_error_submit">نام کاربری یا پسورد درست وارد نشده است</string>
+    <string name="message_error_login">نام کاربری یا رمز عبور درست وارد نشده است</string>
+    <string name="product_name_category_label">نام کالا:</string>
+    <string name="product_owner_category_label">فروشنده:</string>
+    <string name="product_count_category_label">تعداد:</string>
+    <string name="product_price_category_label">قیمت:</string>
+
+
+
+
+
+
+    // Persian
+
+    <string name="home_page">خانه</string>
+    <string name="category">لیست دسته‌بندی محصولات</string>
+
+    <string name="cart">سبد خرید</string>
+
+    <string name="offers">محصولات پیشنهادی</string>
+
+
+
+    <string name="setting">تنظیمات</string>
+    <string name="faq">سوالات متداول</string>
+    <string name="about_us">درباره ما</string>
+
+
+    <string name="add_to_cart">اضافه کردن به سبد خرید</string>
+
+    <string name="tomans">تومان</string>
+    <string name="product_name">نام محصول: </string>
+    <string name="product_detail">مشخصات</string>
+    <string name="product_comments">نظرات کاربران</string>
+    <string name="more_detail">ادامه مطلب</string>
+    <string name="sell_by">فروش توسط</string>
+    <string name="ready_for_send_storage">آماده ارسال از انبار فروشگاه آنلاین</string>
+    <string name="product_garanty">گارانتی ۱۸ ماهه فروشگاه آنلاین</string>
+
+
+    <string name="whole_list">لیست کامل</string>
+
+    <string name="no_internet">خطا در اتصال به اینترنت !</string>
+    <string name="retry">تلاش مجدد</string>
+
+
+
+
+    <string name="search_hint">جستجو در فروشگاه آنلاین... </string>
+    <string name="sort">مرتب‌سازی</string>
+    <string name="filter">فیلتر کردن</string>
+    <string name="price_descending">قیمت از زیاد به کم</string>
+    <string name="price_ascending">قیمت از کم به زیاد</string>
+    <string name="commit_card">خرید خود را نهایی کنید</string>
+    <string name="card_sum">جمع کل خرید</string>
+    <string name="delete">حذف</string>
+    <string name="final_price">قیمت نهایی</string>
+    <string name="count">تعداد</string>
+    <string name="color">رنگ</string>
+    <string name="desscription">توضیحات</string>
+    <string name="title">عنوان</string>
+    <string name="no_mode">بدون ترتیب</string>
+    <string name="filter_default">رنگ، نوع، قیمت ...</string>
+    <string name="fiter_product">فیلتر کردن محصولات</string>
+    <string name="size">سایز</string>
+    <string name="press_again_for_exit">برای خروج دوباره فشار دهید</string>
+    <string name="login_register">ورود و ثبت نام</string>
+    <string name="name_tab_one">سبد خرید</string>
+    <string name="name_tab_two">لیست خریدها</string>
 </resources>

@@ -11,17 +11,19 @@ import android.view.ViewGroup;
 import com.example.onlineshop.R;
 
 
-public class AccountFragment extends Fragment {
+public class ShoppingListWithoutLoginFragment extends Fragment {
 
 
-    public AccountFragment() {
+
+    public ShoppingListWithoutLoginFragment() {
         // Required empty public constructor
     }
 
 
-    public static AccountFragment newInstance() {
-        AccountFragment fragment = new AccountFragment();
+    public static ShoppingListWithoutLoginFragment newInstance() {
+        ShoppingListWithoutLoginFragment fragment = new ShoppingListWithoutLoginFragment();
         Bundle args = new Bundle();
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -36,6 +38,6 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        return inflater.inflate(R.layout.fragment_shopping_list_without_login, container, false);
     }
 }

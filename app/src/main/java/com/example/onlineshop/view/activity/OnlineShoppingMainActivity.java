@@ -13,7 +13,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.onlineshop.R;
 import com.example.onlineshop.databinding.ActivityOnlineShoppingFragmentBinding;
+import com.example.onlineshop.view.fragment.AccountLoginFragment;
+import com.example.onlineshop.view.fragment.CategoryFragment;
 import com.example.onlineshop.view.fragment.HomePageFragment;
+import com.example.onlineshop.view.fragment.LoginSignUpFragment;
+import com.example.onlineshop.view.fragment.ShoppingFragment;
 import com.example.onlineshop.viewmodel.SingleFragmentActivityViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -23,6 +27,7 @@ public class OnlineShoppingMainActivity extends AppCompatActivity implements
 
     private ActivityOnlineShoppingFragmentBinding mBinding;
     private SingleFragmentActivityViewModel mViewModel;
+    private boolean mLogin;
 
 
     @Override
@@ -38,9 +43,6 @@ public class OnlineShoppingMainActivity extends AppCompatActivity implements
         mBinding.onlineShopNavigationBar.setOnNavigationItemSelectedListener
                 (this::onNavigationItemSelected);
 
-
-
-
     }
 
     @Override
@@ -49,22 +51,31 @@ public class OnlineShoppingMainActivity extends AppCompatActivity implements
 
         switch (item.getItemId()) {
             case R.id.home_navigation_menu:
-                mViewModel.setDoubleBackPressToExit(!mViewModel.isHomeButtonClicked());
-                mViewModel.fetchProductsAsync();
+                mViewModel.setHomeButtonClicked(!mViewModel.isHomeButtonClicked());
                 HomePageFragment homePageFragment = HomePageFragment.newInstance();
                 return mViewModel.loadFragment(this,homePageFragment);
 
 
             case R.id.category_navigation_menu:
-                //todo
-               break;
-            //todo
+                mViewModel.setCategoryButtonClicked(!mViewModel.isCategoryButtonClicked());
+                CategoryFragment categoryFragment = CategoryFragment.newInstance();
+                return mViewModel.loadFragment(this,categoryFragment);
+
             case R.id.shopping_cart_navigation_menu:
-                //todo
-                break;
+                mViewModel.setShoppingCartClicked(!mViewModel.isShoppingCartClicked());
+                ShoppingFragment shoppingFragment = ShoppingFragment.newInstance();
+                return mViewModel.loadFragment(this,shoppingFragment);
             case R.id.user_navigation_menu:
-                //todo
-               break;
+
+                mViewModel.setAccountClicked(!mViewModel.isAccountClicked());
+                if (mLogin){
+                    AccountLoginFragment accountLoginFragment = AccountLoginFragment.newInstance();
+                    return mViewModel.loadFragment(this,accountLoginFragment);
+                } else {
+                    LoginSignUpFragment loginSignUpFragment = LoginSignUpFragment.newInstance();
+                    return mViewModel.loadFragment(this,loginSignUpFragment);
+                }
+
         }
 
         return false;
