@@ -11,9 +11,11 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
+import static com.example.onlineshop.data.remote.NetworkParams.CONSUMER_KEY;
+
 public interface ShopService {
 
     @GET(NetworkParams.PRODUCT_PATH + NetworkParams.API_KEY)
-    Call<List<Product>> getProducts ();
+    Call<List<Product>> getProducts(@QueryMap Map<String, String> options);
 
 }

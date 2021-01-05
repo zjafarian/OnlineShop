@@ -13,7 +13,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view_product"
         android:layout_width="136dp"
-        android:layout_height="212dp"
+        android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp">
 
@@ -36,20 +36,19 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="4dp"
-                android:layout_weight="1"
                 android:gravity="right"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
                 android:text=""
                 android:fontFamily="@font/iran_sans_mobile"
-                android:textSize="9dp" />
+                android:textColor="@color/black"
+                android:maxLength="45"
+                android:textSize="10sp" />
 
 
             <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginBottom="4dp"
                 android:background="?android:attr/listDivider" />
 
@@ -63,7 +62,9 @@
                 android:text=""
                 android:fontFamily="@font/iran_sans_mobile"
                 android:textColor="@color/online_shop_red"
-                android:textSize="8dp" />
+                android:textStyle="bold"
+
+                android:textSize="8sp" />
 
             <TextView
                 android:id="@+id/product_price"
@@ -75,7 +76,8 @@
                 android:text=""
                 android:fontFamily="@font/iran_sans_mobile"
                 android:textColor="@color/online_shop_green"
-                android:textSize="10dp" />
+                android:textStyle="bold"
+                android:textSize="10sp" />
 
 
         </LinearLayout>

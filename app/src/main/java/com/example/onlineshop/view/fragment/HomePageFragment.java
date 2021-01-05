@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -14,18 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.onlineshop.R;
-import com.example.onlineshop.adapter.LastProductsAdapter;
+import com.example.onlineshop.adapter.ListProductsAdapter;
+import com.example.onlineshop.adapter.SliderAdapter;
 import com.example.onlineshop.data.model.Product;
+import com.example.onlineshop.data.remote.NetworkParams;
 import com.example.onlineshop.databinding.FragmentHomePageBinding;
 import com.example.onlineshop.viewmodel.HomePageViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomePageFragment extends Fragment {
     private HomePageViewModel mHomePageViewModel;
     private FragmentHomePageBinding mBinding;
-    private LastProductsAdapter mLastProductsAdapter;
+    private ListProductsAdapter mLastProductsAdapter;
+    private ListProductsAdapter mPopularityProductsAdapter;
+    private ListProductsAdapter mRatingProductsAdapter;
+    private SliderAdapter mSliderAdapter;
 
 
     public HomePageFragment() {
@@ -49,13 +52,32 @@ public class HomePageFragment extends Fragment {
 
         mHomePageViewModel = new ViewModelProvider(requireActivity()).get(HomePageViewModel.class);
         mHomePageViewModel.fetchProductsAsync();
-        mHomePageViewModel.getProductsLiveData().observe(this, new Observer<List<Product>>() {
+        setLiveDataObservers();
+
+    }
+
+    private void setLiveDataObservers() {
+        mHomePageViewModel.getLastProductsLiveData().observe(this, new Observer<List<Product>>() {
             @Override
             public void onChanged(List<Product> products) {
-                updateUI();
+                updateUI(products, NetworkParams.LAST);
             }
         });
 
+        mHomePageViewModel.getPopularityProductsLiveData().observe(this, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(List<Product> products) {
+                updateUI(products, NetworkParams.POPULARITY);
+
+            }
+        });
+
+        mHomePageViewModel.getRatingProductsLiveData().observe(this, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(List<Product> products) {
+                updateUI(products, NetworkParams.RATING);
+            }
+        });
     }
 
     @Override
@@ -65,23 +87,57 @@ public class HomePageFragment extends Fragment {
                 R.layout.fragment_home_page,
                 container,
                 false);
-        LinearLayoutManager linearLayoutManager
-                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        mBinding.recycleViewLastProducts.setLayoutManager(linearLayoutManager);
+
+
 
 
         return mBinding.getRoot();
 
     }
 
-    public void updateUI() {
-        if (mLastProductsAdapter == null) {
-            mLastProductsAdapter = new LastProductsAdapter(this,mHomePageViewModel);
-            mBinding.recycleViewLastProducts.setAdapter(mLastProductsAdapter);
+    public void updateUI(List<Product> products, String selectAdapter) {
 
-        } else {
-            mLastProductsAdapter.notifyDataSetChanged();
+        switch (selectAdapter) {
+            case NetworkParams.LAST:
+                if (mLastProductsAdapter == null) {
+
+                    mLastProductsAdapter = new ListProductsAdapter
+                            (this, products, mHomePageViewModel);
+                    mBinding.recycleViewLastProducts.setAdapter(mLastProductsAdapter);
+                } else {
+                    mLastProductsAdapter.notifyDataSetChanged();
+                }
+
+                break;
+            case NetworkParams.POPULARITY:
+                if (mPopularityProductsAdapter == null) {
+
+                    mPopularityProductsAdapter = new ListProductsAdapter
+                            (this, products, mHomePageViewModel);
+                    mBinding.recycleViewPopularityProducts.setAdapter(mPopularityProductsAdapter);
+
+                } else {
+                   mPopularityProductsAdapter.notifyDataSetChanged();
+                }
+
+                break;
+            case NetworkParams.RATING:
+                if (mRatingProductsAdapter == null) {
+
+                    mRatingProductsAdapter = new ListProductsAdapter
+                            (this, products, mHomePageViewModel);
+                    mBinding.recycleViewRatingProducts.setAdapter(mRatingProductsAdapter);
+
+                } else {
+                    mRatingProductsAdapter.notifyDataSetChanged();
+                }
+                break;
         }
+
+
+
+
+
 
 
     }

@@ -6,168 +6,261 @@
     <data>
 
     </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layoutDirection="rtl"
-        tools:context=".view.fragment.HomePageFragment"
-        android:textDirection="rtl"
-        android:background="@color/online_shop_light_gray">
-
-
-
-
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_vertical_start"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.04" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_vertical_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.96" />
-
-
-
-
-        <RelativeLayout
-            android:id="@+id/search_box"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:orientation="horizontal"
-            tools:ignore="MissingConstraints">
-
-            <include layout="@layout/search_bar" />
-
-        </RelativeLayout>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/special_products_slider_cart_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="8sp"
-            app:cardElevation="1sp"
-            app:cardMaxElevation="2sp"
-            app:layout_constraintDimensionRatio="w,16:9"
-            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_end"
-            app:layout_constraintStart_toStartOf="@+id/guideline_vertical_start"
-            app:layout_constraintTop_toBottomOf="@+id/search_box">
+            android:layout_height="match_parent"
+            android:background="@color/online_shop_light_gray"
+            android:layoutDirection="rtl"
+            android:textDirection="rtl"
+            tools:context=".view.fragment.HomePageFragment">
 
 
-            <com.smarteist.autoimageslider.SliderView
-                android:id="@+id/special_products_slider"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:sliderAnimationDuration="600"
-                app:sliderAutoCycleDirection="back_and_forth"
-                app:sliderAutoCycleEnabled="true"
-                app:sliderIndicatorAnimationDuration="600"
-                app:sliderIndicatorGravity="center_horizontal|bottom"
-                app:sliderIndicatorMargin="15dp"
-                app:sliderIndicatorOrientation="horizontal"
-                app:sliderIndicatorPadding="3dp"
-                app:sliderIndicatorRadius="4dp"
-                app:sliderIndicatorSelectedColor="#5A5A5A"
-                app:sliderIndicatorUnselectedColor="#FFF"
-                app:sliderScrollTimeInSec="1"
-                app:sliderStartAutoCycle="true" />
-        </androidx.cardview.widget.CardView>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_start"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.04" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/last_product_card_view"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="5dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_start"
-            app:layout_constraintStart_toStartOf="@+id/guideline_vertical_end"
-            app:layout_constraintTop_toBottomOf="@+id/special_products_slider_cart_view">
-
-            <TextView
-                android:id="@+id/text_view_last_product"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layoutDirection="rtl"
-                android:text="@string/text_last_product" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.96" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycle_view_last_products"
+
+            <RelativeLayout
+                android:id="@+id/search_box"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
-                app:layout_constraintTop_toBottomOf="@id/text_view_last_product"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="0dp" />
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints">
 
-        </androidx.cardview.widget.CardView>
+                <include layout="@layout/search_bar" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/more_viewer_product_card_view"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="5dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_start"
-            app:layout_constraintStart_toStartOf="@+id/guideline_vertical_end"
-            app:layout_constraintTop_toBottomOf="@+id/last_product_card_view">
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/text_view_more_viewer_products"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layoutDirection="rtl"
-                android:text="@string/text_more_viewer_product" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycle_view_more_viewer_products"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
-                app:layout_constraintTop_toBottomOf="@id/text_view_more_viewer_products"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="0dp" />
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/more_score_product_card_view"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="5dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_start"
-            app:layout_constraintStart_toStartOf="@+id/guideline_vertical_end"
-            app:layout_constraintTop_toBottomOf="@+id/more_viewer_product_card_view">
-
-            <TextView
-                android:id="@+id/text_view_more_score_products"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layoutDirection="rtl"
-                android:text="@string/text_more_score_product" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycle_view_more_score_products"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/special_products_slider_cart_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="-16dp">
+                app:cardCornerRadius="8sp"
+                app:cardElevation="1sp"
+                app:cardMaxElevation="2sp"
+                app:layout_constraintDimensionRatio="w,16:9"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical_end"
+                app:layout_constraintStart_toStartOf="@+id/guideline_vertical_start"
+                app:layout_constraintTop_toBottomOf="@+id/search_box">
 
-            </androidx.recyclerview.widget.RecyclerView>
 
-        </androidx.cardview.widget.CardView>
+                <com.smarteist.autoimageslider.SliderView
+                    android:id="@+id/special_products_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:sliderAnimationDuration="600"
+                    app:sliderAutoCycleDirection="back_and_forth"
+                    app:sliderAutoCycleEnabled="true"
+                    app:sliderIndicatorAnimationDuration="600"
+                    app:sliderIndicatorGravity="center_horizontal|bottom"
+                    app:sliderIndicatorMargin="10dp"
+                    app:sliderIndicatorPadding="3dp"
+                    app:sliderIndicatorRadius="4dp"
+                    app:sliderIndicatorOrientation="horizontal"
+                    app:sliderIndicatorSelectedColor="@color/online_shop_red"
+                    app:sliderIndicatorUnselectedColor="@color/online_shop_raw_white"
+                    app:sliderScrollTimeInSec="3"
+                    app:sliderStartAutoCycle="true" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/last_product_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="5dp"
+                android:layoutDirection="rtl"
+                android:textDirection="rtl"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_start"
+                app:layout_constraintStart_toStartOf="@+id/guideline_vertical_end"
+                app:layout_constraintTop_toBottomOf="@+id/special_products_slider_cart_view">
+
+                <TextView
+                    android:id="@+id/text_view_last_product"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/iran_sans_mobile_bold"
+                    android:layoutDirection="rtl"
+                    android:padding="10dp"
+                    android:text="@string/text_last_product"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/text_view_all_last_products"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="15dp"
+                    android:fontFamily="@font/iran_sans_mobile_bold"
+                    android:padding="10dp"
+                    android:text="مشاهده همه"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/img_view_all_last_products"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="12dp"
+                    app:srcCompat="@drawable/ic_left" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycle_view_last_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_last_product"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteX="0dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/more_viewer_product_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="5dp"
+                android:layoutDirection="rtl"
+                android:textDirection="rtl"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_start"
+                app:layout_constraintStart_toStartOf="@+id/guideline_vertical_end"
+                app:layout_constraintTop_toBottomOf="@+id/last_product_card_view">
+
+                <TextView
+                    android:id="@+id/text_view_more_viewer_products"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/iran_sans_mobile_bold"
+                    android:layoutDirection="rtl"
+                    android:padding="10dp"
+                    android:text="@string/text_more_viewer_product"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_view_all_popularity_products"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="15dp"
+                    android:fontFamily="@font/iran_sans_mobile_bold"
+                    android:padding="10dp"
+                    android:text="مشاهده همه"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/img_view_all_popularity_products"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="12dp"
+                    app:srcCompat="@drawable/ic_left" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycle_view_popularity_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="50dp"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_more_viewer_products"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteX="0dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/more_score_product_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="5dp"
+                android:layoutDirection="rtl"
+                android:textDirection="rtl"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_start"
+                app:layout_constraintStart_toStartOf="@+id/guideline_vertical_end"
+                app:layout_constraintTop_toBottomOf="@+id/more_viewer_product_card_view">
+
+                <TextView
+                    android:id="@+id/text_view_more_score_products"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/iran_sans_mobile_bold"
+                    android:layoutDirection="rtl"
+                    android:padding="10dp"
+                    android:text="@string/text_more_score_product"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_view_all_rating_products"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="15dp"
+                    android:fontFamily="@font/iran_sans_mobile_bold"
+                    android:padding="10dp"
+                    android:text="مشاهده همه"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/img_view_all_rating_products"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="12dp"
+                    app:srcCompat="@drawable/ic_left" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycle_view_rating_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="50dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteX="-16dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.cardview.widget.CardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 </layout>

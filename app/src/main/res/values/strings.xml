@@ -32,10 +32,6 @@
     <string name="product_price_category_label">قیمت:</string>
 
 
-
-
-
-
     // Persian
 
     <string name="home_page">خانه</string>
@@ -44,7 +40,6 @@
     <string name="cart">سبد خرید</string>
 
     <string name="offers">محصولات پیشنهادی</string>
-
 
 
     <string name="setting">تنظیمات</string>
@@ -68,8 +63,6 @@
 
     <string name="no_internet">خطا در اتصال به اینترنت !</string>
     <string name="retry">تلاش مجدد</string>
-
-
 
 
     <string name="search_hint">جستجو در فروشگاه آنلاین... </string>

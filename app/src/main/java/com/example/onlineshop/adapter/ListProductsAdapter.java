@@ -1,7 +1,6 @@
 package com.example.onlineshop.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -14,21 +13,25 @@ import com.example.onlineshop.R;
 import com.example.onlineshop.data.model.Product;
 import com.example.onlineshop.databinding.RowShowProductBinding;
 import com.example.onlineshop.viewmodel.HomePageViewModel;
-import com.google.gson.internal.$Gson$Preconditions;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 
-public class LastProductsAdapter extends RecyclerView.Adapter<LastProductsAdapter.ProductHolder> {
+public class ListProductsAdapter extends RecyclerView.Adapter<ListProductsAdapter.ProductHolder> {
     private final HomePageViewModel mHomePageViewModel;
     private final LifecycleOwner mOwner;
-    private  Product mProduct;
+    private Product mProduct;
     private List<Product> mProductList;
 
-    public LastProductsAdapter(LifecycleOwner owner, HomePageViewModel homePageViewModel) {
+    public ListProductsAdapter(
+            LifecycleOwner owner,
+            List<Product> products,
+            HomePageViewModel homePageViewModel) {
+
+
         mHomePageViewModel = homePageViewModel;
-        mProductList=mHomePageViewModel.getProductsList();
+        mProductList = products;
         mOwner = owner;
 
     }
@@ -40,7 +43,7 @@ public class LastProductsAdapter extends RecyclerView.Adapter<LastProductsAdapte
         LayoutInflater inflater = LayoutInflater.from(mHomePageViewModel.getApplication());
         RowShowProductBinding listRowProductBinding = DataBindingUtil.inflate(inflater,
                 R.layout.row_show_product,
-                parent,false);
+                parent, false);
 
         return new ProductHolder(listRowProductBinding);
     }
@@ -53,7 +56,7 @@ public class LastProductsAdapter extends RecyclerView.Adapter<LastProductsAdapte
 
     @Override
     public int getItemCount() {
-        return mHomePageViewModel.getProductsList().size();
+        return mProductList.size();
     }
 
     class ProductHolder extends RecyclerView.ViewHolder {
@@ -62,17 +65,20 @@ public class LastProductsAdapter extends RecyclerView.Adapter<LastProductsAdapte
 
         public ProductHolder(RowShowProductBinding rowShowProductBinding) {
             super(rowShowProductBinding.getRoot());
-            mRowShowProductBinding =rowShowProductBinding;
+            mRowShowProductBinding = rowShowProductBinding;
             mRowShowProductBinding.setHomePageViewModel(mHomePageViewModel);
             mRowShowProductBinding.setLifecycleOwner(mOwner);
         }
 
-        public void bindProduct(int position){
-            mProduct = mHomePageViewModel.getProductsList().get(position);
+        public void bindProduct(int position) {
+            mProduct = mProductList.get(position);
             Picasso.get()
                     .load(mHomePageViewModel.getFirstImageSrc(mProduct))
                     .placeholder(R.drawable.place_holder_online_shop)
                     .into(mRowShowProductBinding.productImage);
+
+            String title = mProduct.getNameProduct();
+
 
             mRowShowProductBinding.productTitle.setText(mProduct.getNameProduct());
             mRowShowProductBinding.productPrice.setText(String.valueOf(mProduct.getPriceProduct()));
