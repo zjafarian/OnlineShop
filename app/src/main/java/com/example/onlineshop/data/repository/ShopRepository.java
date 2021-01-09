@@ -1,5 +1,6 @@
 package com.example.onlineshop.data.repository;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -22,18 +23,28 @@ import retrofit2.Retrofit;
 
 public class ShopRepository {
 
+    private static ShopRepository sInstance;
+
 
     private ShopService mShopService;
     private static final String TAG = "ShopRepository";
     private MutableLiveData<List<Product>> mLastProductsLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Product>> mPopularityProductsLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Product>> mRatingProductsLiveData = new MutableLiveData<>();
+    private Context mContext;
 
-    public ShopRepository() {
+
+    private ShopRepository(Context context) {
+        mContext = context.getApplicationContext();
         Retrofit retrofit = RetrofitInstance.getInstance().getRetrofit();
         mShopService = retrofit.create(ShopService.class);
     }
 
+    public static ShopRepository getInstance(Context context) {
+        if (sInstance == null)
+            sInstance = new ShopRepository(context);
+        return sInstance;
+    }
 
     public void getLastProductsAsync() {
 

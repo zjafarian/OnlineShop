@@ -33,21 +33,18 @@ public class NetworkParams {
     //options for query get last products
     public static final Map<String, String> LAST_PRODUCTS  = new HashMap<String, String>() {{
         put("order", ORDER_STATUS);
-        put("per_page","4");
     }};
 
     //options for query get popularity products
     public static final Map<String, String> POPULARITY_PRODUCTS  = new HashMap<String, String>() {{
         put("order", ORDER_STATUS);
         put("orderby",POPULARITY);
-        put("per_page","4");
     }};
 
     //options for query get rating products
     public static final Map<String, String> RATING_PRODUCTS  = new HashMap<String, String>() {{
         put("order", ORDER_STATUS);
         put("orderby",RATING);
-        put("per_page","4");
     }};
 
 

@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:layoutDirection="rtl"
         android:textDirection="rtl"
-        tools:context=".view.activity.SinUpFragment">
+        tools:context=".view.fragment.SinUpFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_vertical_start"

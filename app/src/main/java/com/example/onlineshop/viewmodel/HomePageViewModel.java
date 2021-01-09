@@ -1,14 +1,21 @@
 package com.example.onlineshop.viewmodel;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.onlineshop.R;
+import com.example.onlineshop.adapter.ListProductsHomePageAdapter;
+import com.example.onlineshop.adapter.SliderAdapter;
 import com.example.onlineshop.data.model.Product;
 import com.example.onlineshop.data.remote.NetworkParams;
 import com.example.onlineshop.data.repository.ShopRepository;
+import com.example.onlineshop.view.activity.ListProductsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,20 +26,20 @@ public class HomePageViewModel extends AndroidViewModel {
     private LiveData<List<Product>> mLastProductsLiveData;
     private LiveData<List<Product>> mPopularityProductsLiveData;
     private LiveData<List<Product>> mRatingProductsLiveData;
-
+    private ListProductsHomePageAdapter mLastProductsAdapter;
+    private ListProductsHomePageAdapter mPopularityProductsAdapter;
+    private ListProductsHomePageAdapter mRatingProductsAdapter;
+    private SliderAdapter mSliderAdapter;
 
 
 
     public HomePageViewModel(@NonNull Application application) {
         super(application);
-        List<Product> products;
-        mShopRepository = new ShopRepository();
+
+        mShopRepository = ShopRepository.getInstance(application);
         mLastProductsLiveData = mShopRepository.getLastProductsLiveData();
         mPopularityProductsLiveData = mShopRepository.getPopularityProductsLiveData();
         mRatingProductsLiveData = mShopRepository.getRatingProductsLiveData();
-
-
-
 
     }
 
@@ -54,16 +61,74 @@ public class HomePageViewModel extends AndroidViewModel {
         return mRatingProductsLiveData;
     }
 
-    public List<Product> getProductsList() {
-        if (mLastProductsLiveData.getValue() != null)
-            return mLastProductsLiveData.getValue();
-        else return new ArrayList<>();
-    }
 
     public String getFirstImageSrc(Product product) {
         mProduct = product;
         if (product.getProductPhotos().length != 0)
-                return product.getProductPhotos()[0].getPhotoSrc();
+            return product.getProductPhotos()[0].getPhotoSrc();
         return null;
     }
+
+    public String getUriImage(int idImage) {
+
+        return Uri.parse("android.resource://" +
+                R.class.getPackage().getName() +
+                "/" +
+                idImage).toString();
+    }
+
+
+    public void updateAdapters(String adapterName) {
+
+        switch (adapterName) {
+            case NetworkParams.LAST:
+                mLastProductsAdapter.notifyDataSetChanged();
+                break;
+
+            case NetworkParams.POPULARITY:
+                mPopularityProductsAdapter.notifyDataSetChanged();
+                break;
+
+            case NetworkParams.RATING:
+                mRatingProductsAdapter.notifyDataSetChanged();
+                break;
+        }
+    }
+
+
+    public void setLastProductsAdapter(ListProductsHomePageAdapter lastProductsAdapter) {
+        mLastProductsAdapter = lastProductsAdapter;
+    }
+
+    public void setPopularityProductsAdapter(ListProductsHomePageAdapter popularityProductsAdapter) {
+        mPopularityProductsAdapter = popularityProductsAdapter;
+    }
+
+    public void setRatingProductsAdapter(ListProductsHomePageAdapter ratingProductsAdapter) {
+        mRatingProductsAdapter = ratingProductsAdapter;
+    }
+
+    public void setSliderAdapter(SliderAdapter sliderAdapter) {
+        mSliderAdapter = sliderAdapter;
+    }
+
+    public ListProductsHomePageAdapter getLastProductsAdapter() {
+        return mLastProductsAdapter;
+    }
+
+    public ListProductsHomePageAdapter getPopularityProductsAdapter() {
+        return mPopularityProductsAdapter;
+    }
+
+    public ListProductsHomePageAdapter getRatingProductsAdapter() {
+        return mRatingProductsAdapter;
+    }
+
+    public SliderAdapter getSliderAdapter() {
+        return mSliderAdapter;
+    }
+
+
+
+
 }

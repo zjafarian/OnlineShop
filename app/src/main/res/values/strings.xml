@@ -86,4 +86,5 @@
     <string name="login_register">ورود و ثبت نام</string>
     <string name="name_tab_one">سبد خرید</string>
     <string name="name_tab_two">لیست خریدها</string>
+    <string name="todo">TODO</string>
 </resources>

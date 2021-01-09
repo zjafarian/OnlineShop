@@ -1,6 +1,7 @@
 package com.example.onlineshop.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -8,80 +9,77 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.onlineshop.R;
 import com.example.onlineshop.data.model.Product;
+import com.example.onlineshop.databinding.ItemProductListBinding;
 import com.example.onlineshop.databinding.RowShowProductBinding;
-import com.example.onlineshop.viewmodel.HomePageViewModel;
+import com.example.onlineshop.viewmodel.ListProductsViewModel;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-
-public class ListProductsAdapter extends RecyclerView.Adapter<ListProductsAdapter.ProductHolder> {
-    private final HomePageViewModel mHomePageViewModel;
-    private final LifecycleOwner mOwner;
-    private Product mProduct;
-    private List<Product> mProductList;
-
-    public ListProductsAdapter(
-            LifecycleOwner owner,
-            List<Product> products,
-            HomePageViewModel homePageViewModel) {
+public class ListProductsAdapter extends RecyclerView.Adapter<ListProductsAdapter.ListProductsViewHolder> {
+    private LifecycleOwner mOwner;
+    private ListProductsViewModel mViewModel;
+    private List<Product> mProducts = new ArrayList<>();
 
 
-        mHomePageViewModel = homePageViewModel;
-        mProductList = products;
+    public ListProductsAdapter(LifecycleOwner owner,
+                               List<Product> products,
+                               ListProductsViewModel viewModel) {
         mOwner = owner;
-
+        mViewModel = viewModel;
+        mProducts = products;
     }
-
 
     @NonNull
     @Override
-    public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(mHomePageViewModel.getApplication());
-        RowShowProductBinding listRowProductBinding = DataBindingUtil.inflate(inflater,
-                R.layout.row_show_product,
-                parent, false);
+    public ListProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        return new ProductHolder(listRowProductBinding);
+
+        LayoutInflater inflater = LayoutInflater.from(mViewModel.getApplication());
+        ItemProductListBinding itemProductListBinding = DataBindingUtil.inflate(inflater,
+                R.layout.item_product_list,
+                parent,
+                false);
+
+        return new ListProductsViewHolder(itemProductListBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull ListProductsViewHolder holder, int position) {
         holder.bindProduct(position);
+
+
     }
 
     @Override
     public int getItemCount() {
-        return mProductList.size();
+        return mProducts.size();
     }
 
-    class ProductHolder extends RecyclerView.ViewHolder {
+    class ListProductsViewHolder extends RecyclerView.ViewHolder {
+        private ItemProductListBinding mBinding;
+        private Product mProduct;
 
-        private final RowShowProductBinding mRowShowProductBinding;
 
-        public ProductHolder(RowShowProductBinding rowShowProductBinding) {
-            super(rowShowProductBinding.getRoot());
-            mRowShowProductBinding = rowShowProductBinding;
-            mRowShowProductBinding.setHomePageViewModel(mHomePageViewModel);
-            mRowShowProductBinding.setLifecycleOwner(mOwner);
+        public ListProductsViewHolder(ItemProductListBinding itemProductListBinding) {
+            super(itemProductListBinding.getRoot());
+            mBinding = itemProductListBinding;
+            mBinding.setListProductsViewModel(mViewModel);
+            mBinding.setLifecycleOwner(mOwner);
         }
 
+
         public void bindProduct(int position) {
-            mProduct = mProductList.get(position);
+            mBinding.setPosition(position);
+            mProduct = mProducts.get(position);
             Picasso.get()
-                    .load(mHomePageViewModel.getFirstImageSrc(mProduct))
+                    .load(mViewModel.getFirstImageSrc(mProduct))
                     .placeholder(R.drawable.place_holder_online_shop)
-                    .into(mRowShowProductBinding.productImage);
+                    .into(mBinding.productImage);
 
-            String title = mProduct.getNameProduct();
-
-
-            mRowShowProductBinding.productTitle.setText(mProduct.getNameProduct());
-            mRowShowProductBinding.productPrice.setText(String.valueOf(mProduct.getPriceProduct()));
         }
     }
 
