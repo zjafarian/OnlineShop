@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.onlineshop.R;
-import com.example.onlineshop.data.model.Product;
+import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.databinding.RowShowProductBinding;
 import com.example.onlineshop.viewmodel.HomePageViewModel;
 import com.squareup.picasso.Picasso;
@@ -24,12 +24,12 @@ public class ListProductsHomePageAdapter extends RecyclerView.Adapter
 
     private final HomePageViewModel mHomePageViewModel;
     private final LifecycleOwner mOwner;
-    private Product mProduct;
-    private List<Product> mProductList = new ArrayList<>();
+    private Products mProduct;
+    private List<Products> mProductList = new ArrayList<>();
 
     public ListProductsHomePageAdapter(
             LifecycleOwner owner,
-            List<Product> products,
+            List<Products> products,
             HomePageViewModel homePageViewModel) {
 
         mHomePageViewModel = homePageViewModel;
@@ -80,11 +80,11 @@ public class ListProductsHomePageAdapter extends RecyclerView.Adapter
                     .placeholder(R.drawable.place_holder_online_shop)
                     .into(mRowShowProductBinding.productImage);
 
-            String title = mProduct.getNameProduct();
 
 
-            mRowShowProductBinding.productTitle.setText(mProduct.getNameProduct());
-            mRowShowProductBinding.productPrice.setText(String.valueOf(mProduct.getPriceProduct()));
+
+            mRowShowProductBinding.productTitle.setText(mProduct.getName());
+            mRowShowProductBinding.productPrice.setText(String.valueOf(mProduct.getPrice()));
         }
     }
 

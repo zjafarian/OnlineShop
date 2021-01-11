@@ -14,10 +14,10 @@ import android.view.ViewGroup;
 
 import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ListProductsAdapter;
-import com.example.onlineshop.data.model.Product;
-import com.example.onlineshop.data.remote.NetworkParams;
+
+import com.example.onlineshop.data.network.models.Products;
+import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.databinding.FragmentListProductsBinding;
-import com.example.onlineshop.viewmodel.HomePageViewModel;
 import com.example.onlineshop.viewmodel.ListProductsViewModel;
 
 import java.util.List;
@@ -62,24 +62,24 @@ public class ListProductsFragment extends Fragment {
     }
 
     private void setLiveDataObservers() {
-        mListProductsViewModel.getLastProductsLiveData().observe(this, new Observer<List<Product>>() {
+        mListProductsViewModel.getLastProductsLiveData().observe(this, new Observer<List<Products>>() {
             @Override
-            public void onChanged(List<Product> products) {
+            public void onChanged(List<Products> products) {
                 updateUI();
             }
         });
 
 
-        mListProductsViewModel.getPopularityProductsLiveData().observe(this, new Observer<List<Product>>() {
+        mListProductsViewModel.getPopularityProductsLiveData().observe(this, new Observer<List<Products>>() {
             @Override
-            public void onChanged(List<Product> products) {
+            public void onChanged(List<Products> products) {
                 updateUI();
             }
         });
 
-        mListProductsViewModel.getRatingProductsLiveData().observe(this, new Observer<List<Product>>() {
+        mListProductsViewModel.getRatingProductsLiveData().observe(this, new Observer<List<Products>>() {
             @Override
-            public void onChanged(List<Product> products) {
+            public void onChanged(List<Products> products) {
                 updateUI();
             }
         });

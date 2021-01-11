@@ -1,13 +1,7 @@
-package com.example.onlineshop.data.remote;
+package com.example.onlineshop.data.network.remote;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public class NetworkParams {
 
@@ -29,6 +23,7 @@ public class NetworkParams {
 
     //path for get products
     public static final String PRODUCT_PATH = "products";
+    public static final String CATEGORY_PATH = "/categories";
 
     //options for query get last products
     public static final Map<String, String> LAST_PRODUCTS  = new HashMap<String, String>() {{

@@ -1,6 +1,5 @@
 package com.example.onlineshop.view.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,8 +15,8 @@ import android.view.ViewGroup;
 import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ListProductsHomePageAdapter;
 import com.example.onlineshop.adapter.SliderAdapter;
-import com.example.onlineshop.data.model.Product;
-import com.example.onlineshop.data.remote.NetworkParams;
+import com.example.onlineshop.data.network.models.Products;
+import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.databinding.FragmentHomePageBinding;
 import com.example.onlineshop.view.activity.ListProductsActivity;
 import com.example.onlineshop.viewmodel.HomePageViewModel;
@@ -67,24 +66,24 @@ public class HomePageFragment extends Fragment {
     }
 
     private void setLiveDataObservers() {
-        mHomePageViewModel.getLastProductsLiveData().observe(this, new Observer<List<Product>>() {
+        mHomePageViewModel.getLastProductsLiveData().observe(this, new Observer<List<Products>>() {
             @Override
-            public void onChanged(List<Product> products) {
+            public void onChanged(List<Products> products) {
                 updateUI(products, NetworkParams.LAST);
             }
         });
 
-        mHomePageViewModel.getPopularityProductsLiveData().observe(this, new Observer<List<Product>>() {
+        mHomePageViewModel.getPopularityProductsLiveData().observe(this, new Observer<List<Products>>() {
             @Override
-            public void onChanged(List<Product> products) {
+            public void onChanged(List<Products> products) {
                 updateUI(products, NetworkParams.POPULARITY);
 
             }
         });
 
-        mHomePageViewModel.getRatingProductsLiveData().observe(this, new Observer<List<Product>>() {
+        mHomePageViewModel.getRatingProductsLiveData().observe(this, new Observer<List<Products>>() {
             @Override
-            public void onChanged(List<Product> products) {
+            public void onChanged(List<Products> products) {
                 updateUI(products, NetworkParams.RATING);
             }
 
@@ -166,7 +165,7 @@ public class HomePageFragment extends Fragment {
         getActivity().startActivity(listProductsActivity);
     }
 
-    public void updateUI(List<Product> products, String selectAdapter) {
+    public void updateUI(List<Products> products, String selectAdapter) {
         switch (selectAdapter) {
 
             case NetworkParams.LAST:

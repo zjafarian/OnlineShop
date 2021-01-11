@@ -1,30 +1,28 @@
 package com.example.onlineshop.viewmodel;
 
 import android.app.Application;
-import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ListProductsAdapter;
-import com.example.onlineshop.data.model.Product;
-import com.example.onlineshop.data.remote.NetworkParams;
+
+import com.example.onlineshop.data.network.models.Products;
+import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.data.repository.ShopRepository;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class ListProductsViewModel extends AndroidViewModel {
     private ListProductsAdapter mListProductAdapter;
     private String mSelectListProducts;
-    private List<Product> mProductList;
+    private List<Products> mProductList;
     private ShopRepository mShopRepository;
-    private Product mProduct;
-    private LiveData<List<Product>> mLastProductsLiveData;
-    private LiveData<List<Product>> mPopularityProductsLiveData;
-    private LiveData<List<Product>> mRatingProductsLiveData;
+    private Products mProduct;
+    private LiveData<List<Products>> mLastProductsLiveData;
+    private LiveData<List<Products>> mPopularityProductsLiveData;
+    private LiveData<List<Products>> mRatingProductsLiveData;
 
 
     public ListProductsViewModel(@NonNull Application application) {
@@ -69,7 +67,7 @@ public class ListProductsViewModel extends AndroidViewModel {
     }
 
 
-    public List<Product> getProductList() {
+    public List<Products> getProductList() {
         return mProductList;
     }
 
@@ -78,30 +76,30 @@ public class ListProductsViewModel extends AndroidViewModel {
         mListProductAdapter.notifyDataSetChanged();
     }
 
-    public String getFirstImageSrc(Product product) {
+    public String getFirstImageSrc(Products product) {
         mProduct = product;
-        if (product.getProductPhotos().length != 0)
-            return product.getProductPhotos()[0].getPhotoSrc();
+        if (product.getImages().size() != 0)
+            return mProduct.getImages().get(0).getSrc();
         else return null;
     }
 
     public String getProductName(int position){
-        return mProductList.get(position).getNameProduct();
+        return mProductList.get(position).getName();
     }
 
     public String getProductPrice(int position){
-        return mProductList.get(position).getPriceProduct();
+        return mProductList.get(position).getPrice();
     }
 
-    public LiveData<List<Product>> getLastProductsLiveData() {
+    public LiveData<List<Products>> getLastProductsLiveData() {
         return mLastProductsLiveData;
     }
 
-    public LiveData<List<Product>> getPopularityProductsLiveData() {
+    public LiveData<List<Products>> getPopularityProductsLiveData() {
         return mPopularityProductsLiveData;
     }
 
-    public LiveData<List<Product>> getRatingProductsLiveData() {
+    public LiveData<List<Products>> getRatingProductsLiveData() {
         return mRatingProductsLiveData;
     }
 }

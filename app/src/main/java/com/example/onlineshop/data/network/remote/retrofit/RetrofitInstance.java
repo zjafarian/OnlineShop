@@ -1,11 +1,9 @@
-package com.example.onlineshop.data.remote.retrofit;
+package com.example.onlineshop.data.network.remote.retrofit;
 
-import com.example.onlineshop.data.model.Product;
-import com.example.onlineshop.data.remote.NetworkParams;
+import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -18,11 +16,14 @@ public class RetrofitInstance {
     private static RetrofitInstance sInstance;
     private final Retrofit mRetrofit;
 
+
     private RetrofitInstance() {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(NetworkParams.BASE_URL)
-                .addConverterFactory(createGsonConverter())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+
     }
 
     public static RetrofitInstance getInstance() {
@@ -36,16 +37,9 @@ public class RetrofitInstance {
         return mRetrofit;
     }
 
-    private static Converter.Factory createGsonConverter (){
-        Type type = new TypeToken<List<Product>>() {}.getType();
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(type, new GetProductsItemDeserializer());
-        Gson gson = gsonBuilder.create();
 
-        return GsonConverterFactory.create(gson);
 
-    }
 
 
 

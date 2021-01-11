@@ -10,7 +10,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.onlineshop.R;
-import com.example.onlineshop.data.model.Product;
+import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.databinding.ItemProductListBinding;
 import com.example.onlineshop.databinding.RowShowProductBinding;
 import com.example.onlineshop.viewmodel.ListProductsViewModel;
@@ -22,11 +22,11 @@ import java.util.List;
 public class ListProductsAdapter extends RecyclerView.Adapter<ListProductsAdapter.ListProductsViewHolder> {
     private LifecycleOwner mOwner;
     private ListProductsViewModel mViewModel;
-    private List<Product> mProducts = new ArrayList<>();
+    private List<Products> mProducts = new ArrayList<>();
 
 
     public ListProductsAdapter(LifecycleOwner owner,
-                               List<Product> products,
+                               List<Products> products,
                                ListProductsViewModel viewModel) {
         mOwner = owner;
         mViewModel = viewModel;
@@ -61,7 +61,7 @@ public class ListProductsAdapter extends RecyclerView.Adapter<ListProductsAdapte
 
     class ListProductsViewHolder extends RecyclerView.ViewHolder {
         private ItemProductListBinding mBinding;
-        private Product mProduct;
+        private Products mProduct;
 
 
         public ListProductsViewHolder(ItemProductListBinding itemProductListBinding) {
