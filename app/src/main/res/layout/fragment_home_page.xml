@@ -90,6 +90,33 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/list_category_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="5dp"
+                android:layoutDirection="rtl"
+                android:textDirection="rtl"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_start"
+                app:layout_constraintStart_toStartOf="@+id/guideline_vertical_end"
+                app:layout_constraintTop_toBottomOf="@+id/special_products_slider_cart_view">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycle_view_list_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="50dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/text_view_last_product"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:itemCount="4"
+                    tools:layout_editor_absoluteX="0dp">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/last_product_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
@@ -98,7 +125,7 @@
                 android:textDirection="rtl"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_start"
                 app:layout_constraintStart_toStartOf="@+id/guideline_vertical_end"
-                app:layout_constraintTop_toBottomOf="@+id/special_products_slider_cart_view">
+                app:layout_constraintTop_toBottomOf="@+id/list_category_card_view">
 
                 <TextView
                     android:id="@+id/text_view_last_product"
