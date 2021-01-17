@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/home_page_fragment_des">
+
+    <activity
+        android:id="@+id/online_shop_activity_des"
+        android:name="com.example.onlineshop.view.activity.OnlineShoppingMainActivity"
+        android:label="OnlineShoppingMainActivity"
+        tools:layout="@layout/activity_single_fragment">
+
+    </activity>
+
+
+    <fragment
+        android:id="@+id/home_page_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.HomePageFragment"
+        android:label="HomePageFragment"
+        tools:layout="@layout/fragment_home_page">
+        <action
+            android:id="@+id/action_home_page_fragment_des_to_list_products_fragment_des"
+            app:destination="@id/list_products_fragment_des" />
+        <action
+            android:id="@+id/action_home_page_fragment_des_to_product_detail_fragment_des"
+            app:destination="@id/product_detail_fragment_des" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/category_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.CategoryFragment"
+        android:label="CategoryFragment"
+        tools:layout="@layout/fragment_category">
+        <action
+            android:id="@+id/action_category_fragment_des_to_list_products_fragment_des"
+            app:destination="@id/list_products_fragment_des" />
+        <action
+            android:id="@+id/action_category_fragment_des_to_product_detail_fragment_des"
+            app:destination="@id/product_detail_fragment_des" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopping_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.ShoppingFragment"
+        android:label="ShoppingFragment"
+        tools:layout="@layout/fragment_shopping">
+        <action
+            android:id="@+id/action_shopping_fragment_des_to_shopping_cart_with_out_login_fragment_des"
+            app:destination="@id/shopping_cart_with_out_login_fragment_des" />
+        <action
+            android:id="@+id/action_shopping_fragment_des_to_shopping_list_with_out_login_fragment_des"
+            app:destination="@id/shopping_list_with_out_login_fragment_des" />
+        <action
+            android:id="@+id/action_shopping_fragment_des_to_shopping_cart_login_fragment_des"
+            app:destination="@id/shopping_cart_login_fragment_des" />
+        <action
+            android:id="@+id/action_shopping_fragment_des_to_shopping_list_login_fragment_des"
+            app:destination="@id/shopping_list_login_fragment_des" />
+    </fragment>
+    <fragment
+        android:id="@+id/list_products_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.ListProductsFragment"
+        android:label="ListProductsFragment"
+        tools:layout="@layout/fragment_list_products" />
+    <fragment
+        android:id="@+id/product_detail_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.ProductDetailFragment"
+        android:label="ProductDetailFragment"
+        tools:layout="@layout/fragment_product_detail" />
+
+    <fragment
+        android:id="@+id/login_sign_up_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.LoginSignUpFragment"
+        android:label="LoginSignUpFragment"
+        tools:layout="@layout/fragment_login_sign_up">
+        <action
+            android:id="@+id/action_login_sign_up_fragment_des_to_sign_up_fragment_des"
+            app:destination="@id/sign_up_fragment_des" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopping_cart_login_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.ShoppingCartLoginFragment"
+        android:label="ShoppingCartLoginFragment"
+        tools:layout="@layout/fragment_shopping_cart_login" />
+    <fragment
+        android:id="@+id/shopping_cart_with_out_login_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.ShoppingCartWithoutLoginFragment"
+        android:label="ShoppingCartWithoutLoginFragment"
+        tools:layout="@layout/fragment_shopping_cart_without_login" />
+    <fragment
+        android:id="@+id/shopping_list_login_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.ShoppingListLoginFragment"
+        android:label="ShoppingListLoginFragment"
+        tools:layout="@layout/fragment_shopping_list_login" />
+    <fragment
+        android:id="@+id/shopping_list_with_out_login_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.ShoppingListWithoutLoginFragment"
+        android:label="ShoppingListWithoutLoginFragment"
+        tools:layout="@layout/fragment_shopping_list_without_login" />
+    <fragment
+        android:id="@+id/sign_up_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.SinUpFragment"
+        android:label="SinUpFragment"
+        tools:layout="@layout/fragment_sin_up" />
+
+</navigation>

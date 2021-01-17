@@ -16,21 +16,21 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_fragment);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container_fragment);
+
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container_navigation);
 
 
         if (fragment == null) {
-            fragmentManager
+            getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container_fragment, createFragment(), FRAGMENT_TAG)
+                    .add(R.id.fragment_container_navigation, createFragment(), FRAGMENT_TAG)
                     .commit();
         } else {
-            fragmentManager
+            getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container_fragment, createFragment(), FRAGMENT_TAG)
+                    .replace(R.id.fragment_container_navigation, createFragment(), FRAGMENT_TAG)
                     .commit();
         }
     }

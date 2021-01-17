@@ -8,12 +8,15 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.onlineshop.R;
+import com.example.onlineshop.adapter.ListCategoriesHomePageAdapter;
 import com.example.onlineshop.adapter.ListProductsHomePageAdapter;
 import com.example.onlineshop.adapter.SliderAdapter;
+import com.example.onlineshop.data.network.models.Categories;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.data.repository.ShopRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomePageViewModel extends AndroidViewModel {
@@ -22,10 +25,24 @@ public class HomePageViewModel extends AndroidViewModel {
     private LiveData<List<Products>> mLastProductsLiveData;
     private LiveData<List<Products>> mPopularityProductsLiveData;
     private LiveData<List<Products>> mRatingProductsLiveData;
+    private LiveData<List<Categories>> mListCategoriesLiveData;
     private ListProductsHomePageAdapter mLastProductsAdapter;
     private ListProductsHomePageAdapter mPopularityProductsAdapter;
     private ListProductsHomePageAdapter mRatingProductsAdapter;
+    private ListCategoriesHomePageAdapter mCategoriesHomePageAdapter;
     private SliderAdapter mSliderAdapter;
+    private List<Integer> mColors = new ArrayList<Integer>(){{
+        add(R.color.online_shop_red);
+        add(R.color.online_shop_green);
+        add(R.color.online_shop_blue);
+        add(R.color.online_shop_purple);
+        add(R.color.online_shop_mustard);
+        add(R.color.online_shop_pink);
+        add(R.color.online_shop_blue_two);
+        add(R.color.online_shop_teal);
+        add(R.color.online_shop_deep_purple);
+        add(R.color.online_shop_blue_gray_two);
+    }};
 
 
 
@@ -36,13 +53,21 @@ public class HomePageViewModel extends AndroidViewModel {
         mLastProductsLiveData = mShopRepository.getLastProductsLiveData();
         mPopularityProductsLiveData = mShopRepository.getPopularityProductsLiveData();
         mRatingProductsLiveData = mShopRepository.getRatingProductsLiveData();
+        mListCategoriesLiveData = mShopRepository.getCategoriesListLiveData();
 
+        mSliderAdapter = new SliderAdapter(new ArrayList<String>() {{
+            add(getUriImage(R.drawable.slider_one));
+            add(getUriImage(R.drawable.slider_two));
+            add(getUriImage(R.drawable.slider_three));
+            add(getUriImage(R.drawable.slider_four));
+        }});
     }
 
     public void fetchProductsAsync() {
         mShopRepository.getLastProductsAsync();
         mShopRepository.getPopularityProductsAsync();
         mShopRepository.getRatingProductsAsync();
+        mShopRepository.getCategoriesAsync();
     }
 
     public LiveData<List<Products>> getLastProductsLiveData() {
@@ -57,6 +82,9 @@ public class HomePageViewModel extends AndroidViewModel {
         return mRatingProductsLiveData;
     }
 
+    public LiveData<List<Categories>> getListCategoriesLiveData() {
+        return mListCategoriesLiveData;
+    }
 
     public String getFirstImageSrc(Products products) {
         mProduct = products;
@@ -73,7 +101,6 @@ public class HomePageViewModel extends AndroidViewModel {
                 idImage).toString();
     }
 
-
     public void updateAdapters(String adapterName) {
 
         switch (adapterName) {
@@ -88,9 +115,12 @@ public class HomePageViewModel extends AndroidViewModel {
             case NetworkParams.RATING:
                 mRatingProductsAdapter.notifyDataSetChanged();
                 break;
+
+            case NetworkParams.CATEGORIES:
+                mCategoriesHomePageAdapter.notifyDataSetChanged();
+                break;
         }
     }
-
 
     public void setLastProductsAdapter(ListProductsHomePageAdapter lastProductsAdapter) {
         mLastProductsAdapter = lastProductsAdapter;
@@ -108,6 +138,14 @@ public class HomePageViewModel extends AndroidViewModel {
         mSliderAdapter = sliderAdapter;
     }
 
+    public ListCategoriesHomePageAdapter getCategoriesHomePageAdapter() {
+        return mCategoriesHomePageAdapter;
+    }
+
+    public void setCategoriesHomePageAdapter(ListCategoriesHomePageAdapter categoriesHomePageAdapter) {
+        mCategoriesHomePageAdapter = categoriesHomePageAdapter;
+    }
+
     public ListProductsHomePageAdapter getLastProductsAdapter() {
         return mLastProductsAdapter;
     }
@@ -118,6 +156,10 @@ public class HomePageViewModel extends AndroidViewModel {
 
     public ListProductsHomePageAdapter getRatingProductsAdapter() {
         return mRatingProductsAdapter;
+    }
+
+    public List<Integer> getColors() {
+        return mColors;
     }
 
     public SliderAdapter getSliderAdapter() {

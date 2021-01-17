@@ -17,7 +17,8 @@ public class NetworkParams {
 
     public static final String POPULARITY = "popularity";
     public static final String RATING = "rating";
-    public static final String LAST ="last";
+    public static final String CATEGORIES = "categories";
+    public static final String LAST = "last";
     public static final String ORDER_STATUS = "desc";
 
 
@@ -26,20 +27,20 @@ public class NetworkParams {
     public static final String CATEGORY_PATH = "/categories";
 
     //options for query get last products
-    public static final Map<String, String> LAST_PRODUCTS  = new HashMap<String, String>() {{
+    public static final Map<String, String> LAST_PRODUCTS = new HashMap<String, String>() {{
         put("order", ORDER_STATUS);
     }};
 
     //options for query get popularity products
-    public static final Map<String, String> POPULARITY_PRODUCTS  = new HashMap<String, String>() {{
+    public static final Map<String, String> POPULARITY_PRODUCTS = new HashMap<String, String>() {{
         put("order", ORDER_STATUS);
-        put("orderby",POPULARITY);
+        put("orderby", POPULARITY);
     }};
 
     //options for query get rating products
-    public static final Map<String, String> RATING_PRODUCTS  = new HashMap<String, String>() {{
+    public static final Map<String, String> RATING_PRODUCTS = new HashMap<String, String>() {{
         put("order", ORDER_STATUS);
-        put("orderby",RATING);
+        put("orderby", RATING);
     }};
 
 

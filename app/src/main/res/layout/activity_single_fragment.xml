@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
     </data>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.activity.SingleFragmentActivity">
 
-        <FrameLayout
-            android:id="@+id/fragment_container_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></FrameLayout>
+     <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
 
-    </FrameLayout>
+         <fragment
+             android:id="@+id/fragment_container_navigation"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_alignParentTop="true"
+             android:layout_above="@+id/online_shop_navigation_bar"
+             android:name="androidx.navigation.fragment.NavHostFragment"
+             app:defaultNavHost="true"
+             app:navGraph="@navigation/main_navigation"/>
+
+
+         <com.google.android.material.bottomnavigation.BottomNavigationView
+             android:id="@+id/online_shop_navigation_bar"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="@color/white"
+             app:itemTextColor="@color/grayLow"
+             android:layout_alignParentBottom="true"
+             android:textDirection="anyRtl"
+             app:labelVisibilityMode="labeled"
+             app:menu="@menu/navigation_menu">
+
+         </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+     </RelativeLayout>
+
 </layout>

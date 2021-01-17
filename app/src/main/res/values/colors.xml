@@ -19,6 +19,14 @@
     <color name="online_shop_red_light">#FF6F70</color>
     <color name="online_shop_green">#66bb68</color>
     <color name="online_shop_blue">#2d91e1</color>
+    <color name="online_shop_purple">#ab47bc</color>
+    <color name="online_shop_mustard">#ffca28</color>
+    <color name="online_shop_pink">#e91e63</color>
+    <color name="online_shop_blue_two">#FF6200EE</color>
+    <color name="online_shop_teal">#FF018786</color>
+    <color name="online_shop_deep_purple">#7e57c2</color>
+    <color name="online_shop_blue_gray_two">#607d8b</color>
+
     <color name="online_shop_blue_gray">#a2aac1</color>
     <color name="online_shop_dark_blue_gray">#303341</color>
     <color name="online_shop_gray">#757575</color>

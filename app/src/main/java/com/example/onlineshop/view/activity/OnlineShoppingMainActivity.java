@@ -3,84 +3,87 @@ package com.example.onlineshop.view.activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 import com.example.onlineshop.R;
-import com.example.onlineshop.databinding.ActivityOnlineShoppingFragmentBinding;
-import com.example.onlineshop.view.fragment.AccountLoginFragment;
-import com.example.onlineshop.view.fragment.CategoryFragment;
+import com.example.onlineshop.databinding.ActivitySingleFragmentBinding;
 import com.example.onlineshop.view.fragment.HomePageFragment;
-import com.example.onlineshop.view.fragment.LoginSignUpFragment;
-import com.example.onlineshop.view.fragment.ShoppingFragment;
 import com.example.onlineshop.viewmodel.SingleFragmentActivityViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class OnlineShoppingMainActivity extends AppCompatActivity implements
+public class OnlineShoppingMainActivity extends SingleFragmentActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener {
 
 
-    private ActivityOnlineShoppingFragmentBinding mBinding;
+    private ActivitySingleFragmentBinding mBinding;
     private SingleFragmentActivityViewModel mViewModel;
     private boolean mLogin;
+    private NavController mNavController;
+    public static final String HOME_PAGE_FRAGMENT_TAG = "HomePageFragmentTag";
 
+
+    @Override
+    public Fragment createFragment() {
+
+        getSupportFragmentManager().
+                beginTransaction().
+                add(R.id.fragment_container_navigation,
+                        HomePageFragment.newInstance(),
+                        HOME_PAGE_FRAGMENT_TAG);
+        return HomePageFragment.newInstance();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mViewModel = new ViewModelProvider(this).get(SingleFragmentActivityViewModel.class);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_online_shopping_fragment);
-        HomePageFragment homePageFragment = HomePageFragment.newInstance();
-        mViewModel.loadFragment(this,homePageFragment);
+
 
         mViewModel.setDoubleBackPressToExit(false);
+        mBinding= DataBindingUtil.setContentView(this,R.layout.activity_single_fragment);
+
         mBinding.onlineShopNavigationBar.setOnNavigationItemSelectedListener
                 (this::onNavigationItemSelected);
+
+        mNavController = Navigation.findNavController(this,R.id.fragment_container_navigation);
 
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        NavOptions optionBuilder=
+                new NavOptions.Builder().
+                        setEnterAnim(android.R.anim.fade_in).
+                        setExitAnim(android.R.anim.fade_out).
+                        setPopExitAnim(android.R.anim.slide_out_right).
+                        build();
 
 
         switch (item.getItemId()) {
             case R.id.home_navigation_menu:
-                mViewModel.setHomeButtonClicked(!mViewModel.isHomeButtonClicked());
-                HomePageFragment homePageFragment = HomePageFragment.newInstance();
-                return mViewModel.loadFragment(this,homePageFragment);
-
+                mNavController.navigate(R.id.home_page_fragment_des,null,optionBuilder);
+               return true;
 
             case R.id.category_navigation_menu:
-                mViewModel.setCategoryButtonClicked(!mViewModel.isCategoryButtonClicked());
-                CategoryFragment categoryFragment = CategoryFragment.newInstance();
-                return mViewModel.loadFragment(this,categoryFragment);
+                mNavController.navigate(R.id.category_fragment_des,null,optionBuilder);
+                return true;
 
             case R.id.shopping_cart_navigation_menu:
-                mViewModel.setShoppingCartClicked(!mViewModel.isShoppingCartClicked());
-                ShoppingFragment shoppingFragment = ShoppingFragment.newInstance();
-                return mViewModel.loadFragment(this,shoppingFragment);
+                mNavController.navigate(R.id.shopping_fragment_des,null,optionBuilder);
+                return true;
+
             case R.id.user_navigation_menu:
-
-                mViewModel.setAccountClicked(!mViewModel.isAccountClicked());
-                if (mLogin){
-                    AccountLoginFragment accountLoginFragment = AccountLoginFragment.newInstance();
-                    return mViewModel.loadFragment(this,accountLoginFragment);
-                } else {
-                    LoginSignUpFragment loginSignUpFragment = LoginSignUpFragment.newInstance();
-                    return mViewModel.loadFragment(this,loginSignUpFragment);
-                }
-
+                mNavController.navigate(R.id.login_sign_up_fragment_des,null,optionBuilder);
+                return true;
         }
 
         return false;
-
-
 
 
     }

@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.onlineshop.R;
+import com.example.onlineshop.adapter.ListCategoriesHomePageAdapter;
 import com.example.onlineshop.adapter.ListProductsHomePageAdapter;
 import com.example.onlineshop.adapter.SliderAdapter;
+import com.example.onlineshop.data.network.models.Categories;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.databinding.FragmentHomePageBinding;
@@ -29,7 +31,6 @@ import java.util.List;
 public class HomePageFragment extends Fragment {
     private HomePageViewModel mHomePageViewModel;
     private FragmentHomePageBinding mBinding;
-    private SliderAdapter mSliderAdapter;
 
 
     public HomePageFragment() {
@@ -54,29 +55,20 @@ public class HomePageFragment extends Fragment {
         mHomePageViewModel = new ViewModelProvider(requireActivity()).get(HomePageViewModel.class);
         mHomePageViewModel.fetchProductsAsync();
         setLiveDataObservers();
-
-        mSliderAdapter = new SliderAdapter(new ArrayList<String>() {{
-            add(mHomePageViewModel.getUriImage(R.drawable.slider_one));
-            add(mHomePageViewModel.getUriImage(R.drawable.slider_two));
-            add(mHomePageViewModel.getUriImage(R.drawable.slider_three));
-            add(mHomePageViewModel.getUriImage(R.drawable.slider_four));
-        }});
-
-
     }
 
     private void setLiveDataObservers() {
         mHomePageViewModel.getLastProductsLiveData().observe(this, new Observer<List<Products>>() {
             @Override
             public void onChanged(List<Products> products) {
-                updateUI(products, NetworkParams.LAST);
+                updateUI(products, null,NetworkParams.LAST);
             }
         });
 
         mHomePageViewModel.getPopularityProductsLiveData().observe(this, new Observer<List<Products>>() {
             @Override
             public void onChanged(List<Products> products) {
-                updateUI(products, NetworkParams.POPULARITY);
+                updateUI(products,null, NetworkParams.POPULARITY);
 
             }
         });
@@ -84,10 +76,18 @@ public class HomePageFragment extends Fragment {
         mHomePageViewModel.getRatingProductsLiveData().observe(this, new Observer<List<Products>>() {
             @Override
             public void onChanged(List<Products> products) {
-                updateUI(products, NetworkParams.RATING);
+                updateUI(products,null, NetworkParams.RATING);
             }
 
 
+        });
+
+        mHomePageViewModel.getListCategoriesLiveData().observe(this, new Observer<List<Categories>>() {
+            @Override
+            public void onChanged(List<Categories> categories) {
+                updateUI(null,categories,NetworkParams.CATEGORIES);
+
+            }
         });
     }
 
@@ -101,7 +101,7 @@ public class HomePageFragment extends Fragment {
 
         mBinding.setHomePageViewModel(mHomePageViewModel);
 
-        mBinding.specialProductsSlider.setSliderAdapter(mSliderAdapter);
+        mBinding.specialProductsSlider.setSliderAdapter(mHomePageViewModel.getSliderAdapter());
         mBinding.specialProductsSlider.startAutoCycle();
         mBinding.specialProductsSlider.setIndicatorAnimation(IndicatorAnimationType.WORM);
         mBinding.specialProductsSlider.setSliderTransformAnimation
@@ -159,13 +159,12 @@ public class HomePageFragment extends Fragment {
         });
     }
 
-
     private void startListProducts(String selectFilter) {
         Intent listProductsActivity = ListProductsActivity.newIntent(getActivity(), selectFilter);
         getActivity().startActivity(listProductsActivity);
     }
 
-    public void updateUI(List<Products> products, String selectAdapter) {
+    public void updateUI(List<Products> products,List<Categories> categories, String selectAdapter) {
         switch (selectAdapter) {
 
             case NetworkParams.LAST:
@@ -180,7 +179,8 @@ public class HomePageFragment extends Fragment {
                     mBinding.recycleViewLastProducts.setAdapter
                             (mHomePageViewModel.getLastProductsAdapter());
 
-                } else mHomePageViewModel.updateAdapters(selectAdapter);
+                }
+                else mHomePageViewModel.updateAdapters(selectAdapter);
 
                 break;
 
@@ -196,7 +196,8 @@ public class HomePageFragment extends Fragment {
                     mBinding.recycleViewPopularityProducts.setAdapter
                             (mHomePageViewModel.getPopularityProductsAdapter());
 
-                } else mHomePageViewModel.updateAdapters(selectAdapter);
+                }
+                else mHomePageViewModel.updateAdapters(selectAdapter);
 
                 break;
 
@@ -212,9 +213,28 @@ public class HomePageFragment extends Fragment {
                     mBinding.recycleViewRatingProducts.setAdapter
                             (mHomePageViewModel.getRatingProductsAdapter());
 
-                } else mHomePageViewModel.updateAdapters(selectAdapter);
+                }
+                else mHomePageViewModel.updateAdapters(selectAdapter);
 
                 break;
+
+            case NetworkParams.CATEGORIES:
+                if(mHomePageViewModel.getCategoriesHomePageAdapter()==null){
+
+                    ListCategoriesHomePageAdapter listCategoriesHomePageAdapter = new
+                            ListCategoriesHomePageAdapter(this,mHomePageViewModel,categories);
+
+                    mHomePageViewModel.setCategoriesHomePageAdapter(listCategoriesHomePageAdapter);
+
+                    mBinding.recycleViewListCategory.setAdapter
+                            (mHomePageViewModel.getCategoriesHomePageAdapter());
+                }
+                else mHomePageViewModel.updateAdapters(selectAdapter);
+
+                break;
+
+
+
         }
     }
 
