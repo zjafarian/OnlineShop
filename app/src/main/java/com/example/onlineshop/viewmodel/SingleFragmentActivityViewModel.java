@@ -2,29 +2,29 @@ package com.example.onlineshop.viewmodel;
 
 import android.app.Application;
 import android.os.Handler;
-import android.view.MenuItem;
-
+import android.util.Log;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.AndroidViewModel;
-
-import com.example.onlineshop.R;
 import com.example.onlineshop.data.repository.ShopRepository;
-import com.example.onlineshop.view.fragment.HomePageFragment;
+
 
 public class SingleFragmentActivityViewModel extends AndroidViewModel {
 
     public static final String FRAGMENT_TAG = "FragmentActivity";
-
-
+    private ShopRepository mShopRepository;
     private boolean mDoubleBackPressToExit;
-
+    private static final String TAG = "SingleFragmentActivityV";
 
 
     public SingleFragmentActivityViewModel(@NonNull Application application) {
         super(application);
+        Log.d(TAG, "SingleFragmentActivityViewModel: " );
+        mShopRepository = ShopRepository.getInstance(application);
+
+        mShopRepository.getLastProductsAsync();
+        mShopRepository.getPopularityProductsAsync();
+        mShopRepository.getRatingProductsAsync();
+        mShopRepository.getCategoriesAsync();
     }
 
 
@@ -35,8 +35,6 @@ public class SingleFragmentActivityViewModel extends AndroidViewModel {
     public void setDoubleBackPressToExit(boolean doubleBackPressToExit) {
         mDoubleBackPressToExit = doubleBackPressToExit;
     }
-
-
 
 
     public void handlerDoubleBackPress() {

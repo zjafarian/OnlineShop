@@ -2,12 +2,13 @@ package com.example.onlineshop.adapter;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.LayoutInflater;
-import android.view.PointerIcon;
-import android.view.View;
+
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,38 +24,35 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListCategoriesHomePageAdapter extends
-        RecyclerView.Adapter<ListCategoriesHomePageAdapter.ListCategoriesHomePageHolder> {
+public class ListCategoriesHomePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private LifecycleOwner mOwner;
-    private HomePageViewModel mViewModel;
-    private List<Categories> mCategoriesList = new ArrayList<>();
-    private Bitmap mItemBitmap;
+    private List<Categories> mCategoriesList;
 
-    public ListCategoriesHomePageAdapter(LifecycleOwner owner, HomePageViewModel homePageViewModel,
-                                         List<Categories> categories) {
-        mOwner = owner;
-        mViewModel = homePageViewModel;
-        mCategoriesList = categories;
+    public ListCategoriesHomePageAdapter() {
+        mCategoriesList = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public ListCategoriesHomePageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        LayoutInflater inflater = LayoutInflater.from(mViewModel.getApplication());
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemCategoryHomePageListBinding itemCategoryHomePageListBinding = DataBindingUtil.inflate(
-                inflater,
+                LayoutInflater.from(parent.getContext()),
                 R.layout.item_category_home_page_list,
                 parent,
                 false);
         return new ListCategoriesHomePageHolder(itemCategoryHomePageListBinding);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull ListCategoriesHomePageHolder holder, int position) {
-        holder.bindCategories(position);
+    public void setData(List<Categories> categories) {
+        mCategoriesList = categories;
+        notifyDataSetChanged();
+    }
 
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Categories item = mCategoriesList.get(position);
+        ((ListCategoriesHomePageHolder) holder).bindCategories(item);
     }
 
     @Override
@@ -62,45 +60,17 @@ public class ListCategoriesHomePageAdapter extends
         return mCategoriesList.size();
     }
 
-    class ListCategoriesHomePageHolder extends RecyclerView.ViewHolder {
-        private ItemCategoryHomePageListBinding mBinding;
-        private Categories mCategory;
+    static class ListCategoriesHomePageHolder extends RecyclerView.ViewHolder {
+        private final ItemCategoryHomePageListBinding mBinding;
 
         public ListCategoriesHomePageHolder(ItemCategoryHomePageListBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
         }
 
-        public void bindCategories(int position) {
-            mCategory = mCategoriesList.get(position);
-
-            Picasso.get()
-                    .load(mCategory.getImage().getSrc())
-                    .placeholder(R.drawable.place_holder_online_shop)
-                    .into(new Target() {
-                        @Override
-                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            mItemBitmap = bitmap;
-
-                        }
-
-                        @Override
-                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                        }
-
-                        @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                        }
-                    });
-        /*    Bitmap imageScale = Bitmap.createScaledBitmap(mItemBitmap, 50, 50, true);
-            mBinding.imgViewCategory.setImageBitmap(imageScale);
-
-
-            mBinding.categoryName.setText(mCategory.getName());
-*/
-
+        public void bindCategories(Categories categories) {
+            mBinding.setCategory(categories);
+            mBinding.executePendingBindings();
         }
     }
 

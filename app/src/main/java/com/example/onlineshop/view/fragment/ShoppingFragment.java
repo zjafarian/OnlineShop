@@ -45,7 +45,9 @@ public class ShoppingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mShoppingViewModel = new ViewModelProvider(this).get(ShoppingViewModel.class);
+
     }
 
     @Override

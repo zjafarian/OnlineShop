@@ -51,6 +51,7 @@ public class ListProductsFragment extends Fragment {
         if (getArguments() != null) {
             mSelectListProducts = getArguments().getString(ARGS_SELECT_LIST_PRODUCTS);
         }
+        setRetainInstance(true);
 
         mListProductsViewModel = new
                 ViewModelProvider(requireActivity()).get(ListProductsViewModel.class);

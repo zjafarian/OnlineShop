@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.onlineshop.R;
+import com.example.onlineshop.data.network.models.Categories;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.databinding.RowShowProductBinding;
 import com.example.onlineshop.viewmodel.HomePageViewModel;
@@ -19,32 +20,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ListProductsHomePageAdapter extends RecyclerView.Adapter
-        <ListProductsHomePageAdapter.ProductHolder> {
+public class ListProductsHomePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final HomePageViewModel mHomePageViewModel;
-    private final LifecycleOwner mOwner;
-    private Products mProduct;
+
     private List<Products> mProductList = new ArrayList<>();
 
-    public ListProductsHomePageAdapter(
-            LifecycleOwner owner,
-            List<Products> products,
-            HomePageViewModel homePageViewModel) {
+    public ListProductsHomePageAdapter() {
 
-        mHomePageViewModel = homePageViewModel;
+
+
+    }
+
+    public void setData(List<Products> productList) {
         for (int i = 0; i < 4; i++) {
-            mProductList.add(products.get(i));
+            mProductList.add(productList.get(i));
         }
-        mOwner = owner;
+        notifyDataSetChanged();
     }
 
 
     @NonNull
     @Override
-    public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(mHomePageViewModel.getApplication());
-        RowShowProductBinding listRowProductBinding = DataBindingUtil.inflate(inflater,
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        RowShowProductBinding listRowProductBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(parent.getContext()),
                 R.layout.row_show_product,
                 parent, false);
 
@@ -52,9 +51,12 @@ public class ListProductsHomePageAdapter extends RecyclerView.Adapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Products item = mProductList.get(position);
+        ((ListProductsHomePageAdapter.ProductHolder) holder).bindProduct(item);
 
-        holder.bindProduct(position);
+
+
     }
 
     @Override
@@ -64,27 +66,25 @@ public class ListProductsHomePageAdapter extends RecyclerView.Adapter
 
     class ProductHolder extends RecyclerView.ViewHolder {
 
-        private final RowShowProductBinding mRowShowProductBinding;
+        private final RowShowProductBinding mBinding;
 
-        public ProductHolder(RowShowProductBinding rowShowProductBinding) {
-            super(rowShowProductBinding.getRoot());
-            mRowShowProductBinding = rowShowProductBinding;
-            mRowShowProductBinding.setHomePageViewModel(mHomePageViewModel);
-            mRowShowProductBinding.setLifecycleOwner(mOwner);
+        public ProductHolder(RowShowProductBinding binding) {
+            super(binding.getRoot());
+            mBinding = binding;
+
         }
 
-        public void bindProduct(int position) {
-            mProduct = mProductList.get(position);
-            Picasso.get()
-                    .load(mHomePageViewModel.getFirstImageSrc(mProduct))
-                    .placeholder(R.drawable.place_holder_online_shop)
-                    .into(mRowShowProductBinding.productImage);
+        public void bindProduct(Products products) {
+            mBinding.setProduct(products);
+            mBinding.executePendingBindings();
+            if (products.getImages().size() != 0 ) {
+                Picasso.get()
+                        .load(products.getImages().get(0).getSrc())
+                        .placeholder(R.drawable.place_holder_online_shop)
+                        .into(mBinding.productImage);
+            }
 
 
-
-
-            mRowShowProductBinding.productTitle.setText(mProduct.getName());
-            mRowShowProductBinding.productPrice.setText(String.valueOf(mProduct.getPrice()));
         }
     }
 

@@ -30,6 +30,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         } else {
             getSupportFragmentManager()
                     .beginTransaction()
+                    .addToBackStack(null)
                     .replace(R.id.fragment_container_navigation, createFragment(), FRAGMENT_TAG)
                     .commit();
         }

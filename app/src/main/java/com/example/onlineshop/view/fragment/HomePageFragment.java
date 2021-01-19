@@ -3,10 +3,13 @@ package com.example.onlineshop.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,10 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomePageFragment extends Fragment {
+    public static final String ARGS_SELECT_LIST_PRODUCTS = "selectListProducts";
     private HomePageViewModel mHomePageViewModel;
     private FragmentHomePageBinding mBinding;
-
-
+    private ListCategoriesHomePageAdapter mCategoryAdapter;
+    private ListProductsHomePageAdapter mLastProductsAdapter;
+    private ListProductsHomePageAdapter mPopularityProductsAdapter;
+    private ListProductsHomePageAdapter mRatingProductsAdapter;
+    private SliderAdapter mSliderAdapter;
     public HomePageFragment() {
         // Required empty public constructor
     }
@@ -50,45 +57,10 @@ public class HomePageFragment extends Fragment {
         if (getArguments() != null) {
 
         }
+        setRetainInstance(true);
 
 
         mHomePageViewModel = new ViewModelProvider(requireActivity()).get(HomePageViewModel.class);
-        mHomePageViewModel.fetchProductsAsync();
-        setLiveDataObservers();
-    }
-
-    private void setLiveDataObservers() {
-        mHomePageViewModel.getLastProductsLiveData().observe(this, new Observer<List<Products>>() {
-            @Override
-            public void onChanged(List<Products> products) {
-                updateUI(products, null,NetworkParams.LAST);
-            }
-        });
-
-        mHomePageViewModel.getPopularityProductsLiveData().observe(this, new Observer<List<Products>>() {
-            @Override
-            public void onChanged(List<Products> products) {
-                updateUI(products,null, NetworkParams.POPULARITY);
-
-            }
-        });
-
-        mHomePageViewModel.getRatingProductsLiveData().observe(this, new Observer<List<Products>>() {
-            @Override
-            public void onChanged(List<Products> products) {
-                updateUI(products,null, NetworkParams.RATING);
-            }
-
-
-        });
-
-        mHomePageViewModel.getListCategoriesLiveData().observe(this, new Observer<List<Categories>>() {
-            @Override
-            public void onChanged(List<Categories> categories) {
-                updateUI(null,categories,NetworkParams.CATEGORIES);
-
-            }
-        });
     }
 
     @Override
@@ -101,17 +73,17 @@ public class HomePageFragment extends Fragment {
 
         mBinding.setHomePageViewModel(mHomePageViewModel);
 
-        mBinding.specialProductsSlider.setSliderAdapter(mHomePageViewModel.getSliderAdapter());
-        mBinding.specialProductsSlider.startAutoCycle();
-        mBinding.specialProductsSlider.setIndicatorAnimation(IndicatorAnimationType.WORM);
-        mBinding.specialProductsSlider.setSliderTransformAnimation
-                (SliderAnimations.SIMPLETRANSFORMATION);
-
+        initRecyclers();
         listener();
-
 
         return mBinding.getRoot();
 
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setLiveDataObservers();
     }
 
     private void listener() {
@@ -160,83 +132,98 @@ public class HomePageFragment extends Fragment {
     }
 
     private void startListProducts(String selectFilter) {
-        Intent listProductsActivity = ListProductsActivity.newIntent(getActivity(), selectFilter);
-        getActivity().startActivity(listProductsActivity);
+        Bundle bundle = new Bundle();
+        bundle.putString(ARGS_SELECT_LIST_PRODUCTS,selectFilter);
+        Navigation.findNavController(mBinding.getRoot()).navigate(R.id.list_products_fragment_des,bundle);
     }
 
-    public void updateUI(List<Products> products,List<Categories> categories, String selectAdapter) {
+    public void updateUI(List<Products> products, List<Categories> categories, String selectAdapter) {
         switch (selectAdapter) {
 
             case NetworkParams.LAST:
-
-                if (mHomePageViewModel.getLastProductsAdapter() == null) {
-
-                    ListProductsHomePageAdapter listProductsHomePageAdapter =
-                            new ListProductsHomePageAdapter(this, products, mHomePageViewModel);
-
-                    mHomePageViewModel.setLastProductsAdapter(listProductsHomePageAdapter);
-
-                    mBinding.recycleViewLastProducts.setAdapter
-                            (mHomePageViewModel.getLastProductsAdapter());
-
-                }
-                else mHomePageViewModel.updateAdapters(selectAdapter);
-
+                mLastProductsAdapter.setData(products);
                 break;
 
             case NetworkParams.POPULARITY:
-
-                if (mHomePageViewModel.getPopularityProductsAdapter() == null) {
-
-                    ListProductsHomePageAdapter listProductsHomePageAdapter =
-                            new ListProductsHomePageAdapter(this, products, mHomePageViewModel);
-
-                    mHomePageViewModel.setPopularityProductsAdapter(listProductsHomePageAdapter);
-
-                    mBinding.recycleViewPopularityProducts.setAdapter
-                            (mHomePageViewModel.getPopularityProductsAdapter());
-
-                }
-                else mHomePageViewModel.updateAdapters(selectAdapter);
-
+                mPopularityProductsAdapter.setData(products);
                 break;
 
             case NetworkParams.RATING:
-
-                if (mHomePageViewModel.getRatingProductsAdapter() == null) {
-
-                    ListProductsHomePageAdapter listProductsHomePageAdapter =
-                            new ListProductsHomePageAdapter(this, products, mHomePageViewModel);
-
-                    mHomePageViewModel.setRatingProductsAdapter(listProductsHomePageAdapter);
-
-                    mBinding.recycleViewRatingProducts.setAdapter
-                            (mHomePageViewModel.getRatingProductsAdapter());
-
-                }
-                else mHomePageViewModel.updateAdapters(selectAdapter);
-
+                mRatingProductsAdapter.setData(products);
                 break;
 
             case NetworkParams.CATEGORIES:
-                if(mHomePageViewModel.getCategoriesHomePageAdapter()==null){
-
-                    ListCategoriesHomePageAdapter listCategoriesHomePageAdapter = new
-                            ListCategoriesHomePageAdapter(this,mHomePageViewModel,categories);
-
-                    mHomePageViewModel.setCategoriesHomePageAdapter(listCategoriesHomePageAdapter);
-
-                    mBinding.recycleViewListCategory.setAdapter
-                            (mHomePageViewModel.getCategoriesHomePageAdapter());
-                }
-                else mHomePageViewModel.updateAdapters(selectAdapter);
-
+                mCategoryAdapter.setData(categories);
                 break;
-
-
-
         }
     }
 
+    private void setLiveDataObservers() {
 
+        if (!mHomePageViewModel.getLastProductsLiveData().hasActiveObservers())
+            mHomePageViewModel.getLastProductsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Products>>() {
+                @Override
+                public void onChanged(List<Products> products) {
+                    updateUI(products, null, NetworkParams.LAST);
+                }
+            });
+
+        if (!mHomePageViewModel.getPopularityProductsLiveData().hasActiveObservers())
+            mHomePageViewModel.getPopularityProductsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Products>>() {
+                @Override
+                public void onChanged(List<Products> products) {
+                    updateUI(products, null, NetworkParams.POPULARITY);
+
+                }
+            });
+
+        if (!mHomePageViewModel.getRatingProductsLiveData().hasActiveObservers())
+            mHomePageViewModel.getRatingProductsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Products>>() {
+                @Override
+                public void onChanged(List<Products> products) {
+                    updateUI(products, null, NetworkParams.RATING);
+                }
+
+
+            });
+
+        //if (!mHomePageViewModel.getListCategoriesLiveData().hasActiveObservers())
+            mHomePageViewModel.getListCategoriesLiveData().observe(getViewLifecycleOwner(), new Observer<List<Categories>>() {
+                @Override
+                public void onChanged(List<Categories> categories) {
+                    updateUI(null, categories, NetworkParams.CATEGORIES);
+
+                }
+            });
+
+
+    }
+
+    private void initRecyclers() {
+        mCategoryAdapter = new ListCategoriesHomePageAdapter();
+        mLastProductsAdapter = new ListProductsHomePageAdapter();
+        mPopularityProductsAdapter = new ListProductsHomePageAdapter();
+        mRatingProductsAdapter = new ListProductsHomePageAdapter();
+
+        mSliderAdapter= new SliderAdapter(new ArrayList<String>() {{
+            add(mHomePageViewModel.getUriImage(R.drawable.slider_one));
+            add(mHomePageViewModel.getUriImage(R.drawable.slider_two));
+            add(mHomePageViewModel.getUriImage(R.drawable.slider_three));
+            add(mHomePageViewModel.getUriImage(R.drawable.slider_four));
+        }});;
+
+
+
+
+        mBinding.recycleViewListCategory.setAdapter(mCategoryAdapter);
+        mBinding.recycleViewLastProducts.setAdapter(mLastProductsAdapter);
+        mBinding.recycleViewPopularityProducts.setAdapter(mPopularityProductsAdapter);
+        mBinding.recycleViewRatingProducts.setAdapter(mRatingProductsAdapter);
+
+        mBinding.specialProductsSlider.setSliderAdapter(mSliderAdapter);
+        mBinding.specialProductsSlider.startAutoCycle();
+        mBinding.specialProductsSlider.setIndicatorAnimation(IndicatorAnimationType.WORM);
+        mBinding.specialProductsSlider.setSliderTransformAnimation
+                (SliderAnimations.SIMPLETRANSFORMATION);
+    }
 }

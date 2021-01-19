@@ -2,11 +2,14 @@ package com.example.onlineshop.view.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -22,8 +25,10 @@ import java.util.List;
 
 
 public class CategoryFragment extends Fragment {
+
     private FragmentCategoryBinding mBinding;
     private CategoryViewModel mViewModel;
+    private ListCategoriesAdapter mCategoriesAdapter;
 
 
     public CategoryFragment() {
@@ -45,16 +50,7 @@ public class CategoryFragment extends Fragment {
         if (getArguments() != null) {
 
         }
-
-        mViewModel = new ViewModelProvider(requireActivity()).get(CategoryViewModel.class);
-        mViewModel.fetchCategoriesAsync();
-        mViewModel.getCategoryLiveData().observe(this, new Observer<List<Categories>>() {
-            @Override
-            public void onChanged(List<Categories> categories) {
-                List<Categories> categoriesList = categories;
-                updateUI(categories);
-            }
-        });
+        setRetainInstance(true);
     }
 
     @Override
@@ -65,22 +61,44 @@ public class CategoryFragment extends Fragment {
                 container,
                 false);
 
-
-        mBinding.recycleViewCategoriesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
+        initialRecycle();
         return mBinding.getRoot();
     }
 
-    private void updateUI(List<Categories> categories) {
-        if (mViewModel.getCategoriesAdapter() == null) {
-            ListCategoriesAdapter listCategoriesAdapter = new ListCategoriesAdapter
-                    (this,mViewModel,categories);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mViewModel = new ViewModelProvider(requireActivity()).get(CategoryViewModel.class);
+        setLiveDataObserver();
+        mCategoriesAdapter.onItemClicked(new ListCategoriesAdapter.OnItemClick() {
+            @Override
+            public void onItemClicked(Categories category, int position) {
 
-            mViewModel.setCategoriesAdapter(listCategoriesAdapter);
-            mBinding.recycleViewCategoriesList.setAdapter(mViewModel.getCategoriesAdapter());
-        } else {
-            mViewModel.notifyAdapter();
-        }
+            }
+        });
     }
+
+    private void updateUI(List<Categories> categories) {
+       mCategoriesAdapter.setData(categories);
+    }
+
+
+    private void setLiveDataObserver() {
+
+        mViewModel.getCategoryLiveData().observe(getViewLifecycleOwner(), new Observer<List<Categories>>() {
+            @Override
+            public void onChanged(List<Categories> categories) {
+                updateUI(categories);
+            }
+        });
+
+    }
+
+    private void initialRecycle(){
+        mBinding.recycleViewCategoriesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mCategoriesAdapter = new ListCategoriesAdapter();
+        mBinding.recycleViewCategoriesList.setAdapter(mCategoriesAdapter);
+    }
+
+
 }

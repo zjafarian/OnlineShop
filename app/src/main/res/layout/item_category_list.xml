@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <variable
+            name="category"
+            type="com.example.onlineshop.data.network.models.Categories" />
+
 
     </data>
 
@@ -20,10 +26,11 @@
 
             <ImageView
                 android:id="@+id/category_image"
-                android:layout_width="95dp"
-                android:layout_height="95dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="right"
                 android:layout_margin="10dp"
+                app:src="@{category.image.src}"
                 android:src="@drawable/place_holder_online_shop" />
 
             <TextView
@@ -32,10 +39,12 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/iran_sans_mobile"
                 android:gravity="right"
+                android:text="@{category.name}"
                 android:layout_marginTop="20dp"
-                android:layout_marginRight="120dp"
+                android:layout_marginRight="130dp"
                 android:textColor="@color/black"
-                android:textSize="10sp" />
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
 
             <TextView
@@ -43,12 +52,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_marginRight="120dp"
+                android:layout_marginRight="130dp"
                 android:layout_marginTop="50dp"
                 android:fontFamily="@font/iran_sans_mobile"
-                android:text=""
+                android:text="@{String.valueOf(category.count)}"
                 android:textColor="@color/online_shop_green"
-                android:textSize="10sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -56,13 +65,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_marginRight="120dp"
-                android:layout_marginTop="80dp"
+                android:layout_marginRight="160dp"
+                android:layout_marginTop="50dp"
                 android:fontFamily="@font/iran_sans_mobile"
                 android:text="کالا"
                 android:textColor="@color/online_shop_green"
-                android:textSize="10sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_view_all_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/iran_sans_mobile_bold"
+            android:text="مشاهده همه"
+            android:textColor="@color/online_shop_blue"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/img_view_all_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="22dp"
+            app:srcCompat="@drawable/ic_left" />
 
 
     </androidx.cardview.widget.CardView>

@@ -45,10 +45,6 @@
         </RelativeLayout>
 
 
-
-
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle_view_categories_list"
             android:layout_width="match_parent"
@@ -59,11 +55,6 @@
             app:layout_constraintTop_toBottomOf="@+id/search_box"
             android:layout_marginBottom="30dp"
             tools:layout_editor_absoluteX="0dp" />
-
-
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

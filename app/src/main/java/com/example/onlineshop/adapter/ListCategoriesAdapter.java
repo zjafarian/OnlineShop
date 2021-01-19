@@ -1,42 +1,43 @@
 package com.example.onlineshop.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.LifecycleOwner;
+
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.onlineshop.R;
 import com.example.onlineshop.data.network.models.Categories;
 import com.example.onlineshop.databinding.ItemCategoryListBinding;
-import com.example.onlineshop.viewmodel.CategoryViewModel;
-import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListCategoriesAdapter extends
-        RecyclerView.Adapter<ListCategoriesAdapter.CategoryHolder> {
+public class ListCategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private LifecycleOwner mOwner;
-    private CategoryViewModel mViewModel;
+
     private List<Categories> mCategoriesList= new ArrayList<>();
+    private OnItemClick mOnItemClick;
 
+    public ListCategoriesAdapter() {
 
+    }
 
-    public ListCategoriesAdapter(LifecycleOwner owner,
-                                 CategoryViewModel categoryViewModel,
-                                 List<Categories> categories) {
-        mOwner = owner;
-        mViewModel = categoryViewModel;
+    public void setData(List<Categories> categories) {
         mCategoriesList = categories;
+        notifyDataSetChanged();
+    }
+
+    public void onItemClicked(OnItemClick onItemClick){
+        this.mOnItemClick = onItemClick;
     }
 
     @NonNull
     @Override
-    public CategoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public  RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        LayoutInflater inflater = LayoutInflater.from(mViewModel.getApplication());
-        ItemCategoryListBinding itemCategoryListBinding = DataBindingUtil.inflate(inflater,
+        ItemCategoryListBinding itemCategoryListBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(parent.getContext()),
                 R.layout.item_category_list,
                 parent,
                 false);
@@ -45,10 +46,14 @@ public class ListCategoriesAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
-        holder.bindCategory(position);
-
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Categories item = mCategoriesList.get(position);
+        ((ListCategoriesAdapter.CategoryHolder) holder).bindCategory(item);
+        if (mOnItemClick != null)
+            ((CategoryHolder) holder).itemView.findViewById(R.id.text_view_all_category).setOnClickListener(v -> mOnItemClick.onItemClicked(item, position));
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -57,23 +62,21 @@ public class ListCategoriesAdapter extends
 
     class CategoryHolder extends RecyclerView.ViewHolder{
         private ItemCategoryListBinding mBinding;
-        private Categories mCategories;
 
-        public CategoryHolder(ItemCategoryListBinding itemCategoryListBinding) {
-            super(itemCategoryListBinding.getRoot());
-            mBinding = itemCategoryListBinding;
+        public CategoryHolder(ItemCategoryListBinding binding) {
+            super(binding.getRoot());
+            mBinding = binding;
         }
 
-        public void bindCategory(int position){
-            mCategories = mCategoriesList.get(position);
-            Picasso.get()
-                    .load(mViewModel.getImageSrc(mCategories))
-                    .placeholder(R.drawable.place_holder_online_shop)
-                    .into(mBinding.categoryImage);
+        public void bindCategory(Categories categories){
+            mBinding.setCategory(categories);
+            mBinding.executePendingBindings();
 
-            mBinding.categoryTitle.setText(mCategories.getName());
-            mBinding.productCount.setText(String.valueOf(mCategories.getCount()));
 
         }
+    }
+
+    public interface OnItemClick{
+        void onItemClicked(Categories category, int position);
     }
 }

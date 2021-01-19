@@ -12,8 +12,6 @@ import java.util.List;
 public class CategoryViewModel extends AndroidViewModel {
     private ShopRepository mShopRepository;
     private LiveData<List<Categories>> mCategoryLiveData;
-    private ListCategoriesAdapter mCategoriesAdapter;
-    private Categories mCategories;
 
 
     public CategoryViewModel(@NonNull Application application) {
@@ -22,32 +20,8 @@ public class CategoryViewModel extends AndroidViewModel {
         mCategoryLiveData = mShopRepository.getCategoriesListLiveData();
     }
 
-
-    public void fetchCategoriesAsync() {
-        mShopRepository.getCategoriesAsync();
-
-    }
-
     public LiveData<List<Categories>> getCategoryLiveData() {
         return mCategoryLiveData;
     }
 
-    public ListCategoriesAdapter getCategoriesAdapter() {
-        return mCategoriesAdapter;
-    }
-
-    public void setCategoriesAdapter(ListCategoriesAdapter categoriesAdapter) {
-        mCategoriesAdapter = categoriesAdapter;
-    }
-
-    public void notifyAdapter(){
-        mCategoriesAdapter.notifyDataSetChanged();
-    }
-
-    public String getImageSrc(Categories categories) {
-        mCategories = categories;
-        if (categories.getImage() != null)
-            return categories.getImage().getSrc();
-        return null;
-    }
 }

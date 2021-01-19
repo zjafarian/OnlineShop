@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="homePageViewModel"
-            type="com.example.onlineshop.viewmodel.HomePageViewModel" />
+            name="product"
+            type="com.example.onlineshop.data.network.models.Products" />
 
     </data>
 
@@ -37,7 +37,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="8dp"
                 android:gravity="right"
-                android:text=""
+                android:text="@{product.name}"
                 android:fontFamily="@font/iran_sans_mobile"
                 android:textColor="@color/black"
                 android:maxLength="45"
@@ -73,7 +73,7 @@
                 android:layout_gravity="left"
                 android:layout_marginLeft="4dp"
                 android:gravity="left"
-                android:text=""
+                android:text="@{product.price}"
                 android:fontFamily="@font/iran_sans_mobile"
                 android:textColor="@color/online_shop_green"
                 android:textStyle="bold"
