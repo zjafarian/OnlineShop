@@ -10,7 +10,9 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.onlineshop.R;
+import com.example.onlineshop.data.network.models.Categories;
 import com.example.onlineshop.data.network.models.Products;
+import com.example.onlineshop.databinding.ItemCategoryListBinding;
 import com.example.onlineshop.databinding.ItemProductListBinding;
 import com.example.onlineshop.databinding.RowShowProductBinding;
 import com.example.onlineshop.viewmodel.ListProductsViewModel;
@@ -19,40 +21,40 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListProductsAdapter extends RecyclerView.Adapter<ListProductsAdapter.ListProductsViewHolder> {
-    private LifecycleOwner mOwner;
-    private ListProductsViewModel mViewModel;
+public class ListProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private List<Products> mProducts = new ArrayList<>();
 
 
-    public ListProductsAdapter(LifecycleOwner owner,
-                               List<Products> products,
-                               ListProductsViewModel viewModel) {
-        mOwner = owner;
-        mViewModel = viewModel;
+    public ListProductsAdapter() {
+    }
+
+    public void setData(List<Products> products) {
         mProducts = products;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public ListProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
 
-        LayoutInflater inflater = LayoutInflater.from(mViewModel.getApplication());
-        ItemProductListBinding itemProductListBinding = DataBindingUtil.inflate(inflater,
+        ItemProductListBinding itemProductListBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(parent.getContext()),
                 R.layout.item_product_list,
                 parent,
                 false);
+
 
         return new ListProductsViewHolder(itemProductListBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListProductsViewHolder holder, int position) {
-        holder.bindProduct(position);
-
-
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Products item = mProducts.get(position);
+        ((ListProductsAdapter.ListProductsViewHolder) holder).bindProduct(item);
     }
+
 
     @Override
     public int getItemCount() {
@@ -61,27 +63,22 @@ public class ListProductsAdapter extends RecyclerView.Adapter<ListProductsAdapte
 
     class ListProductsViewHolder extends RecyclerView.ViewHolder {
         private ItemProductListBinding mBinding;
-        private Products mProduct;
 
-
-        public ListProductsViewHolder(ItemProductListBinding itemProductListBinding) {
-            super(itemProductListBinding.getRoot());
-            mBinding = itemProductListBinding;
-            mBinding.setListProductsViewModel(mViewModel);
-            mBinding.setLifecycleOwner(mOwner);
+        public ListProductsViewHolder(ItemProductListBinding binding) {
+            super(binding.getRoot());
+            mBinding = binding;
         }
 
-
-        public void bindProduct(int position) {
-            mBinding.setPosition(position);
-            mProduct = mProducts.get(position);
-            Picasso.get()
-                    .load(mViewModel.getFirstImageSrc(mProduct))
-                    .placeholder(R.drawable.place_holder_online_shop)
-                    .into(mBinding.productImage);
-
+        public void bindProduct(Products product) {
+            mBinding.setProduct(product);
+            mBinding.executePendingBindings();
+            if (product.getImages().size() != 0 ) {
+                Picasso.get()
+                        .load(product.getImages().get(0).getSrc())
+                        .placeholder(R.drawable.place_holder_online_shop)
+                        .into(mBinding.productImage);
+            }
         }
+
     }
-
-
 }

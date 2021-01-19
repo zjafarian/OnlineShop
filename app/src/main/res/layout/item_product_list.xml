@@ -3,13 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable
-            name="listProductsViewModel"
-            type="com.example.onlineshop.viewmodel.ListProductsViewModel" />
-
-        <variable
-            name="position"
-            type="Integer" />
+      <variable
+          name="product"
+          type="com.example.onlineshop.data.network.models.Products" />
 
     </data>
 
@@ -66,7 +62,7 @@
                 android:fontFamily="@font/iran_sans_mobile"
                 android:gravity="center"
                 android:maxLength="30"
-                android:text="@{listProductsViewModel.getProductName(position)}"
+                android:text="@{product.name}"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -93,7 +89,7 @@
                 android:layout_marginRight="175dp"
                 android:fontFamily="@font/iran_sans_mobile"
                 android:gravity="center"
-                android:text="@{listProductsViewModel.getProductPrice(position)}"
+                android:text="@{product.price}"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
