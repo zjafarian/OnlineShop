@@ -49,10 +49,16 @@ public class ListCategoriesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Categories item = mCategoriesList.get(position);
         ((ListCategoriesAdapter.CategoryHolder) holder).bindCategory(item);
-        if (mOnItemClick != null)
+
+        if (mOnItemClick != null) {
             ((CategoryHolder) holder).itemView.findViewById
                     (R.id.text_view_all_category).setOnClickListener
                     (v -> mOnItemClick.onItemClicked(item, position));
+
+            ((CategoryHolder) holder).itemView.findViewById
+                    (R.id.img_view_all_category).setOnClickListener
+                    (v -> mOnItemClick.onItemClicked(item, position));
+        }
     }
 
 

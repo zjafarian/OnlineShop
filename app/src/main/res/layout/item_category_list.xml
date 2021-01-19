@@ -43,6 +43,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="130dp"
                 android:textColor="@color/black"
+                android:maxLength="13"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
@@ -53,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="130dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="70dp"
                 android:fontFamily="@font/iran_sans_mobile"
                 android:text="@{String.valueOf(category.count)}"
                 android:textColor="@color/online_shop_green"
@@ -66,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="160dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="70dp"
                 android:fontFamily="@font/iran_sans_mobile"
                 android:text="کالا"
                 android:textColor="@color/online_shop_green"

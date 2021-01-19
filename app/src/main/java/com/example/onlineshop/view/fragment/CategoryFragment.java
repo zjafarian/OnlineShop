@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ListCategoriesAdapter;
 import com.example.onlineshop.data.network.models.Categories;
+import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.databinding.FragmentCategoryBinding;
 import com.example.onlineshop.viewmodel.CategoryViewModel;
 
@@ -25,6 +26,8 @@ import java.util.List;
 
 
 public class CategoryFragment extends Fragment {
+    public static final String ARGS_SELECT_LIST_PRODUCTS = "selectListProducts";
+    public static final String ARGS_CATEGORY_ID = "categoryId";
 
     private FragmentCategoryBinding mBinding;
     private CategoryViewModel mViewModel;
@@ -70,10 +73,19 @@ public class CategoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(CategoryViewModel.class);
         setLiveDataObserver();
+        onItemClick();
+    }
+
+    private void onItemClick() {
+
         mCategoriesAdapter.onItemClicked(new ListCategoriesAdapter.OnItemClick() {
             @Override
             public void onItemClicked(Categories category, int position) {
-
+                if (mViewModel.getCategoryLiveData()
+                        .getValue()
+                        .get(position)
+                        .getId()==category.getId())
+                    startListProducts(NetworkParams.CATEGORIES, category.getId());
             }
         });
     }
@@ -98,6 +110,15 @@ public class CategoryFragment extends Fragment {
         mBinding.recycleViewCategoriesList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mCategoriesAdapter = new ListCategoriesAdapter();
         mBinding.recycleViewCategoriesList.setAdapter(mCategoriesAdapter);
+    }
+
+    private void startListProducts(String selectFilter, int categoryId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ARGS_SELECT_LIST_PRODUCTS, selectFilter);
+        bundle.putInt(ARGS_CATEGORY_ID, categoryId);
+
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (R.id.list_products_fragment_des, bundle);
     }
 
 
