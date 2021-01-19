@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.onlineshop.R;
+import com.example.onlineshop.adapter.ListCategoriesAdapter;
 import com.example.onlineshop.adapter.ListCategoriesHomePageAdapter;
 import com.example.onlineshop.adapter.ListProductsHomePageAdapter;
 import com.example.onlineshop.adapter.SliderAdapter;
@@ -33,6 +34,7 @@ import java.util.List;
 
 public class HomePageFragment extends Fragment {
     public static final String ARGS_SELECT_LIST_PRODUCTS = "selectListProducts";
+    public static final String ARGS_PRODUCT_ID = "productId";
     private HomePageViewModel mHomePageViewModel;
     private FragmentHomePageBinding mBinding;
     private ListCategoriesHomePageAdapter mCategoryAdapter;
@@ -59,7 +61,6 @@ public class HomePageFragment extends Fragment {
         }
         setRetainInstance(true);
 
-
         mHomePageViewModel = new ViewModelProvider(requireActivity()).get(HomePageViewModel.class);
     }
 
@@ -84,6 +85,45 @@ public class HomePageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setLiveDataObservers();
+        onClickProduct();
+    }
+
+    private void onClickProduct() {
+        mLastProductsAdapter.onItemClickedProduct
+                (new ListProductsHomePageAdapter.OnItemClickProduct() {
+            @Override
+            public void onItemClicked(Products products) {
+                setNavigationToProductPage(products);
+
+            }
+        });
+
+        mPopularityProductsAdapter.onItemClickedProduct
+                (new ListProductsHomePageAdapter.OnItemClickProduct() {
+            @Override
+            public void onItemClicked(Products products) {
+                setNavigationToProductPage(products);
+
+            }
+        });
+
+        mRatingProductsAdapter.onItemClickedProduct
+                (new ListProductsHomePageAdapter.OnItemClickProduct() {
+            @Override
+            public void onItemClicked(Products products) {
+                setNavigationToProductPage(products);
+            }
+        });
+
+
+    }
+
+    private void setNavigationToProductPage(Products products) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARGS_PRODUCT_ID,products.getId());
+
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (R.id.product_detail_fragment_des,bundle);
     }
 
     private void listener() {

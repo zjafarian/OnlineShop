@@ -22,20 +22,21 @@ import java.util.List;
 
 public class ListProductsHomePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-
     private List<Products> mProductList = new ArrayList<>();
-
-    public ListProductsHomePageAdapter() {
-
+    private OnItemClickProduct mOnItemClick;
 
 
-    }
+    public ListProductsHomePageAdapter() {}
 
     public void setData(List<Products> productList) {
         for (int i = 0; i < 4; i++) {
             mProductList.add(productList.get(i));
         }
         notifyDataSetChanged();
+    }
+
+    public void onItemClickedProduct(OnItemClickProduct onItemClick){
+        this.mOnItemClick = onItemClick;
     }
 
 
@@ -54,6 +55,11 @@ public class ListProductsHomePageAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Products item = mProductList.get(position);
         ((ListProductsHomePageAdapter.ProductHolder) holder).bindProduct(item);
+
+        if (mOnItemClick != null)
+            ((ProductHolder) holder).itemView.setOnClickListener
+                    (v -> mOnItemClick.onItemClicked(item));
+
 
 
 
@@ -86,6 +92,10 @@ public class ListProductsHomePageAdapter extends RecyclerView.Adapter<RecyclerVi
 
 
         }
+    }
+
+    public interface OnItemClickProduct{
+        void onItemClicked(Products products);
     }
 
 
