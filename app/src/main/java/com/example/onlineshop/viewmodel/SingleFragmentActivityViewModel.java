@@ -25,6 +25,7 @@ public class SingleFragmentActivityViewModel extends AndroidViewModel {
         mShopRepository.getPopularityProductsAsync();
         mShopRepository.getRatingProductsAsync();
         mShopRepository.getCategoriesAsync();
+        mShopRepository.getAllProductsAsync();
     }
 
 

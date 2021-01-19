@@ -2,8 +2,11 @@ package com.example.onlineshop.view.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -11,19 +14,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.onlineshop.R;
+import com.example.onlineshop.adapter.SliderAdapter;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.databinding.FragmentProductDetailBinding;
 import com.example.onlineshop.viewmodel.HomePageViewModel;
 import com.example.onlineshop.viewmodel.ProductDetailViewModel;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ProductDetailFragment extends Fragment {
 
 
-    public static final String ARG_PRODUCT_ID = "ArgProductId";
+    public static final String ARGS_PRODUCT_ID = "productId";
     private int mProductId;
     private ProductDetailViewModel mViewModel;
     private FragmentProductDetailBinding mBinding;
+    private SliderAdapter mSliderAdapter;
+    private Products mProduct;
 
     public ProductDetailFragment() {
         // Required empty public constructor
@@ -32,7 +43,7 @@ public class ProductDetailFragment extends Fragment {
     public static ProductDetailFragment newInstance(int productId) {
         ProductDetailFragment fragment = new ProductDetailFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PRODUCT_ID,productId);
+        args.putInt(ARGS_PRODUCT_ID, productId);
 
 
         fragment.setArguments(args);
@@ -44,9 +55,11 @@ public class ProductDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         if (getArguments() != null)
-            mProductId = getArguments().getInt(ARG_PRODUCT_ID);
+            mProductId = getArguments().getInt(ARGS_PRODUCT_ID);
 
         mViewModel = new ViewModelProvider(requireActivity()).get(ProductDetailViewModel.class);
+        mViewModel.findProduct(mProductId);
+
     }
 
     @Override
@@ -59,5 +72,36 @@ public class ProductDetailFragment extends Fragment {
                 false);
 
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setLiveDataObserver();
+    }
+
+    private void setLiveDataObserver() {
+        mViewModel.getProductLiveData().observe(getViewLifecycleOwner(), new Observer<Products>() {
+            @Override
+            public void onChanged(Products products) {
+                mBinding.setProduct(products);
+                initSlider();
+            }
+        });
+    }
+
+    public void initSlider() {
+        List<String> imagesUri = mViewModel.getImagesUriProduct();
+        mSliderAdapter = new SliderAdapter(imagesUri);
+
+        if (imagesUri.size() != 0 && imagesUri != null) {
+            mBinding.productImagesSlider.setSliderAdapter(mSliderAdapter);
+            mBinding.productImagesSlider.startAutoCycle();
+            mBinding.productImagesSlider.setIndicatorAnimation(IndicatorAnimationType.WORM);
+            mBinding.productImagesSlider.setSliderTransformAnimation
+                    (SliderAnimations.SIMPLETRANSFORMATION);
+        }
+
     }
 }

@@ -89,6 +89,7 @@ public class HomePageFragment extends Fragment {
     }
 
     private void onClickProduct() {
+
         mLastProductsAdapter.onItemClickedProduct
                 (new ListProductsHomePageAdapter.OnItemClickProduct() {
             @Override
@@ -102,6 +103,7 @@ public class HomePageFragment extends Fragment {
                 (new ListProductsHomePageAdapter.OnItemClickProduct() {
             @Override
             public void onItemClicked(Products products) {
+                Products item = products;
                 setNavigationToProductPage(products);
 
             }
@@ -111,6 +113,7 @@ public class HomePageFragment extends Fragment {
                 (new ListProductsHomePageAdapter.OnItemClickProduct() {
             @Override
             public void onItemClicked(Products products) {
+                Products item = products;
                 setNavigationToProductPage(products);
             }
         });
@@ -174,7 +177,9 @@ public class HomePageFragment extends Fragment {
     private void startListProducts(String selectFilter) {
         Bundle bundle = new Bundle();
         bundle.putString(ARGS_SELECT_LIST_PRODUCTS,selectFilter);
-        Navigation.findNavController(mBinding.getRoot()).navigate(R.id.list_products_fragment_des,bundle);
+
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (R.id.list_products_fragment_des,bundle);
     }
 
     public void updateUI(List<Products> products, List<Categories> categories, String selectAdapter) {

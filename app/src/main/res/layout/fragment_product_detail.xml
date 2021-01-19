@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="product"
+            type="com.example.onlineshop.data.network.models.Products" />
 
     </data>
     <ScrollView
@@ -19,10 +22,39 @@
         android:background="@color/online_shop_light_gray">
 
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_start"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.04" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.02" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.98" />
+
+
         <androidx.cardview.widget.CardView
             android:id="@+id/product_slider_card_view"
             android:layout_width="wrap_content"
-            android:layout_height="300dp"
+            android:layout_height="320dp"
             app:layout_constraintLeft_toRightOf="@id/guideline_vertical_end"
             app:layout_constraintRight_toLeftOf="@id/guideline_vertical_start"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,10 +74,10 @@
                 app:sliderIndicatorMargin="15dp"
                 app:sliderIndicatorOrientation="horizontal"
                 app:sliderIndicatorPadding="3dp"
-                app:sliderIndicatorRadius="4dp"
+                app:sliderIndicatorRadius="2dp"
                 app:sliderIndicatorSelectedColor="#5A5A5A"
                 app:sliderIndicatorUnselectedColor="#FFF"
-                app:sliderScrollTimeInSec="1"
+                app:sliderScrollTimeInSec="3"
                 app:sliderStartAutoCycle="true" />
 
             <com.google.android.material.button.MaterialButton
@@ -55,7 +87,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="2dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="60dp"
                 app:backgroundTint="@color/nothing"
                 app:cornerRadius="30dp"
                 app:icon="@drawable/ic_share"
@@ -70,7 +102,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="30dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="60dp"
                 app:backgroundTint="@color/nothing"
                 app:cornerRadius="30dp"
                 app:icon="@drawable/ic_like"
@@ -86,7 +118,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="60dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="60dp"
                 app:backgroundTint="@color/nothing"
                 app:cornerRadius="30dp"
                 app:icon="@drawable/ic_alarm"
@@ -105,13 +137,10 @@
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/iran_sans_mobile"
                 android:gravity="right"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="60dp"
                 android:layout_gravity="bottom|right"
-                android:text=""
+                android:text="@{product.name}"
                 android:textSize="16dp" />
-
-
-
 
         </androidx.cardview.widget.CardView>
 
@@ -121,7 +150,6 @@
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="product_slider_card_view" />
-
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/product_properties"
@@ -296,7 +324,7 @@
                 android:layout_gravity="left"
                 android:layout_marginLeft="250dp"
                 android:fontFamily="@font/iran_sans_mobile"
-                android:text=""
+                android:text="@{product.price}"
                 android:textColor="@color/online_shop_red"
                 android:textSize="14dp" />
 
@@ -352,7 +380,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/iran_sans_mobile"
                 android:gravity="right"
-                android:text=""
+                android:text="@{product.shortDescription}"
                 android:textColor="@color/online_shop_gray"
                 android:textSize="12dp" />
 
@@ -360,7 +388,7 @@
 
 
             <View
-                android:id="@+id/navigation_layout__devider03"
+                android:id="@+id/navigation_layout_devider03"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="50dp"
@@ -393,7 +421,7 @@
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:paddingBottom="4dp"
-                android:text=""
+                android:text="@{product.description}"
                 android:textColor="#C9464646"
                 android:textSize="10dp" />
 

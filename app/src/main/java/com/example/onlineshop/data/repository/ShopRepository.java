@@ -22,7 +22,9 @@ public class ShopRepository {
     private MutableLiveData<List<Products>> mLastProductsLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Products>> mPopularityProductsLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Products>> mRatingProductsLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Products>> mAllProducts = new MutableLiveData<>();
     private MutableLiveData<List<Categories>> mCategoriesListLiveData = new MutableLiveData<>();
+
     private Context mContext;
 
 
@@ -36,6 +38,21 @@ public class ShopRepository {
         if (sInstance == null)
             sInstance = new ShopRepository(context);
         return sInstance;
+    }
+
+    public void getAllProductsAsync(){
+        Call<List<Products>> call = mShopService.getAllProducts();
+        call.enqueue(new Callback<List<Products>>() {
+            @Override
+            public void onResponse(Call<List<Products>> call, Response<List<Products>> response) {
+                mAllProducts.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Products>> call, Throwable t) {
+
+            }
+        });
     }
 
     public void getLastProductsAsync() {
@@ -135,5 +152,9 @@ public class ShopRepository {
 
     public LiveData<List<Categories>> getCategoriesListLiveData() {
         return mCategoriesListLiveData;
+    }
+
+    public LiveData<List<Products>> getAllProducts() {
+        return mAllProducts;
     }
 }

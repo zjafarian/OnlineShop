@@ -10,6 +10,8 @@ import androidx.databinding.DataBindingUtil;
 
 import com.example.onlineshop.R;
 import com.example.onlineshop.databinding.FragmentSliderImageBinding;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Picasso;
 
@@ -62,9 +64,11 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderHolder>
         }
 
         public void bindImage(String src) {
-
             Picasso.get().load(src).into(mBinding.sliderImage);
         }
+
+
+
 
 
     }
