@@ -60,9 +60,6 @@ public class ListProductsHomePageAdapter extends RecyclerView.Adapter<RecyclerVi
             ((ProductHolder) holder).itemView.setOnClickListener
                     (v -> mOnItemClick.onItemClicked(item));
 
-
-
-
     }
 
     @Override

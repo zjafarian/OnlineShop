@@ -41,7 +41,6 @@ public class HomePageViewModel extends AndroidViewModel {
     }
 
 
-
     public LiveData<List<Products>> getLastProductsLiveData() {
         return mLastProductsLiveData;
     }

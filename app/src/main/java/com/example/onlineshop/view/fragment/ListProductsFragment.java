@@ -33,20 +33,23 @@ import java.util.List;
 
 public class ListProductsFragment extends Fragment {
     public static final String ARGS_SELECT_LIST_PRODUCTS = "selectListProducts";
+    public static final String ARGS_CATEGORY_ID = "categoryId";
     private FragmentListProductsBinding mBinding;
     private ListProductsViewModel mListProductsViewModel;
     private String mSelectListProducts;
     private ListProductsAdapter mListProductAdapter;
+    private int mCategoryId;
 
 
     public ListProductsFragment() {
         // Required empty public constructor
     }
 
-    public static ListProductsFragment newInstance(String selectListProducts) {
+    public static ListProductsFragment newInstance(String selectListProducts,int categoryId) {
         ListProductsFragment fragment = new ListProductsFragment();
         Bundle args = new Bundle();
         args.putString(ARGS_SELECT_LIST_PRODUCTS, selectListProducts);
+        args.putInt(ARGS_CATEGORY_ID,categoryId);
 
         fragment.setArguments(args);
         return fragment;
@@ -57,11 +60,14 @@ public class ListProductsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mSelectListProducts = getArguments().getString(ARGS_SELECT_LIST_PRODUCTS);
+            mCategoryId = getArguments().getInt(ARGS_CATEGORY_ID);
         }
         setRetainInstance(true);
 
         mListProductsViewModel = new
                 ViewModelProvider(requireActivity()).get(ListProductsViewModel.class);
+        if (mCategoryId !=0)
+            mListProductsViewModel.setCategoryId(mCategoryId);
 
     }
 
@@ -96,6 +102,8 @@ public class ListProductsFragment extends Fragment {
 
     private void updateUI() {
         mListProductsViewModel.setSelectListProducts(mSelectListProducts);
+        if (mCategoryId != 0)
+
         mListProductAdapter.setData(mListProductsViewModel.getProductList());
     }
 }

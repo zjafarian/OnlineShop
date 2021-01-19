@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.onlineshop.R;
 import com.example.onlineshop.data.network.models.Categories;
+import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.databinding.ItemCategoryHomePageListBinding;
 import com.example.onlineshop.databinding.ItemCategoryListBinding;
 import com.example.onlineshop.viewmodel.HomePageViewModel;
@@ -27,6 +28,7 @@ import java.util.List;
 public class ListCategoriesHomePageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Categories> mCategoriesList;
+    private OnItemClickCategory mOnItemClick;
 
     public ListCategoriesHomePageAdapter() {
         mCategoriesList = new ArrayList<>();
@@ -48,11 +50,21 @@ public class ListCategoriesHomePageAdapter extends RecyclerView.Adapter<Recycler
         notifyDataSetChanged();
     }
 
+    public void onItemClickedCategory
+            (ListCategoriesHomePageAdapter.OnItemClickCategory onItemClick){
+        this.mOnItemClick = onItemClick;
+    }
+
+
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Categories item = mCategoriesList.get(position);
         ((ListCategoriesHomePageHolder) holder).bindCategories(item);
+
+        if (mOnItemClick != null)
+            ((ListCategoriesHomePageHolder) holder).itemView.setOnClickListener
+                    (v -> mOnItemClick.onItemClicked(item,position));
     }
 
     @Override
@@ -72,6 +84,10 @@ public class ListCategoriesHomePageAdapter extends RecyclerView.Adapter<Recycler
             mBinding.setCategory(categories);
             mBinding.executePendingBindings();
         }
+    }
+
+    public interface OnItemClickCategory{
+        void onItemClicked(Categories category,int position);
     }
 
 

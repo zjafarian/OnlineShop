@@ -1,6 +1,5 @@
 package com.example.onlineshop.view.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.onlineshop.R;
-import com.example.onlineshop.adapter.ListCategoriesAdapter;
 import com.example.onlineshop.adapter.ListCategoriesHomePageAdapter;
 import com.example.onlineshop.adapter.ListProductsHomePageAdapter;
 import com.example.onlineshop.adapter.SliderAdapter;
@@ -24,7 +22,6 @@ import com.example.onlineshop.data.network.models.Categories;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.databinding.FragmentHomePageBinding;
-import com.example.onlineshop.view.activity.ListProductsActivity;
 import com.example.onlineshop.viewmodel.HomePageViewModel;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -35,6 +32,7 @@ import java.util.List;
 public class HomePageFragment extends Fragment {
     public static final String ARGS_SELECT_LIST_PRODUCTS = "selectListProducts";
     public static final String ARGS_PRODUCT_ID = "productId";
+    public static final String ARGS_CATEGORY_ID = "categoryId";
     private HomePageViewModel mHomePageViewModel;
     private FragmentHomePageBinding mBinding;
     private ListCategoriesHomePageAdapter mCategoryAdapter;
@@ -42,6 +40,7 @@ public class HomePageFragment extends Fragment {
     private ListProductsHomePageAdapter mPopularityProductsAdapter;
     private ListProductsHomePageAdapter mRatingProductsAdapter;
     private SliderAdapter mSliderAdapter;
+
     public HomePageFragment() {
         // Required empty public constructor
     }
@@ -85,69 +84,80 @@ public class HomePageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setLiveDataObservers();
-        onClickProduct();
+        onClickItems();
     }
 
-    private void onClickProduct() {
+    private void onClickItems() {
 
         mLastProductsAdapter.onItemClickedProduct
                 (new ListProductsHomePageAdapter.OnItemClickProduct() {
-            @Override
-            public void onItemClicked(Products products) {
-                setNavigationToProductPage(products);
+                    @Override
+                    public void onItemClicked(Products products) {
+                        setNavigationToProductPage(products);
 
-            }
-        });
+                    }
+                });
 
         mPopularityProductsAdapter.onItemClickedProduct
                 (new ListProductsHomePageAdapter.OnItemClickProduct() {
-            @Override
-            public void onItemClicked(Products products) {
-                Products item = products;
-                setNavigationToProductPage(products);
+                    @Override
+                    public void onItemClicked(Products products) {
+                        setNavigationToProductPage(products);
 
-            }
-        });
+                    }
+                });
 
         mRatingProductsAdapter.onItemClickedProduct
                 (new ListProductsHomePageAdapter.OnItemClickProduct() {
-            @Override
-            public void onItemClicked(Products products) {
-                Products item = products;
-                setNavigationToProductPage(products);
-            }
-        });
+                    @Override
+                    public void onItemClicked(Products products) {
+                        setNavigationToProductPage(products);
+                    }
+                });
+
+        mCategoryAdapter.onItemClickedCategory
+                (new ListCategoriesHomePageAdapter.OnItemClickCategory() {
+                    @Override
+                    public void onItemClicked(Categories category, int position) {
+                        if (mHomePageViewModel.getListCategoriesLiveData()
+                                .getValue()
+                                .get(position)
+                                .getId()==category.getId())
+                            startListProducts(NetworkParams.CATEGORIES, category.getId());
+                    }
+                });
 
 
     }
 
     private void setNavigationToProductPage(Products products) {
         Bundle bundle = new Bundle();
-        bundle.putInt(ARGS_PRODUCT_ID,products.getId());
+        bundle.putInt(ARGS_PRODUCT_ID, products.getId());
 
         Navigation.findNavController(mBinding.getRoot()).navigate
-                (R.id.product_detail_fragment_des,bundle);
+                (R.id.product_detail_fragment_des, bundle);
     }
 
     private void listener() {
+
         mBinding.textViewAllLastProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startListProducts(NetworkParams.LAST);
+                startListProducts(NetworkParams.LAST, 0);
             }
         });
 
         mBinding.imgViewAllLastProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startListProducts(NetworkParams.LAST);
+                startListProducts(NetworkParams.LAST, 0);
             }
         });
 
         mBinding.textViewAllPopularityProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startListProducts(NetworkParams.POPULARITY);
+                startListProducts(NetworkParams.POPULARITY, 0);
 
             }
         });
@@ -155,31 +165,33 @@ public class HomePageFragment extends Fragment {
         mBinding.imgViewAllPopularityProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startListProducts(NetworkParams.POPULARITY);
+                startListProducts(NetworkParams.POPULARITY, 0);
             }
         });
 
         mBinding.textViewAllRatingProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startListProducts(NetworkParams.RATING);
+                startListProducts(NetworkParams.RATING, 0);
             }
         });
 
         mBinding.imgViewAllRatingProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startListProducts(NetworkParams.RATING);
+                startListProducts(NetworkParams.RATING, 0);
             }
         });
+
     }
 
-    private void startListProducts(String selectFilter) {
+    private void startListProducts(String selectFilter, int categoryId) {
         Bundle bundle = new Bundle();
-        bundle.putString(ARGS_SELECT_LIST_PRODUCTS,selectFilter);
+        bundle.putString(ARGS_SELECT_LIST_PRODUCTS, selectFilter);
+        bundle.putInt(ARGS_CATEGORY_ID, categoryId);
 
         Navigation.findNavController(mBinding.getRoot()).navigate
-                (R.id.list_products_fragment_des,bundle);
+                (R.id.list_products_fragment_des, bundle);
     }
 
     public void updateUI(List<Products> products, List<Categories> categories, String selectAdapter) {
@@ -233,13 +245,13 @@ public class HomePageFragment extends Fragment {
             });
 
         //if (!mHomePageViewModel.getListCategoriesLiveData().hasActiveObservers())
-            mHomePageViewModel.getListCategoriesLiveData().observe(getViewLifecycleOwner(), new Observer<List<Categories>>() {
-                @Override
-                public void onChanged(List<Categories> categories) {
-                    updateUI(null, categories, NetworkParams.CATEGORIES);
+        mHomePageViewModel.getListCategoriesLiveData().observe(getViewLifecycleOwner(), new Observer<List<Categories>>() {
+            @Override
+            public void onChanged(List<Categories> categories) {
+                updateUI(null, categories, NetworkParams.CATEGORIES);
 
-                }
-            });
+            }
+        });
 
 
     }
@@ -250,14 +262,13 @@ public class HomePageFragment extends Fragment {
         mPopularityProductsAdapter = new ListProductsHomePageAdapter();
         mRatingProductsAdapter = new ListProductsHomePageAdapter();
 
-        mSliderAdapter= new SliderAdapter(new ArrayList<String>() {{
+        mSliderAdapter = new SliderAdapter(new ArrayList<String>() {{
             add(mHomePageViewModel.getUriImage(R.drawable.slider_one));
             add(mHomePageViewModel.getUriImage(R.drawable.slider_two));
             add(mHomePageViewModel.getUriImage(R.drawable.slider_three));
             add(mHomePageViewModel.getUriImage(R.drawable.slider_four));
-        }});;
-
-
+        }});
+        ;
 
 
         mBinding.recycleViewListCategory.setAdapter(mCategoryAdapter);

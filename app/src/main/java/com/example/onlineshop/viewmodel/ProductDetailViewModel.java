@@ -23,7 +23,7 @@ public class ProductDetailViewModel extends AndroidViewModel {
     public ProductDetailViewModel(@NonNull Application application) {
         super(application);
         mShopRepository = ShopRepository.getInstance(application);
-        mProductsLiveData = mShopRepository.getAllProducts();
+        mProductsLiveData = mShopRepository.getAllProductsLiveData();
         mRatingLiveData = mShopRepository.getRatingProductsLiveData();
         mProducts = new ArrayList<Products>();
         mProducts = mProductsLiveData.getValue();
