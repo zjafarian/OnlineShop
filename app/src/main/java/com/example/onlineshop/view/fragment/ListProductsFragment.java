@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import java.util.List;
 public class ListProductsFragment extends Fragment {
     public static final String ARGS_SELECT_LIST_PRODUCTS = "selectListProducts";
     public static final String ARGS_CATEGORY_ID = "categoryId";
+    public static final String ARGS_PRODUCT_ID = "productId";
     private FragmentListProductsBinding mBinding;
     private ListProductsViewModel mListProductsViewModel;
     private String mSelectListProducts;
@@ -45,11 +47,11 @@ public class ListProductsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ListProductsFragment newInstance(String selectListProducts,int categoryId) {
+    public static ListProductsFragment newInstance(String selectListProducts, int categoryId) {
         ListProductsFragment fragment = new ListProductsFragment();
         Bundle args = new Bundle();
         args.putString(ARGS_SELECT_LIST_PRODUCTS, selectListProducts);
-        args.putInt(ARGS_CATEGORY_ID,categoryId);
+        args.putInt(ARGS_CATEGORY_ID, categoryId);
 
         fragment.setArguments(args);
         return fragment;
@@ -66,8 +68,7 @@ public class ListProductsFragment extends Fragment {
 
         mListProductsViewModel = new
                 ViewModelProvider(requireActivity()).get(ListProductsViewModel.class);
-        if (mCategoryId !=0)
-            mListProductsViewModel.setCategoryId(mCategoryId);
+
 
     }
 
@@ -85,13 +86,14 @@ public class ListProductsFragment extends Fragment {
 
 
 
-
         return mBinding.getRoot();
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         updateUI();
+        onClickItems();
 
     }
 
@@ -101,9 +103,29 @@ public class ListProductsFragment extends Fragment {
     }
 
     private void updateUI() {
-        mListProductsViewModel.setSelectListProducts(mSelectListProducts);
-        if (mCategoryId != 0)
 
+        if (mCategoryId != 0)
+            mListProductsViewModel.setCategoryId(mCategoryId);
+        mListProductsViewModel.setSelectListProducts(mSelectListProducts);
+
+        mListProductsViewModel.setProductsList();
         mListProductAdapter.setData(mListProductsViewModel.getProductList());
+    }
+
+    private void onClickItems() {
+        mListProductAdapter.onItemClickedProduct(new ListProductsAdapter.OnItemClickProduct() {
+            @Override
+            public void onItemClicked(Products products) {
+                setNavigationToProductPage(products);
+            }
+        });
+    }
+
+    private void setNavigationToProductPage(Products products) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARGS_PRODUCT_ID, products.getId());
+
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (R.id.product_detail_fragment_des, bundle);
     }
 }

@@ -46,10 +46,9 @@ public class ListProductsViewModel extends AndroidViewModel {
 
     public void setSelectListProducts(String selectListProducts) {
         mSelectListProducts = selectListProducts;
-        setProductsList();
     }
 
-    private void setProductsList() {
+    public void setProductsList() {
         switch (mSelectListProducts){
             case NetworkParams.LAST:
                 mProductList = new ArrayList<>();

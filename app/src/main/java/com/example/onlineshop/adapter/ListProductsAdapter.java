@@ -24,6 +24,7 @@ import java.util.List;
 public class ListProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Products> mProducts = new ArrayList<>();
+    private OnItemClickProduct mOnItemClick;
 
 
     public ListProductsAdapter() {
@@ -33,6 +34,11 @@ public class ListProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mProducts = products;
         notifyDataSetChanged();
     }
+
+    public void onItemClickedProduct(OnItemClickProduct onItemClick){
+        this.mOnItemClick = onItemClick;
+    }
+
 
     @NonNull
     @Override
@@ -53,6 +59,11 @@ public class ListProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Products item = mProducts.get(position);
         ((ListProductsAdapter.ListProductsViewHolder) holder).bindProduct(item);
+
+        if (mOnItemClick != null)
+            ((ListProductsViewHolder) holder).itemView.setOnClickListener
+                    (v -> mOnItemClick.onItemClicked(item));
+
     }
 
 
@@ -80,5 +91,9 @@ public class ListProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         }
 
+    }
+
+    public interface OnItemClickProduct{
+        void onItemClicked(Products products);
     }
 }
