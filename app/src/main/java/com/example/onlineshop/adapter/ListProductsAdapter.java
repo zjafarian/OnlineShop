@@ -3,6 +3,8 @@ package com.example.onlineshop.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -21,10 +23,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ListProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
     private List<Products> mProducts = new ArrayList<>();
     private OnItemClickProduct mOnItemClick;
+
 
 
     public ListProductsAdapter() {
@@ -71,6 +74,44 @@ public class ListProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemCount() {
         return mProducts.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+
+    Filter mFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Products> productsFilter = new ArrayList<>();
+            if (constraint.toString().isEmpty())
+                productsFilter.addAll(mProducts);
+            else {
+                for (Products product: mProducts) {
+                    if (product.getName().contains(constraint.toString().toLowerCase()) ||
+                    product.getDescription().contains(constraint.toString().toLowerCase())||
+                    product.getShortDescription().contains(constraint.toString().toLowerCase()))
+                        productsFilter.add(product);
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = productsFilter;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            notifyDataSetChanged();
+
+        }
+    };
+
+
+
+
+
 
     class ListProductsViewHolder extends RecyclerView.ViewHolder {
         private ItemProductListBinding mBinding;

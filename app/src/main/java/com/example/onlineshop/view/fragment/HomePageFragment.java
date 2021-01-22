@@ -1,5 +1,6 @@
 package com.example.onlineshop.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,9 +11,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ListCategoriesHomePageAdapter;
@@ -22,6 +28,8 @@ import com.example.onlineshop.data.network.models.Categories;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.databinding.FragmentHomePageBinding;
+import com.example.onlineshop.databinding.SearchBarBinding;
+import com.example.onlineshop.view.activity.SearchActivity;
 import com.example.onlineshop.viewmodel.HomePageViewModel;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -33,6 +41,8 @@ public class HomePageFragment extends Fragment {
     public static final String ARGS_SELECT_LIST_PRODUCTS = "selectListProducts";
     public static final String ARGS_PRODUCT_ID = "productId";
     public static final String ARGS_CATEGORY_ID = "categoryId";
+    public static final String ARGS_PAGE_NAME = "pageName";
+    public static final String ARGS_SEARCH_TEXT = "searchText";
     private HomePageViewModel mHomePageViewModel;
     private FragmentHomePageBinding mBinding;
     private ListCategoriesHomePageAdapter mCategoryAdapter;
@@ -40,6 +50,7 @@ public class HomePageFragment extends Fragment {
     private ListProductsHomePageAdapter mPopularityProductsAdapter;
     private ListProductsHomePageAdapter mRatingProductsAdapter;
     private SliderAdapter mSliderAdapter;
+
 
     public HomePageFragment() {
         // Required empty public constructor
@@ -71,7 +82,6 @@ public class HomePageFragment extends Fragment {
                 container,
                 false);
 
-        mBinding.setHomePageViewModel(mHomePageViewModel);
 
         initRecyclers();
         listener();
@@ -122,7 +132,7 @@ public class HomePageFragment extends Fragment {
                         if (mHomePageViewModel.getListCategoriesLiveData()
                                 .getValue()
                                 .get(position)
-                                .getId()==category.getId())
+                                .getId() == category.getId())
                             startListProducts(NetworkParams.CATEGORIES, category.getId());
                     }
                 });
@@ -139,6 +149,7 @@ public class HomePageFragment extends Fragment {
     }
 
     private void listener() {
+        //openKeyboard();
 
         mBinding.textViewAllLastProducts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,6 +194,42 @@ public class HomePageFragment extends Fragment {
             }
         });
 
+        mBinding.textViewSearchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchEvent();
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mBinding.imgBtnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchEvent();
+            }
+        });
+
+
+    }
+
+    private void searchEvent() {
+        String search = mBinding.textViewSearchBox.getText().toString();
+        Bundle bundle = new Bundle();
+
+        bundle.putString(ARGS_PAGE_NAME, "homePage");
+        bundle.putString(ARGS_SEARCH_TEXT, search);
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (R.id.search_Fragment_des,bundle);
     }
 
     private void startListProducts(String selectFilter, int categoryId) {
@@ -282,4 +329,13 @@ public class HomePageFragment extends Fragment {
         mBinding.specialProductsSlider.setSliderTransformAnimation
                 (SliderAnimations.SIMPLETRANSFORMATION);
     }
+
+
+    private void openKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+
 }

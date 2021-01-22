@@ -35,7 +35,6 @@ public class ListProductsViewModel extends AndroidViewModel {
         mRatingProductsLiveData = mShopRepository.getRatingProductsLiveData();
         mAllProductsLiveData = mShopRepository.getAllProductsLiveData();
         mAllProducts = mAllProductsLiveData.getValue();
-        mAllProducts.addAll(mRatingProductsLiveData.getValue());
 
     }
 

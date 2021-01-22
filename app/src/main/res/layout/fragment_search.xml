@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
-
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layoutDirection="rtl"
-        android:orientation="vertical"
-        android:textDirection="rtl">
+        android:textDirection="rtl"
+        tools:context=".view.fragment.SearchFragment">
+
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -30,36 +31,40 @@
             android:id="@+id/text_view_search_box"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginBottom="4dp"
-            android:autofillHints=""
-            android:hint="@string/text_search_menu_item"
+            android:layout_margin="4dp"
             android:background="@color/online_shop_light_gray"
             android:fontFamily="@font/iran_sans_mobile"
+            android:hint="@string/text_search_hint"
             android:paddingRight="35dp"
+            android:paddingBottom="10dp"
             app:actionViewClass="android.widget.SearchView" />
 
         <ImageButton
-            android:id="@+id/img_btn_search"
+            android:id="@+id/img_btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ic_back_dark"
+            app:srcCompat="@drawable/ic_back_dark" />
+
+
+        <ImageButton
+            android:id="@+id/img_btn_search_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/ic_search"
+            android:layout_gravity="left"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_close"
             android:layoutDirection="rtl"
             android:textDirection="rtl"
-            app:actionViewClass="android.widget.SearchView"
-
-            app:srcCompat="@drawable/ic_search" />
-
-
-    </RelativeLayout>
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_close" />
 
 
+    </FrameLayout>
 </layout>

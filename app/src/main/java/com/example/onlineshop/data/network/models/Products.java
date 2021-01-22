@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Products {
+public class Products implements Comparable<Products> {
 
 
     @SerializedName("price")
@@ -62,10 +62,12 @@ public class Products {
     private List<Integer> relatedIds;
 
 
+
+
     public Products(int id, String name, String description, String shortDescription,
                     String price, String regularPrice, String salePrice, boolean onSale,
                     List<Images> images, List<Categories> categories,
-                    List<Integer> relatedIds) {
+                    List<Integer> relatedIds,int totalSales) {
 
         this.price = price;
         this.id = id;
@@ -78,6 +80,7 @@ public class Products {
         this.onSale = onSale;
         this.salePrice = salePrice;
         this.relatedIds = relatedIds;
+        this.totalSales = totalSales;
     }
 
     public String getPrice() {
@@ -152,5 +155,16 @@ public class Products {
         return relatedIds;
     }
 
+
+    @Override
+    public int compareTo(Products o) {
+
+        if(this.totalSales==o.totalSales)
+            return 0;
+        else if(this.totalSales>o.totalSales)
+            return 1;
+        else
+            return -1;
+    }
 
 }

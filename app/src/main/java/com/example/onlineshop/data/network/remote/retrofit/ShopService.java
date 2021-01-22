@@ -14,10 +14,6 @@ import retrofit2.http.QueryMap;
 public interface ShopService {
 
     @GET(NetworkParams.PRODUCT_PATH + NetworkParams.API_KEY)
-    Call<List<Products>> getAllProducts();
-
-
-    @GET(NetworkParams.PRODUCT_PATH + NetworkParams.API_KEY)
     Call<List<Products>> getProducts(@QueryMap Map<String, String> options);
 
     @GET(NetworkParams.PRODUCT_PATH  + NetworkParams.CATEGORY_PATH + NetworkParams.API_KEY)

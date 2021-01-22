@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OnlineShop">
-        <activity android:name=".view.activity.DetailProductActivity"></activity>
+        <activity android:name=".view.activity.SearchActivity"></activity>
         <activity android:name=".view.activity.ProductDetailActivity" />
         <activity android:name=".view.activity.ListProductsActivity" />
         <activity android:name=".view.activity.LoginSignUpActivity" />
@@ -24,6 +24,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.najva.sdk.metadata.API_KEY"
+            android:value="4989681b-3dcd-438e-9b66-81fda641fff0" />
+        <meta-data
+            android:name="com.najva.sdk.metadata.WEBSITE_ID"
+            android:value="22302" />
     </application>
 
 </manifest>

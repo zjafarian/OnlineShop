@@ -19,29 +19,62 @@ public class NetworkParams {
     public static final String RATING = "rating";
     public static final String CATEGORIES = "categories";
     public static final String LAST = "last";
-    public static final String ORDER_STATUS = "desc";
+    public static final String ORDER_STATUS_DESC = "desc";
+    public static final String ORDER_STATUS_ASC = "asc";
+    public static final String PER_PAGE="30";
+    public static final String MIN_PRICE="min_price";
+    public static final String MAX_PRICE="max_price";
+
+
 
 
     //path for get products
     public static final String PRODUCT_PATH = "products";
     public static final String CATEGORY_PATH = "/categories";
 
+    //options for query get ALL products
+    public static final Map<String, String> ALL_PRODUCTS = new HashMap<String, String>() {{
+        put("per_page",PER_PAGE);
+    }};
+
+
+
     //options for query get last products
     public static final Map<String, String> LAST_PRODUCTS = new HashMap<String, String>() {{
-        put("order", ORDER_STATUS);
+        put("order", ORDER_STATUS_DESC);
+        put("per_page",PER_PAGE);
     }};
 
     //options for query get popularity products
     public static final Map<String, String> POPULARITY_PRODUCTS = new HashMap<String, String>() {{
-        put("order", ORDER_STATUS);
+        put("order", ORDER_STATUS_DESC);
         put("orderby", POPULARITY);
+        put("per_page",PER_PAGE);
     }};
 
     //options for query get rating products
     public static final Map<String, String> RATING_PRODUCTS = new HashMap<String, String>() {{
-        put("order", ORDER_STATUS);
+        put("order", ORDER_STATUS_DESC);
         put("orderby", RATING);
+        put("per_page",PER_PAGE);
     }};
+
+    //sort products by max price
+    public static final Map<String, String> SORT_PRODUCTS_BY_MAX_PRICE = new HashMap<String, String>() {{
+        put("order", ORDER_STATUS_ASC);
+        put("price", MAX_PRICE);
+        put("per_page",PER_PAGE);
+    }};
+
+    //sort products by min price
+    public static final Map<String, String> SORT_PRODUCTS_BY_MIN_PRICE = new HashMap<String, String>() {{
+        put("order", ORDER_STATUS_DESC);
+        put("price", MIN_PRICE);
+        put("per_page",PER_PAGE);
+    }};
+
+
+
 
 
 }

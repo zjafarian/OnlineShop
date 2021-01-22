@@ -8,6 +8,9 @@ import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.data.network.remote.retrofit.RetrofitInstance;
 import com.example.onlineshop.data.network.remote.retrofit.ShopService;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,6 +27,9 @@ public class ShopRepository {
     private MutableLiveData<List<Products>> mRatingProductsLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Products>> mAllProductsLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Categories>> mCategoriesListLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Products>> mSortProductsByMaxPrice = new MutableLiveData<>();
+    private MutableLiveData<List<Products>> mSortProductsByMinPrice = new MutableLiveData<>();
+    private MutableLiveData<List<Products>> mSortProductsByTotalSale = new MutableLiveData<>();
 
     private Context mContext;
 
@@ -41,7 +47,7 @@ public class ShopRepository {
     }
 
     public void getAllProductsAsync(){
-        Call<List<Products>> call = mShopService.getAllProducts();
+        Call<List<Products>> call = mShopService.getProducts(NetworkParams.ALL_PRODUCTS);
         call.enqueue(new Callback<List<Products>>() {
             @Override
             public void onResponse(Call<List<Products>> call, Response<List<Products>> response) {
@@ -122,6 +128,51 @@ public class ShopRepository {
         });
     }
 
+    public void sortProductsByMaxPrice(){
+        Call<List<Products>> call = mShopService.getProducts
+                (NetworkParams.SORT_PRODUCTS_BY_MAX_PRICE);
+        call.enqueue(new Callback<List<Products>>() {
+            @Override
+            public void onResponse(Call<List<Products>> call, Response<List<Products>> response) {
+                mSortProductsByMaxPrice.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Products>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public void sortProductsByMinPrice(){
+        Call<List<Products>> call = mShopService.getProducts
+                (NetworkParams.SORT_PRODUCTS_BY_MIN_PRICE);
+
+        call.enqueue(new Callback<List<Products>>() {
+            @Override
+            public void onResponse(Call<List<Products>> call, Response<List<Products>> response) {
+                mSortProductsByMinPrice.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Products>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void sortProductsByTotalSale() {
+        List<Products> products = mAllProductsLiveData.getValue();
+
+        if (products != null){
+            Collections.sort(products);
+            mSortProductsByTotalSale.setValue(products);
+        }
+
+    }
+
+
   /*  public void getProductSync() {
 
 
@@ -156,5 +207,17 @@ public class ShopRepository {
 
     public LiveData<List<Products>> getAllProductsLiveData() {
         return mAllProductsLiveData;
+    }
+
+    public MutableLiveData<List<Products>> getSortProductsByMaxPrice() {
+        return mSortProductsByMaxPrice;
+    }
+
+    public MutableLiveData<List<Products>> getSortProductsByMinPrice() {
+        return mSortProductsByMinPrice;
+    }
+
+    public MutableLiveData<List<Products>> getSortProductsByTotalSale() {
+        return mSortProductsByTotalSale;
     }
 }

@@ -11,6 +11,8 @@
     <string name="text_more_viewer_product">پربازدیدترین محصولات</string>
     <string name="text_more_score_product">بهترین محصولات</string>
     <string name="text_search_menu_item">جست‌وجو در فروشگاه آنلاین</string>
+    <string name="text_search_hint">جست‌وجو در %s</string>
+
     <string name="text_category_one"> دسته‌بندی یک</string>
     <string name="text_card_view_login">ورود یا ثبت نام</string>
     <string name="text_description_card_view_login">برای تجربه بهتر خرید و بررسی روش ارسال کالاها لطفا وارد شوید.</string>
