@@ -12,6 +12,8 @@ import com.example.onlineshop.data.network.remote.retrofit.ShopService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +32,7 @@ public class ShopRepository {
     private MutableLiveData<List<Products>> mSortProductsByMaxPrice = new MutableLiveData<>();
     private MutableLiveData<List<Products>> mSortProductsByMinPrice = new MutableLiveData<>();
     private MutableLiveData<List<Products>> mSortProductsByTotalSale = new MutableLiveData<>();
+    private MutableLiveData<List<Products>> mSearchProducts = new MutableLiveData<>();
 
     private Context mContext;
 
@@ -172,6 +175,47 @@ public class ShopRepository {
 
     }
 
+    public void searchProducts (String pageName,String searchText){
+        Map<String,String> options;
+        switch (pageName){
+            case NetworkParams.CATEGORIES:
+                options = NetworkParams.ALL_PRODUCTS;
+                break;
+            case NetworkParams.LAST:
+                options = NetworkParams.LAST_PRODUCTS;
+                break;
+            case NetworkParams.POPULARITY:
+                options = NetworkParams.POPULARITY_PRODUCTS;
+                break;
+            case NetworkParams.RATING:
+                options = NetworkParams.RATING_PRODUCTS;
+                break;
+            case "homePage":
+                options = NetworkParams.ALL_PRODUCTS;
+                break;
+            default:
+                options = NetworkParams.ALL_PRODUCTS;
+                options.put("category",pageName);
+                break;
+
+        }
+        options.put("search",searchText);
+        Call<List<Products>> call = mShopService.getProducts(options);
+        call.enqueue(new Callback<List<Products>>() {
+            @Override
+            public void onResponse(Call<List<Products>> call, Response<List<Products>> response) {
+                mSearchProducts.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Products>> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
 
   /*  public void getProductSync() {
 
@@ -209,15 +253,19 @@ public class ShopRepository {
         return mAllProductsLiveData;
     }
 
-    public MutableLiveData<List<Products>> getSortProductsByMaxPrice() {
+    public LiveData<List<Products>> getSortProductsByMaxPrice() {
         return mSortProductsByMaxPrice;
     }
 
-    public MutableLiveData<List<Products>> getSortProductsByMinPrice() {
+    public LiveData<List<Products>> getSortProductsByMinPrice() {
         return mSortProductsByMinPrice;
     }
 
-    public MutableLiveData<List<Products>> getSortProductsByTotalSale() {
+    public LiveData<List<Products>> getSortProductsByTotalSale() {
         return mSortProductsByTotalSale;
+    }
+
+    public LiveData<List<Products>> getSearchProducts() {
+        return mSearchProducts;
     }
 }

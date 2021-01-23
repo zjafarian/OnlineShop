@@ -1,20 +1,18 @@
 package com.example.onlineshop.view.fragment;
 
-import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavBackStackEntry;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,8 +22,18 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.onlineshop.R;
+import com.example.onlineshop.adapter.ListCategoriesHomePageAdapter;
+import com.example.onlineshop.adapter.ListProductsAdapter;
+import com.example.onlineshop.adapter.ListProductsHomePageAdapter;
+import com.example.onlineshop.adapter.SliderAdapter;
+import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.databinding.FragmentSearchBinding;
 import com.example.onlineshop.viewmodel.SearchViewModel;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchFragment extends Fragment {
     public static final String ARGS_PAGE_NAME = "pageName";
@@ -34,7 +42,7 @@ public class SearchFragment extends Fragment {
     private String mSearchText;
     private FragmentSearchBinding mBinding;
     private SearchViewModel mViewModel;
-
+    private ListProductsAdapter mListProductsAdapter;
 
 
     public SearchFragment() {
@@ -61,8 +69,7 @@ public class SearchFragment extends Fragment {
         }
 
         mViewModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
-
-
+        mViewModel.setValues(mPageName, mSearchText);
 
 
     }
@@ -77,9 +84,26 @@ public class SearchFragment extends Fragment {
                 false);
         openKeyboard();
         //mBinding.textViewSearchBox.requestFocus();
+        mBinding.recycleViewListProductsWithSearch.setLayoutManager
+                (new LinearLayoutManager(getActivity()));
         initView();
+        initRecyclers();
         listener();
         return mBinding.getRoot();
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        mViewModel.getSearchProductsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Products>>() {
+            @Override
+            public void onChanged(List<Products> products) {
+                updateUI(products);
+            }
+        });
     }
 
     private void listener() {
@@ -91,29 +115,13 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.equals("") && s.length() !=0)
-                    mBinding.imgBtnSearchClose.setVisibility(View.VISIBLE);
-                else {
-                    mBinding.imgBtnSearchClose.setVisibility(View.GONE);
-                    mViewModel.setValues(mPageName);
-                    mBinding.textViewSearchBox.setHint(getActivity().getString
-                            (R.string.text_search_hint, mViewModel.getSetTextHintSearch()));
-
-                }
+                setVisibilityAction(s.toString());
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!s.equals("") && s.length() !=0)
-                    mBinding.imgBtnSearchClose.setVisibility(View.VISIBLE);
-                else {
-                    mBinding.imgBtnSearchClose.setVisibility(View.GONE);
-                    mViewModel.setValues(mPageName);
-                    mBinding.textViewSearchBox.setHint(getActivity().getString
-                            (R.string.text_search_hint, mViewModel.getSetTextHintSearch()));
-
-                }
+                setVisibilityAction(s.toString());
 
             }
         });
@@ -128,9 +136,13 @@ public class SearchFragment extends Fragment {
                         (navBackStackEntry.getDestination().getId());
 
 
+            }
+        });
 
-
-
+        mBinding.imgBtnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.fetchSearchQuery(mBinding.textViewSearchBox.getText().toString());
             }
         });
 
@@ -144,22 +156,39 @@ public class SearchFragment extends Fragment {
 
     }
 
+    private void setVisibilityAction(String s) {
+        if (!s.equals("") && s.length() != 0) {
+            mBinding.imgBtnSearchClose.setVisibility(View.VISIBLE);
+            mBinding.imgBtnSearch.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.imgBtnSearchClose.setVisibility(View.GONE);
+            mBinding.imgBtnSearch.setVisibility(View.GONE);
+            mBinding.textViewSearchBox.setHint(getActivity().getString
+                    (R.string.text_search_hint, mViewModel.getSetTextHintSearch()));
+
+        }
+    }
+
     private void initView() {
-        if (mSearchText.equals("") && mSearchText.length() == 0){
-            mViewModel.setValues(mPageName);
+        if (mSearchText.equals("") && mSearchText.length() == 0) {
             mBinding.textViewSearchBox.setHint(getActivity().getString
                     (R.string.text_search_hint, mViewModel.getSetTextHintSearch()));
         } else {
             mBinding.textViewSearchBox.setText(mSearchText);
             mBinding.imgBtnSearchClose.setVisibility(View.VISIBLE);
+            mBinding.imgBtnSearch.setVisibility(View.VISIBLE);
         }
     }
-
 
     private void openKeyboard() {
         InputMethodManager imm = (InputMethodManager) getActivity()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    private void updateUI(List<Products> products) {
+        mListProductsAdapter.setData(products);
+
     }
 
 
@@ -168,5 +197,10 @@ public class SearchFragment extends Fragment {
         super.onPause();
     /*    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);*/
+    }
+
+    private void initRecyclers() {
+        mListProductsAdapter = new ListProductsAdapter();
+        mBinding.recycleViewListProductsWithSearch.setAdapter(mListProductsAdapter);
     }
 }

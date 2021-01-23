@@ -9,7 +9,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         android:layoutDirection="rtl"
         android:textDirection="rtl"
         tools:context=".view.fragment.SearchFragment">
@@ -49,6 +49,19 @@
             android:background="@drawable/ic_back_dark"
             app:srcCompat="@drawable/ic_back_dark" />
 
+        <ImageButton
+            android:id="@+id/img_btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="35dp"
+            android:visibility="gone"
+            android:background="@drawable/ic_search_gray"
+            app:srcCompat="@drawable/ic_search_gray" />
+
+
+
 
         <ImageButton
             android:id="@+id/img_btn_search_close"
@@ -64,6 +77,15 @@
             android:textDirection="rtl"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_close" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_view_list_products_with_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_marginTop="55dp" />
+
+
 
 
     </FrameLayout>
