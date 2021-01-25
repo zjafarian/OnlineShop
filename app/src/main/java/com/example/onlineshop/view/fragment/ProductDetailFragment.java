@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,13 +73,23 @@ public class ProductDetailFragment extends Fragment {
                 container,
                 false);
 
+        listener();
+
         return mBinding.getRoot();
+    }
+
+    private void listener() {
+        mBinding.imgBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setBackNavigation();
+            }
+        });
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setLiveDataObserver();
     }
 
@@ -103,5 +115,12 @@ public class ProductDetailFragment extends Fragment {
                     (SliderAnimations.SIMPLETRANSFORMATION);
         }
 
+    }
+
+    private void setBackNavigation() {
+        NavBackStackEntry navBackStackEntry = Navigation.findNavController
+                (mBinding.getRoot()).getPreviousBackStackEntry();
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (navBackStackEntry.getDestination().getId());
     }
 }

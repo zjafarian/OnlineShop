@@ -52,13 +52,59 @@
 
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_shop_product"
+            android:background="@color/online_shop_red"
+            android:backgroundTint="@color/online_shop_red"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/img_btn_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/ic_back" />
+
+            <ImageButton
+                android:id="@+id/img_btn_shop_customer"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="left"
+                android:background="@drawable/ic_shopping_cart"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/text_view_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="7dp"
+                android:gravity="center"
+                tools:text="0"
+                android:layout_marginLeft="50dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/iran_sans_mobile"
+                android:textStyle="bold"/>
+
+
+
+        </androidx.cardview.widget.CardView>
+
+
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/product_slider_card_view"
             android:layout_width="wrap_content"
             android:layout_height="320dp"
             app:layout_constraintLeft_toRightOf="@id/guideline_vertical_end"
             app:layout_constraintRight_toLeftOf="@id/guideline_vertical_start"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_start">
+            app:layout_constraintTop_toBottomOf="@id/card_view_shop_product">
 
 
             <com.smarteist.autoimageslider.SliderView
