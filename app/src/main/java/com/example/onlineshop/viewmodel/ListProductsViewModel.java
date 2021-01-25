@@ -1,43 +1,47 @@
 package com.example.onlineshop.viewmodel;
 
 import android.app.Application;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.onlineshop.data.network.models.Categories;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.data.repository.ShopRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListProductsViewModel extends AndroidViewModel {
 
     private String mSelectListProducts;
-    private List<Products> mProductList=new ArrayList<>();
     private ShopRepository mShopRepository;
     private LiveData<List<Products>> mLastProductsLiveData;
     private LiveData<List<Products>> mPopularityProductsLiveData;
     private LiveData<List<Products>> mRatingProductsLiveData;
-    private LiveData<List<Products>> mAllProductsLiveData;
-    private List<Products> mAllProducts;
+    private LiveData<List<Products>> mSelectProductsShow;
+    private LiveData<List<Categories>> mCategoriesLiveData;
+    private LiveData<List<Products>> mSortProducts;
+    private String mWhichList;
     private int mCategoryId;
+    private String mCategoryName;
 
 
     public ListProductsViewModel(@NonNull Application application) {
         super(application);
+
         mShopRepository = ShopRepository.getInstance(application);
+
         mLastProductsLiveData = mShopRepository.getLastProductsLiveData();
         mPopularityProductsLiveData = mShopRepository.getPopularityProductsLiveData();
         mRatingProductsLiveData = mShopRepository.getRatingProductsLiveData();
-        mAllProductsLiveData = mShopRepository.getAllProductsLiveData();
-        mAllProducts = mAllProductsLiveData.getValue();
-
+        mCategoriesLiveData = mShopRepository.getCategoriesListLiveData();
+        mSortProducts = mShopRepository.getSortProductsLiveData();
     }
-
 
     public void setCategoryId(int categoryId) {
         mCategoryId = categoryId;
@@ -48,45 +52,62 @@ public class ListProductsViewModel extends AndroidViewModel {
     }
 
     public void setProductsList() {
-        switch (mSelectListProducts){
+        switch (mSelectListProducts) {
             case NetworkParams.LAST:
-                mProductList = new ArrayList<>();
-                mProductList = mLastProductsLiveData.getValue();
+                mWhichList = mSelectListProducts;
+                mSelectProductsShow = new MutableLiveData<>();
+                mSelectProductsShow = mLastProductsLiveData;
                 break;
             case NetworkParams.POPULARITY:
-                mProductList = new ArrayList<>();
-                mProductList =mPopularityProductsLiveData.getValue();
+                mWhichList = mSelectListProducts;
+                mSelectProductsShow = new MutableLiveData<>();
+                mSelectProductsShow = mPopularityProductsLiveData;
                 break;
             case NetworkParams.RATING:
-                mProductList = new ArrayList<>();
-                mProductList = mRatingProductsLiveData.getValue();
+                mWhichList = mSelectListProducts;
+                mSelectProductsShow = new MutableLiveData<>();
+                mSelectProductsShow = mRatingProductsLiveData;
                 break;
             case NetworkParams.CATEGORIES:
-                mProductList = new ArrayList<>();
-                mProductList = findProductsByCategory();
+                mWhichList = findCategoryName();
+                mCategoryName = findCategoryName();
+                mSelectProductsShow = new MutableLiveData<>();
+                mSelectProductsShow = findProductsByCategory();
                 break;
         }
 
     }
 
-    private List<Products> findProductsByCategory() {
-        List<Products> productsPerCategory = new ArrayList<>();
+    private LiveData<List<Products>> findProductsByCategory() {
+        mShopRepository.getProductsByCategoryAsync(mCategoryId);
+        return mShopRepository.getProductsByCategoryLiveData();
+    }
 
-
-
-        if (mCategoryId != 0){
-            for (Products productFind: mAllProducts) {
-                for (Categories categoryFind: productFind.getCategories()) {
-                    if (categoryFind.getId() == mCategoryId)
-                        productsPerCategory.add(productFind);
-                }
-            }
+    private String findCategoryName() {
+        List<Categories> categories = mCategoriesLiveData.getValue();
+        for (Categories category : categories) {
+            if (category.getId() == mCategoryId) return category.getName();
         }
-        return productsPerCategory;
+        return null;
     }
 
-    public List<Products> getProductList() {
-        return mProductList;
+
+    public String getCategoryName() {
+        return mCategoryName;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void fetchSortQuery(String sort) {
+        mShopRepository.sortProductsAsync(mWhichList, sort, mCategoryId);
+       mSortProducts = mShopRepository.getSortProductsLiveData();
+    }
+
+    public LiveData<List<Products>> getSelectProductsShow() {
+        return mSelectProductsShow;
+    }
+
+
+    public LiveData<List<Products>> getSortProducts() {
+        return mSortProducts;
+    }
 }

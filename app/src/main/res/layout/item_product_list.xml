@@ -96,14 +96,6 @@
 
         </androidx.cardview.widget.CardView>
 
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/product_item_card_view"
-            android:layout_margin="10dp"
-            android:background="@color/online_shop_red" />
-
 
     </RelativeLayout>
 </layout>

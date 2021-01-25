@@ -149,7 +149,7 @@ public class HomePageFragment extends Fragment {
     }
 
     private void listener() {
-        //openKeyboard();
+
 
         mBinding.textViewAllLastProducts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,7 +203,6 @@ public class HomePageFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 searchEvent();
-
             }
 
             @Override
@@ -226,8 +225,9 @@ public class HomePageFragment extends Fragment {
         String search = mBinding.textViewSearchBox.getText().toString();
         Bundle bundle = new Bundle();
 
-        bundle.putString(ARGS_PAGE_NAME, "homePage");
+        bundle.putString(ARGS_PAGE_NAME, NetworkParams.AllProducts);
         bundle.putString(ARGS_SEARCH_TEXT, search);
+        bundle.putInt(ARGS_CATEGORY_ID,0);
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (R.id.search_Fragment_des,bundle);
     }
@@ -331,11 +331,7 @@ public class HomePageFragment extends Fragment {
     }
 
 
-    private void openKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getActivity()
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
+
 
 
 }

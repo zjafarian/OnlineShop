@@ -13,10 +13,12 @@
         tools:layout="@layout/fragment_home_page">
         <action
             android:id="@+id/action_home_page_fragment_des_to_list_products_fragment_des"
-            app:destination="@id/list_products_fragment_des" />
+            app:destination="@id/list_products_fragment_des"
+            app:popUpTo="@id/home_page_fragment_des" />
         <action
             android:id="@+id/action_home_page_fragment_des_to_product_detail_fragment_des"
-            app:destination="@id/product_detail_fragment_des" />
+            app:destination="@id/product_detail_fragment_des"
+            app:popUpTo="@id/home_page_fragment_des" />
         <action
             android:id="@+id/action_home_page_fragment_des_to_search_Fragment_des"
             app:destination="@id/search_Fragment_des"
@@ -31,10 +33,12 @@
         tools:layout="@layout/fragment_category">
         <action
             android:id="@+id/action_category_fragment_des_to_list_products_fragment_des"
-            app:destination="@id/list_products_fragment_des" />
+            app:destination="@id/list_products_fragment_des"
+            app:popUpTo="@id/category_fragment_des" />
         <action
             android:id="@+id/action_category_fragment_des_to_product_detail_fragment_des"
-            app:destination="@id/product_detail_fragment_des" />
+            app:destination="@id/product_detail_fragment_des"
+            app:popUpTo="@id/category_fragment_des" />
         <action
             android:id="@+id/action_category_fragment_des_to_search_Fragment_des"
             app:destination="@id/search_Fragment_des"
@@ -63,7 +67,12 @@
         android:id="@+id/list_products_fragment_des"
         android:name="com.example.onlineshop.view.fragment.ListProductsFragment"
         android:label="ListProductsFragment"
-        tools:layout="@layout/fragment_list_products" />
+        tools:layout="@layout/fragment_list_products" >
+        <action
+            android:id="@+id/action_list_products_fragment_des_to_product_detail_fragment_des"
+            app:destination="@id/product_detail_fragment_des"
+            app:popUpTo="@id/list_products_fragment_des" />
+    </fragment>
     <fragment
         android:id="@+id/product_detail_fragment_des"
         android:name="com.example.onlineshop.view.fragment.ProductDetailFragment"

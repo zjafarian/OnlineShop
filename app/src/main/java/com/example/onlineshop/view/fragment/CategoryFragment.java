@@ -12,9 +12,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ListCategoriesAdapter;
 import com.example.onlineshop.data.network.models.Categories;
@@ -28,6 +31,8 @@ import java.util.List;
 public class CategoryFragment extends Fragment {
     public static final String ARGS_SELECT_LIST_PRODUCTS = "selectListProducts";
     public static final String ARGS_CATEGORY_ID = "categoryId";
+    public static final String ARGS_PAGE_NAME = "pageName";
+    public static final String ARGS_SEARCH_TEXT = "searchText";
 
     private FragmentCategoryBinding mBinding;
     private CategoryViewModel mViewModel;
@@ -65,8 +70,10 @@ public class CategoryFragment extends Fragment {
                 false);
 
         initialRecycle();
+        listener();
         return mBinding.getRoot();
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -84,14 +91,14 @@ public class CategoryFragment extends Fragment {
                 if (mViewModel.getCategoryLiveData()
                         .getValue()
                         .get(position)
-                        .getId()==category.getId())
+                        .getId() == category.getId())
                     startListProducts(NetworkParams.CATEGORIES, category.getId());
             }
         });
     }
 
     private void updateUI(List<Categories> categories) {
-       mCategoriesAdapter.setData(categories);
+        mCategoriesAdapter.setData(categories);
     }
 
 
@@ -106,7 +113,7 @@ public class CategoryFragment extends Fragment {
 
     }
 
-    private void initialRecycle(){
+    private void initialRecycle() {
         mBinding.recycleViewCategoriesList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mCategoriesAdapter = new ListCategoriesAdapter();
         mBinding.recycleViewCategoriesList.setAdapter(mCategoriesAdapter);
@@ -119,6 +126,46 @@ public class CategoryFragment extends Fragment {
 
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (R.id.list_products_fragment_des, bundle);
+    }
+
+    private void listener() {
+
+        mBinding.textViewSearchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchEvent();
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mBinding.imgBtnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchEvent();
+            }
+        });
+    }
+
+
+    private void searchEvent() {
+        String search = mBinding.textViewSearchBox.getText().toString();
+        Bundle bundle = new Bundle();
+
+        bundle.putString(ARGS_PAGE_NAME, NetworkParams.AllProducts);
+        bundle.putString(ARGS_SEARCH_TEXT, search);
+        bundle.putInt(ARGS_CATEGORY_ID, 0);
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (R.id.search_Fragment_des, bundle);
     }
 
 

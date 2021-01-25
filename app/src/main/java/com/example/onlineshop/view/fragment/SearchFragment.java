@@ -2,10 +2,12 @@ package com.example.onlineshop.view.fragment;
 
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -20,29 +22,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.example.onlineshop.R;
-import com.example.onlineshop.adapter.ListCategoriesHomePageAdapter;
 import com.example.onlineshop.adapter.ListProductsAdapter;
-import com.example.onlineshop.adapter.ListProductsHomePageAdapter;
-import com.example.onlineshop.adapter.SliderAdapter;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.databinding.FragmentSearchBinding;
 import com.example.onlineshop.viewmodel.SearchViewModel;
-import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
-import com.smarteist.autoimageslider.SliderAnimations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchFragment extends Fragment {
     public static final String ARGS_PAGE_NAME = "pageName";
     public static final String ARGS_SEARCH_TEXT = "searchText";
-    private String mPageName;
+    public static final String ARGS_CATEGORY_ID = "categoryId";
+    private String mWhichList;
     private String mSearchText;
+    private int mCategoryId;
     private FragmentSearchBinding mBinding;
     private SearchViewModel mViewModel;
     private ListProductsAdapter mListProductsAdapter;
+    private ArrayAdapter<CharSequence> mAdapterSpinner;
+    private boolean mClickSort = false;
+    private boolean mClickFilter = false;
+    private String mSort;
 
 
     public SearchFragment() {
@@ -50,11 +54,12 @@ public class SearchFragment extends Fragment {
     }
 
 
-    public static SearchFragment newInstance(String pageName, String searchText) {
+    public static SearchFragment newInstance(String pageName, String searchText, int categoryId) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putString(ARGS_PAGE_NAME, pageName);
         args.putString(ARGS_SEARCH_TEXT, searchText);
+        args.putInt(ARGS_CATEGORY_ID, categoryId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,14 +69,13 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mPageName = getArguments().getString(ARGS_PAGE_NAME);
+            mWhichList = getArguments().getString(ARGS_PAGE_NAME);
             mSearchText = getArguments().getString(ARGS_SEARCH_TEXT);
+            mCategoryId = getArguments().getInt(ARGS_CATEGORY_ID);
         }
 
         mViewModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
-        mViewModel.setValues(mPageName, mSearchText);
-
-
+        mViewModel.setValues(mWhichList, mSearchText, mCategoryId);
     }
 
     @Override
@@ -82,10 +86,10 @@ public class SearchFragment extends Fragment {
                 R.layout.fragment_search,
                 container,
                 false);
-        openKeyboard();
-        //mBinding.textViewSearchBox.requestFocus();
-        mBinding.recycleViewListProductsWithSearch.setLayoutManager
-                (new LinearLayoutManager(getActivity()));
+        //openKeyboard();
+        mBinding.textViewSearchBox.requestFocus();
+
+
         initView();
         initRecyclers();
         listener();
@@ -101,7 +105,14 @@ public class SearchFragment extends Fragment {
         mViewModel.getSearchProductsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Products>>() {
             @Override
             public void onChanged(List<Products> products) {
-                updateUI(products);
+                if (products.size() != 0 && products != null) {
+                    mBinding.cardViewFilterAndSort.setVisibility(View.VISIBLE);
+                    mBinding.recycleViewListProductsWithSearch.setVisibility(View.VISIBLE);
+                    updateUI(products);
+                } else {
+                    mBinding.cardViewFilterAndSort.setVisibility(View.GONE);
+                }
+
             }
         });
     }
@@ -116,13 +127,11 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 setVisibilityAction(s.toString());
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 setVisibilityAction(s.toString());
-
             }
         });
 
@@ -130,19 +139,18 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                NavBackStackEntry navBackStackEntry = Navigation.findNavController
-                        (mBinding.getRoot()).getPreviousBackStackEntry();
-                Navigation.findNavController(mBinding.getRoot()).navigate
-                        (navBackStackEntry.getDestination().getId());
-
+                setNavigationBack();
 
             }
         });
 
         mBinding.imgBtnSearch.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                mViewModel.fetchSearchQuery(mBinding.textViewSearchBox.getText().toString());
+                mViewModel.setValues(mWhichList, mBinding.textViewSearchBox.getText().toString(), mCategoryId);
+                mViewModel.fetchSearchQuery(mBinding.textViewSearchBox.getText().toString(),mSort);
+                mBinding.cardViewFilterAndSort.setVisibility(View.VISIBLE);
             }
         });
 
@@ -154,6 +162,52 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        mBinding.imgBtnSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                statusSort();
+            }
+        });
+
+        mBinding.txtViewSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                statusSort();
+            }
+        });
+
+        mBinding.spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mBinding.txtViewSort.setText(mAdapterSpinner.getItem(position));
+                mSort = mAdapterSpinner.getItem(position).toString();
+                mAdapterSpinner.getItemId(position);
+                mViewModel.fetchSearchQuery(mBinding.textViewSearchBox.getText().toString(),mSort);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mBinding.txtViewSort.setText(R.string.text_view_sort);
+
+            }
+        });
+    }
+
+    private void setNavigationBack() {
+        NavBackStackEntry navBackStackEntry = Navigation.findNavController
+                (mBinding.getRoot()).getPreviousBackStackEntry();
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (navBackStackEntry.getDestination().getId());
+    }
+
+    private void statusSort() {
+        mClickSort = !mClickSort;
+        if (mClickSort) {
+            mBinding.spinnerSort.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.spinnerSort.setVisibility(View.GONE);
+        }
     }
 
     private void setVisibilityAction(String s) {
@@ -170,6 +224,15 @@ public class SearchFragment extends Fragment {
     }
 
     private void initView() {
+
+        mBinding.recycleViewListProductsWithSearch.setLayoutManager
+                (new LinearLayoutManager(getActivity()));
+
+        if (mBinding.imgBtnSearch.getVisibility() == View.VISIBLE)
+            mBinding.cardViewFilterAndSort.setVisibility(View.VISIBLE);
+        else mBinding.cardViewFilterAndSort.setVisibility(View.GONE);
+
+
         if (mSearchText.equals("") && mSearchText.length() == 0) {
             mBinding.textViewSearchBox.setHint(getActivity().getString
                     (R.string.text_search_hint, mViewModel.getSetTextHintSearch()));
@@ -178,6 +241,16 @@ public class SearchFragment extends Fragment {
             mBinding.imgBtnSearchClose.setVisibility(View.VISIBLE);
             mBinding.imgBtnSearch.setVisibility(View.VISIBLE);
         }
+
+
+        mAdapterSpinner = ArrayAdapter.createFromResource
+                (getActivity(),
+                        R.array.sort_array,
+                        android.R.layout.simple_spinner_dropdown_item);
+
+        mBinding.spinnerSort.setAdapter(mAdapterSpinner);
+
+
     }
 
     private void openKeyboard() {
@@ -191,16 +264,9 @@ public class SearchFragment extends Fragment {
 
     }
 
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    /*    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);*/
-    }
-
     private void initRecyclers() {
         mListProductsAdapter = new ListProductsAdapter();
         mBinding.recycleViewListProductsWithSearch.setAdapter(mListProductsAdapter);
     }
+
 }

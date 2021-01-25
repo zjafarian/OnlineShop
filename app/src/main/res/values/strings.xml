@@ -12,6 +12,8 @@
     <string name="text_more_score_product">بهترین محصولات</string>
     <string name="text_search_menu_item">جست‌وجو در فروشگاه آنلاین</string>
     <string name="text_search_hint">جست‌وجو در %s</string>
+    <string name="text_view_filter">فیلترها</string>
+    <string name="text_view_sort">مرتب‌سازی</string>
 
     <string name="text_category_one"> دسته‌بندی یک</string>
     <string name="text_card_view_login">ورود یا ثبت نام</string>
@@ -89,4 +91,13 @@
     <string name="name_tab_one">سبد خرید</string>
     <string name="name_tab_two">لیست خریدها</string>
     <string name="todo">TODO</string>
+
+
+    <string-array name="sort_array">
+        <item>جدیدترین</item>
+        <item>پرفروش‌ترین</item>
+        <item>ارزان‌ترین</item>
+        <item>گران‌ترین</item>
+
+    </string-array>
 </resources>

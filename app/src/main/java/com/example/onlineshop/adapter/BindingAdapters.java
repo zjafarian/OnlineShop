@@ -4,6 +4,7 @@ package com.example.onlineshop.adapter;
 import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.onlineshop.R;
 
@@ -24,6 +25,8 @@ public class BindingAdapters {
         }
 
     }
+
+
 
 
 

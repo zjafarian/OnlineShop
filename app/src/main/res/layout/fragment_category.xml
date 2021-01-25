@@ -31,18 +31,60 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.96" />
 
-        <RelativeLayout
-            android:id="@+id/search_box"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_search"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:orientation="horizontal"
-            tools:ignore="MissingConstraints">
+            android:layout_height="53dp"
+            android:layout_margin="2dp"
+            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_start"
+            app:layout_constraintStart_toStartOf="@+id/guideline_vertical_end"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="8sp">
 
-            <include layout="@layout/search_bar" />
 
-        </RelativeLayout>
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/Theme.Design.NoActionBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
+
+            <EditText
+
+                android:id="@+id/text_view_search_box"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="4dp"
+                android:hint="@string/text_search_menu_item"
+                android:background="@color/online_shop_light_gray"
+                android:fontFamily="@font/iran_sans_mobile"
+                android:paddingRight="35dp" />
+
+            <ImageButton
+                android:id="@+id/img_btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_search"
+                android:layoutDirection="rtl"
+                android:textDirection="rtl"
+                app:srcCompat="@drawable/ic_search" />
+
+
+        </androidx.cardview.widget.CardView>
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -52,7 +94,7 @@
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_start"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical_end"
-            app:layout_constraintTop_toBottomOf="@+id/search_box"
+            app:layout_constraintTop_toBottomOf="@+id/card_view_search"
             android:layout_marginBottom="30dp"
             tools:layout_editor_absoluteX="0dp" />
 

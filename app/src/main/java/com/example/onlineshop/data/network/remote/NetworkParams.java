@@ -21,9 +21,12 @@ public class NetworkParams {
     public static final String LAST = "last";
     public static final String ORDER_STATUS_DESC = "desc";
     public static final String ORDER_STATUS_ASC = "asc";
-    public static final String PER_PAGE="30";
+    public static final String PER_PAGE="40";
     public static final String MIN_PRICE="min_price";
     public static final String MAX_PRICE="max_price";
+    public static final String AllProducts= "allProducts";
+    public static final String DATE="date";
+
 
 
 
@@ -38,10 +41,9 @@ public class NetworkParams {
     }};
 
 
-
     //options for query get last products
     public static final Map<String, String> LAST_PRODUCTS = new HashMap<String, String>() {{
-        put("order", ORDER_STATUS_DESC);
+        put("orderby",DATE);
         put("per_page",PER_PAGE);
     }};
 
@@ -59,6 +61,8 @@ public class NetworkParams {
         put("per_page",PER_PAGE);
     }};
 
+
+
     //sort products by max price
     public static final Map<String, String> SORT_PRODUCTS_BY_MAX_PRICE = new HashMap<String, String>() {{
         put("order", ORDER_STATUS_ASC);
@@ -72,6 +76,9 @@ public class NetworkParams {
         put("price", MIN_PRICE);
         put("per_page",PER_PAGE);
     }};
+
+
+
 
 
 

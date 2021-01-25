@@ -14,11 +14,13 @@ public class SearchActivity extends SingleFragmentActivity {
 
     public static final String EXTRA_PAGE_NAME = "com.example.onlineshop.pageName";
     public static final String EXTRA_SEARCH_TEXT = "com.example.onlineshop.searchText";
+    public static final String EXTRA_CATEGORY_ID = "com.example.onlineshop.categoryId";
 
-    public static Intent newIntent(Context context, String pageName, String searchText) {
+    public static Intent newIntent(Context context, String pageName, String searchText, int categoryId) {
         Intent intent = new Intent(context, ListProductsActivity.class);
         intent.putExtra(EXTRA_PAGE_NAME, pageName);
         intent.putExtra(EXTRA_SEARCH_TEXT, searchText);
+        intent.putExtra(EXTRA_CATEGORY_ID,categoryId);
 
 
         return intent;
@@ -29,7 +31,8 @@ public class SearchActivity extends SingleFragmentActivity {
     public Fragment createFragment() {
         String pageName = getIntent().getStringExtra(EXTRA_PAGE_NAME);
         String searchText = getIntent().getStringExtra(EXTRA_SEARCH_TEXT);
-        SearchFragment searchFragment = SearchFragment.newInstance(pageName, searchText);
+        int categoryId = getIntent().getIntExtra(EXTRA_CATEGORY_ID,0);
+        SearchFragment searchFragment = SearchFragment.newInstance(pageName, searchText,categoryId);
         return searchFragment;
     }
 }
