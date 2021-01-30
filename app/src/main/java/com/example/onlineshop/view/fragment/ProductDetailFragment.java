@@ -38,6 +38,7 @@ public class ProductDetailFragment extends Fragment {
     private SliderAdapter mSliderAdapter;
     private Products mProduct;
 
+
     public ProductDetailFragment() {
         // Required empty public constructor
     }
@@ -85,6 +86,13 @@ public class ProductDetailFragment extends Fragment {
                 setBackNavigation();
             }
         });
+
+        mBinding.btnProductAddToShoppingCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.addProductToShoppingCart(mProduct);
+            }
+        });
     }
 
     @Override
@@ -97,8 +105,17 @@ public class ProductDetailFragment extends Fragment {
         mViewModel.getProductLiveData().observe(getViewLifecycleOwner(), new Observer<Products>() {
             @Override
             public void onChanged(Products products) {
+                mProduct = products;
                 mBinding.setProduct(products);
                 initSlider();
+            }
+        });
+
+        mViewModel.getProductsShoppingCartLiveData().observe(getViewLifecycleOwner(), new Observer<List<Products>>() {
+            @Override
+            public void onChanged(List<Products> products) {
+                String count = String.valueOf(products.size());
+                mBinding.textViewNumberProductsShopping.setText(count);
             }
         });
     }

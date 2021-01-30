@@ -70,7 +70,12 @@
         android:id="@+id/product_detail_fragment_des"
         android:name="com.example.onlineshop.view.fragment.ProductDetailFragment"
         android:label="ProductDetailFragment"
-        tools:layout="@layout/fragment_product_detail" />
+        tools:layout="@layout/fragment_product_detail" >
+        <action
+            android:id="@+id/action_product_detail_fragment_des_to_shopping_cart_login_fragment_des"
+            app:destination="@id/shopping_cart_login_fragment_des"
+            app:popUpTo="@id/product_detail_fragment_des" />
+    </fragment>
 
     <fragment
         android:id="@+id/login_sign_up_fragment_des"

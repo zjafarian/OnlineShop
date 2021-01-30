@@ -14,6 +14,7 @@ import com.example.onlineshop.data.network.remote.retrofit.ShopService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,8 @@ public class ShopRepository {
     private MutableLiveData<List<Products>> mSearchProductsLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Products>> mProductsByCategoryLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Products>> mSortProductsLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Products>> mProductsShoppingCartLiveData = new MutableLiveData<>();
+    private List<Products> mProductsListShopping = new ArrayList<>();
 
 
 
@@ -289,10 +292,18 @@ public class ShopRepository {
     }
 
 
-    @NotNull
-    private String TAG() {
-        return "shopRepository";
+    public void setProductsShopping(Products products){
+        mProductsListShopping.add(products);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                mProductsShoppingCartLiveData.postValue(mProductsListShopping);
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
+
 
 
     public LiveData<List<Products>> getLastProductsLiveData() {
@@ -327,5 +338,7 @@ public class ShopRepository {
         return mSortProductsLiveData;
     }
 
-
+    public LiveData<List<Products>> getProductsShoppingCartLiveData() {
+        return mProductsShoppingCartLiveData;
+    }
 }

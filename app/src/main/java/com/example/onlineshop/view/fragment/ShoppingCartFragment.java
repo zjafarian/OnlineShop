@@ -18,9 +18,11 @@ import com.example.onlineshop.viewmodel.ShoppingCartViewModel;
 
 
 public class ShoppingCartFragment extends Fragment {
+    public static final String ARGS_WHICH_PAGE = "whichPage";
+    public static final String ARGS_WHICH_PAGE_SHOPPING = "whichPageShopping";
     private ShoppingCartViewModel mViewModel;
     private FragmentShoppingCartBinding mBinding;
-    public static final String ARGS_WHICH_PAGE = "whichPage";
+
 
 
     public ShoppingCartFragment() {
@@ -28,9 +30,10 @@ public class ShoppingCartFragment extends Fragment {
     }
 
 
-    public static ShoppingCartFragment newInstance() {
+    public static ShoppingCartFragment newInstance(String whichPage) {
         ShoppingCartFragment fragment = new ShoppingCartFragment();
         Bundle args = new Bundle();
+        args.putString(ARGS_WHICH_PAGE_SHOPPING,whichPage);
 
         fragment.setArguments(args);
         return fragment;

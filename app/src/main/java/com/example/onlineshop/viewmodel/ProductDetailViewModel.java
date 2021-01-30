@@ -20,11 +20,13 @@ public class ProductDetailViewModel extends ViewModel {
     private LiveData<List<Products>> mRatingLiveData;
     private List<Products> mProducts = new ArrayList<>();
     private MutableLiveData<Products> mProductLiveData = new MutableLiveData<>();
+    private LiveData<List<Products>> mProductsShoppingCartLiveData;
 
     public ProductDetailViewModel() {
         mShopRepository = ShopRepository.getInstance();
         mProductsLiveData = mShopRepository.getAllProductsLiveData();
         mRatingLiveData = mShopRepository.getRatingProductsLiveData();
+        mProductsShoppingCartLiveData = mShopRepository.getProductsShoppingCartLiveData();
         mProducts = new ArrayList<Products>();
         mProducts = mProductsLiveData.getValue();
         mProducts.addAll(mRatingLiveData.getValue());
@@ -32,7 +34,6 @@ public class ProductDetailViewModel extends ViewModel {
     }
 
     public void findProduct(int productId) {
-
 
         for (Products productFind : mProducts) {
             if (productFind.getId() == productId) {
@@ -56,5 +57,13 @@ public class ProductDetailViewModel extends ViewModel {
 
     public LiveData<Products> getProductLiveData() {
         return mProductLiveData;
+    }
+
+    public void addProductToShoppingCart(Products products){
+        mShopRepository.setProductsShopping(products);
+    }
+
+    public LiveData<List<Products>> getProductsShoppingCartLiveData() {
+        return mProductsShoppingCartLiveData;
     }
 }

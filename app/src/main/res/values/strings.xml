@@ -15,6 +15,7 @@
     <string name="text_view_filter">فیلترها</string>
     <string name="text_view_sort">مرتب‌سازی</string>
     <string name="text_username_hint">ایمیل خود را وارد کنید</string>
+    <string name="text_delete_product_from_shop_cart">حذف</string>
 
     <string name="text_category_one"> دسته‌بندی یک</string>
     <string name="text_card_view_login">ورود یا ثبت نام</string>
@@ -35,6 +36,7 @@
     <string name="product_owner_category_label">فروشنده:</string>
     <string name="product_count_category_label">تعداد:</string>
     <string name="product_price_category_label">قیمت:</string>
+    <string name="pay_products">پرداخت نهایی</string>
 
 
     // Persian
