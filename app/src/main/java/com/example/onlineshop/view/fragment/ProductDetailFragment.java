@@ -32,6 +32,7 @@ public class ProductDetailFragment extends Fragment {
 
 
     public static final String ARGS_PRODUCT_ID = "productId";
+    public static final String ARGS_WHICH_PAGE_SHOPPING = "whichPageShopping";
     private int mProductId;
     private ProductDetailViewModel mViewModel;
     private FragmentProductDetailBinding mBinding;
@@ -79,6 +80,14 @@ public class ProductDetailFragment extends Fragment {
         return mBinding.getRoot();
     }
 
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setLiveDataObserver();
+    }
+
     private void listener() {
         mBinding.imgBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,12 +102,14 @@ public class ProductDetailFragment extends Fragment {
                 mViewModel.addProductToShoppingCart(mProduct);
             }
         });
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setLiveDataObserver();
+        mBinding.imgBtnShopCustomer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToShoppingCartPage();
+
+            }
+        });
     }
 
     private void setLiveDataObserver() {
@@ -139,5 +150,13 @@ public class ProductDetailFragment extends Fragment {
                 (mBinding.getRoot()).getPreviousBackStackEntry();
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (navBackStackEntry.getDestination().getId());
+    }
+
+    private void goToShoppingCartPage() {
+        Bundle bundle = new Bundle();
+        bundle.putString(ARGS_WHICH_PAGE_SHOPPING, "productPage");
+
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (R.id.shopping_cart_fragment_des, bundle);
     }
 }

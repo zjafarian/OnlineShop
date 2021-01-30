@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ public class ShoppingCartFragment extends Fragment {
     public static final String ARGS_WHICH_PAGE_SHOPPING = "whichPageShopping";
     private ShoppingCartViewModel mViewModel;
     private FragmentShoppingCartBinding mBinding;
+    private String mPage;
 
 
 
@@ -43,6 +45,9 @@ public class ShoppingCartFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        if (getArguments() != null)
+            mPage = getArguments().getString(ARGS_WHICH_PAGE_SHOPPING);
 
         mViewModel = new ViewModelProvider(requireActivity()).get(ShoppingCartViewModel.class);
         mViewModel.getIsLogin().observe(this, new Observer<Boolean>() {
@@ -69,8 +74,15 @@ public class ShoppingCartFragment extends Fragment {
                 R.layout.fragment_shopping_cart,
                 container,
                 false);
+        initView();
         listener();
         return mBinding.getRoot();
+    }
+
+    private void initView() {
+        if (mPage.equals("productPage"))
+            mBinding.cardViewBackPage.setVisibility(View.VISIBLE);
+        else mBinding.cardViewBackPage.setVisibility(View.GONE);
     }
 
     private void listener() {
@@ -78,6 +90,13 @@ public class ShoppingCartFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startLoginPage();
+            }
+        });
+
+        mBinding.imgBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setBackNavigation();
             }
         });
     }
@@ -89,6 +108,13 @@ public class ShoppingCartFragment extends Fragment {
 
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (R.id.login_sign_up_fragment_des, bundle);
+    }
+
+    private void setBackNavigation() {
+        NavBackStackEntry navBackStackEntry = Navigation.findNavController
+                (mBinding.getRoot()).getPreviousBackStackEntry();
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (navBackStackEntry.getDestination().getId());
     }
 
 }
