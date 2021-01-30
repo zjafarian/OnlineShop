@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ShoppingAdapter;
 import com.example.onlineshop.databinding.FragmentShoppingBinding;
-import com.example.onlineshop.viewmodel.ShoppingViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -26,8 +25,7 @@ import java.util.List;
 public class ShoppingFragment extends Fragment {
 
     private FragmentShoppingBinding mBinding;
-    private ShoppingViewModel mShoppingViewModel;
-
+    private ShoppingAdapter mShoppingAdapter;
 
 
     public ShoppingFragment() {
@@ -46,8 +44,6 @@ public class ShoppingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mShoppingViewModel = new ViewModelProvider(this).get(ShoppingViewModel.class);
-
     }
 
     @Override
@@ -56,7 +52,7 @@ public class ShoppingFragment extends Fragment {
 
         mBinding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_shopping,
-                container,false);
+                container, false);
 
         updateUI();
 
@@ -69,15 +65,10 @@ public class ShoppingFragment extends Fragment {
         List<String> shoppingTabs = new ArrayList<>();
         shoppingTabs.add("سبد خرید");
         shoppingTabs.add("لیست خریدها");
+        if (mShoppingAdapter == null) {
 
-
-
-        if (mShoppingViewModel.getShoppingAdapter() == null) {
-            mShoppingViewModel.setShoppingAdapter(new ShoppingAdapter(getActivity()));
-
-            mBinding.viewPagerShoppingCart.setAdapter(mShoppingViewModel.getShoppingAdapter());
-
-
+            mShoppingAdapter = new ShoppingAdapter(getActivity());
+            mBinding.viewPagerShoppingCart.setAdapter(mShoppingAdapter);
 
             new TabLayoutMediator(mBinding.tabShoppingCart, mBinding.viewPagerShoppingCart,
                     new TabLayoutMediator.TabConfigurationStrategy() {
@@ -89,10 +80,9 @@ public class ShoppingFragment extends Fragment {
                             mBinding.viewPagerShoppingCart.setCurrentItem(position);
                         }
                     }).attach();
-
-
         } else {
-            mShoppingViewModel.updateUI();
+            mShoppingAdapter.notifyDataSetChanged();
         }
     }
+
 }

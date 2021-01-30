@@ -6,6 +6,7 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ListCategoriesHomePageAdapter;
@@ -19,7 +20,7 @@ import com.example.onlineshop.data.repository.ShopRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePageViewModel extends AndroidViewModel {
+public class HomePageViewModel extends ViewModel {
     private ShopRepository mShopRepository;
 
     private LiveData<List<Products>> mLastProductsLiveData;
@@ -29,15 +30,12 @@ public class HomePageViewModel extends AndroidViewModel {
 
 
 
-    public HomePageViewModel(@NonNull Application application) {
-        super(application);
-
-        mShopRepository = ShopRepository.getInstance(application);
+    public HomePageViewModel() {
+        mShopRepository = ShopRepository.getInstance();
         mLastProductsLiveData = mShopRepository.getLastProductsLiveData();
         mPopularityProductsLiveData = mShopRepository.getPopularityProductsLiveData();
         mRatingProductsLiveData = mShopRepository.getRatingProductsLiveData();
         mListCategoriesLiveData = mShopRepository.getCategoriesListLiveData();
-
     }
 
 

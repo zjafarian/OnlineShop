@@ -12,18 +12,20 @@ import com.example.onlineshop.viewmodel.SingleFragmentActivityViewModel;
 
 public class LoginSignUpActivity extends SingleFragmentActivity {
 
-    public static Intent newIntent (Context context) {
+    public static final String EXTRA_WHICH_PAGE = "com.example.onlineshop.whichPage";
+
+    public static Intent newIntent(Context context, String whichPage) {
         Intent intent = new Intent(context, LoginSignUpActivity.class);
+        intent.putExtra(EXTRA_WHICH_PAGE, whichPage);
 
         return intent;
     }
 
 
-
-
     @Override
     public Fragment createFragment() {
-        LoginSignUpFragment loginSignUpFragment = LoginSignUpFragment.newInstance();
+        String whichPage = getIntent().getStringExtra(EXTRA_WHICH_PAGE);
+        LoginSignUpFragment loginSignUpFragment = LoginSignUpFragment.newInstance(whichPage);
         return loginSignUpFragment;
     }
 }

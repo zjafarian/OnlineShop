@@ -5,10 +5,12 @@ import android.os.Handler;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.ViewModel;
+
 import com.example.onlineshop.data.repository.ShopRepository;
 
 
-public class SingleFragmentActivityViewModel extends AndroidViewModel {
+public class SingleFragmentActivityViewModel extends ViewModel {
 
     public static final String FRAGMENT_TAG = "FragmentActivity";
     private ShopRepository mShopRepository;
@@ -16,10 +18,10 @@ public class SingleFragmentActivityViewModel extends AndroidViewModel {
     private static final String TAG = "SingleFragmentActivityV";
 
 
-    public SingleFragmentActivityViewModel(@NonNull Application application) {
-        super(application);
+    public SingleFragmentActivityViewModel() {
+
         Log.d(TAG, "SingleFragmentActivityViewModel: " );
-        mShopRepository = ShopRepository.getInstance(application);
+        mShopRepository = ShopRepository.getInstance();
 
         mShopRepository.getLastProductsAsync();
         mShopRepository.getPopularityProductsAsync();

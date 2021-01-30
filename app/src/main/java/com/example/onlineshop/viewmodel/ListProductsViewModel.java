@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.onlineshop.data.network.models.Categories;
 import com.example.onlineshop.data.network.models.Products;
@@ -16,7 +17,7 @@ import com.example.onlineshop.data.repository.ShopRepository;
 
 import java.util.List;
 
-public class ListProductsViewModel extends AndroidViewModel {
+public class ListProductsViewModel extends ViewModel {
 
     private String mSelectListProducts;
     private ShopRepository mShopRepository;
@@ -31,10 +32,9 @@ public class ListProductsViewModel extends AndroidViewModel {
     private String mCategoryName;
 
 
-    public ListProductsViewModel(@NonNull Application application) {
-        super(application);
+    public ListProductsViewModel() {
 
-        mShopRepository = ShopRepository.getInstance(application);
+        mShopRepository = ShopRepository.getInstance();
 
         mLastProductsLiveData = mShopRepository.getLastProductsLiveData();
         mPopularityProductsLiveData = mShopRepository.getPopularityProductsLiveData();

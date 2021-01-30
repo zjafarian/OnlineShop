@@ -1,85 +1,121 @@
 package com.example.onlineshop.data.network.models;
 
-public class Shipping {
-    private String first_name;
-    private String last_name;
-    private String company;
-    private String address_1;
-    private String address_2;
-    private String city;
-    private String state;
-    private String postcode;
-    private String country;
+import com.google.gson.annotations.SerializedName;
 
-    public String getFirst_name() {
-        return first_name;
-    }
+public class Shipping{
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
+	@SerializedName("first_name")
+	private String firstName="";
 
-    public String getLast_name() {
-        return last_name;
-    }
+	@SerializedName("last_name")
+	private String lastName="";
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
+	@SerializedName("company")
+	private String company="";
 
-    public String getCompany() {
-        return company;
-    }
+	@SerializedName("address_1")
+	private String address1="";
 
-    public void setCompany(String company) {
-        this.company = company;
-    }
+	@SerializedName("address_2")
+	private String address2="";
 
-    public String getAddress_1() {
-        return address_1;
-    }
+	@SerializedName("city")
+	private String city="";
 
-    public void setAddress_1(String address_1) {
-        this.address_1 = address_1;
-    }
+	@SerializedName("state")
+	private String state="";
 
-    public String getAddress_2() {
-        return address_2;
-    }
+	@SerializedName("postcode")
+	private String postcode="";
 
-    public void setAddress_2(String address_2) {
-        this.address_2 = address_2;
-    }
+	@SerializedName("country")
+	private String country="";
 
-    public String getCity() {
-        return city;
-    }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+	public Shipping() {
+	}
 
-    public String getState() {
-        return state;
-    }
+	public Shipping(String firstName, String lastName, String company, String address1, String address2, String city, String state, String postcode, String country) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.company = company;
+		this.address1 = address1;
+		this.address2 = address2;
+		this.city = city;
+		this.state = state;
+		this.postcode = postcode;
+		this.country = country;
+	}
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public String getPostcode() {
-        return postcode;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
+	public void setCompany(String company) {
+		this.company = company;
+	}
 
-    public String getCountry() {
-        return country;
-    }
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getCountry(){
+		return country;
+	}
+
+	public String getCity(){
+		return city;
+	}
+
+	public String getAddress1(){
+		return address1;
+	}
+
+	public String getAddress2(){
+		return address2;
+	}
+
+	public String getPostcode(){
+		return postcode;
+	}
+
+	public String getLastName(){
+		return lastName;
+	}
+
+	public String getState(){
+		return state;
+	}
+
+	public String getFirstName(){
+		return firstName;
+	}
+
+	public String getCompany() {
+		return company;
+	}
 }

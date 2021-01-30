@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.data.network.remote.NetworkParams;
@@ -14,7 +15,7 @@ import com.example.onlineshop.data.repository.ShopRepository;
 
 import java.util.List;
 
-public class SearchViewModel extends AndroidViewModel {
+public class SearchViewModel extends ViewModel {
     private String mWhichList;
     private String mSearchText;
     private String mSetTextHintSearch;
@@ -23,9 +24,8 @@ public class SearchViewModel extends AndroidViewModel {
     private LiveData<List<Products>> mSearchProductsLiveData;
 
 
-    public SearchViewModel(@NonNull Application application) {
-        super(application);
-        mShopRepository = ShopRepository.getInstance(application);
+    public SearchViewModel() {
+        mShopRepository = ShopRepository.getInstance();
         mSearchProductsLiveData = mShopRepository.getSearchProductsLiveData();
     }
 

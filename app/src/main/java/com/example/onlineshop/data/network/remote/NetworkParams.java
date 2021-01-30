@@ -7,8 +7,7 @@ public class NetworkParams {
 
     public static final String BASE_URL = "https://woocommerce.maktabsharif.ir/wp-json/wc/v3/";
 
-    public static final String USER_NAME = "zjafarian88";
-    public static final String PASSWORD = "rVfdEYSWDFj9";
+
 
     public static final String CONSUMER_KEY = "ck_66caee3abb3e7a93e98b2f1e2b5bb4216d2eaee7";
     public static final String CONSUMER_SECRET = "cs_bc59f09cc045eda7134363273277b10ae155fc6f";
@@ -22,10 +21,9 @@ public class NetworkParams {
     public static final String ORDER_STATUS_DESC = "desc";
     public static final String ORDER_STATUS_ASC = "asc";
     public static final String PER_PAGE="40";
-    public static final String MIN_PRICE="min_price";
-    public static final String MAX_PRICE="max_price";
     public static final String AllProducts= "allProducts";
     public static final String DATE="date";
+    public static final String DATE_CUSTOMER="registered_date";
 
 
 
@@ -63,19 +61,7 @@ public class NetworkParams {
 
 
 
-    //sort products by max price
-    public static final Map<String, String> SORT_PRODUCTS_BY_MAX_PRICE = new HashMap<String, String>() {{
-        put("order", ORDER_STATUS_ASC);
-        put("price", MAX_PRICE);
-        put("per_page",PER_PAGE);
-    }};
 
-    //sort products by min price
-    public static final Map<String, String> SORT_PRODUCTS_BY_MIN_PRICE = new HashMap<String, String>() {{
-        put("order", ORDER_STATUS_DESC);
-        put("price", MIN_PRICE);
-        put("per_page",PER_PAGE);
-    }};
 
 
 

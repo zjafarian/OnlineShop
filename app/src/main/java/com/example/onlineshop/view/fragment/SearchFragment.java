@@ -86,8 +86,8 @@ public class SearchFragment extends Fragment {
                 R.layout.fragment_search,
                 container,
                 false);
-        //openKeyboard();
-        mBinding.textViewSearchBox.requestFocus();
+        openKeyboard();
+        //mBinding.textViewSearchBox.requestFocus();
 
 
         initView();

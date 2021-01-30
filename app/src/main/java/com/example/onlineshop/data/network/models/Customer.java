@@ -1,40 +1,78 @@
 package com.example.onlineshop.data.network.models;
 
-public class Customer {
+import androidx.annotation.NonNull;
 
+import java.util.List;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class Customer {
+    @SerializedName("id")
+    private int id;
+
+    @SerializedName("email")
+    @Expose
     private String email;
-    private String first_name;
-    private String last_name;
+
+    @SerializedName("username")
+    @Expose
     private String username;
+
+    @SerializedName("password")
+    private String password;
+
+    @SerializedName("first_name")
+    @Expose
+    private String firstName = "";
+
+    @SerializedName("last_name")
+    @Expose
+    private String lastName = "";
+
+    @SerializedName("billing")
+    @Expose
     private Billing billing;
+
+    @SerializedName("shipping")
+    @Expose
     private Shipping shipping;
 
-    public Customer(String email, String first_name, String last_name, String username,
-                    Billing billing,
-                    Shipping shipping) {
-
+    public Customer(String email, String password) {
         this.email = email;
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.password = password;
+    }
+
+    public Customer() {
+    }
+
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setBilling(Billing billing) {
         this.billing = billing;
+    }
+
+    public void setShipping(Shipping shipping) {
         this.shipping = shipping;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public String getUsername() {
-        return username;
+    public String getLastName() {
+        return lastName;
     }
 
     public Billing getBilling() {
@@ -46,4 +84,27 @@ public class Customer {
     }
 
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getId() {
+        return id;
+    }
 }

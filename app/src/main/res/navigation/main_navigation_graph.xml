@@ -50,13 +50,6 @@
         android:label="ShoppingFragment"
         tools:layout="@layout/fragment_shopping">
         <action
-            android:id="@+id/action_shopping_fragment_des_to_shopping_cart_with_out_login_fragment_des"
-            app:destination="@id/shopping_cart_with_out_login_fragment_des" />
-        <action
-            android:id="@+id/action_shopping_fragment_des_to_shopping_list_with_out_login_fragment_des"
-            app:destination="@id/shopping_list_with_out_login_fragment_des"
-            app:popUpTo="@id/shopping_fragment_des" />
-        <action
             android:id="@+id/action_shopping_fragment_des_to_shopping_cart_login_fragment_des"
             app:destination="@id/shopping_cart_login_fragment_des" />
         <action
@@ -90,24 +83,24 @@
     </fragment>
     <fragment
         android:id="@+id/shopping_cart_login_fragment_des"
-        android:name="com.example.onlineshop.view.fragment.ShoppingCartLoginFragment"
+        android:name="com.example.onlineshop.view.fragment.ShoppingCartFragment"
         android:label="ShoppingCartLoginFragment"
-        tools:layout="@layout/fragment_shopping_cart_login" />
-    <fragment
-        android:id="@+id/shopping_cart_with_out_login_fragment_des"
-        android:name="com.example.onlineshop.view.fragment.ShoppingCartWithoutLoginFragment"
-        android:label="ShoppingCartWithoutLoginFragment"
-        tools:layout="@layout/fragment_shopping_cart_without_login" />
+        tools:layout="@layout/fragment_shopping_cart" >
+        <action
+            android:id="@+id/action_shopping_cart_login_fragment_des_to_login_sign_up_fragment_des"
+            app:destination="@id/login_sign_up_fragment_des"
+            app:popUpTo="@id/shopping_cart_login_fragment_des" />
+    </fragment>
     <fragment
         android:id="@+id/shopping_list_login_fragment_des"
-        android:name="com.example.onlineshop.view.fragment.ShoppingListLoginFragment"
+        android:name="com.example.onlineshop.view.fragment.ShoppingListProductsFragment"
         android:label="ShoppingListLoginFragment"
-        tools:layout="@layout/fragment_shopping_list_login" />
-    <fragment
-        android:id="@+id/shopping_list_with_out_login_fragment_des"
-        android:name="com.example.onlineshop.view.fragment.ShoppingListWithoutLoginFragment"
-        android:label="ShoppingListWithoutLoginFragment"
-        tools:layout="@layout/fragment_shopping_list_without_login" />
+        tools:layout="@layout/fragment_shopping_list_products" >
+        <action
+            android:id="@+id/action_shopping_list_login_fragment_des_to_login_sign_up_fragment_des"
+            app:destination="@id/login_sign_up_fragment_des"
+            app:popUpTo="@id/shopping_list_login_fragment_des" />
+    </fragment>
     <fragment
         android:id="@+id/sign_up_fragment_des"
         android:name="com.example.onlineshop.view.fragment.SinUpFragment"

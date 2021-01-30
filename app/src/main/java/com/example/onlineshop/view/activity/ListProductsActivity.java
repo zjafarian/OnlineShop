@@ -18,6 +18,7 @@ public class ListProductsActivity extends SingleFragmentActivity {
         intent.putExtra(EXTRA_SELECT_LIST_PRODUCTS,selectListsProducts);
         intent.putExtra(EXTRA_CATEGORY_ID,categoryId);
 
+
         return intent;
     }
 

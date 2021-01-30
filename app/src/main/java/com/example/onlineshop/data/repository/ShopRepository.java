@@ -1,13 +1,12 @@
 package com.example.onlineshop.data.repository;
 
-import android.content.Context;
-import android.os.Build;
+import android.util.Log;
 
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.onlineshop.data.network.models.Categories;
+import com.example.onlineshop.data.network.models.Customer;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.data.network.remote.retrofit.RetrofitInstance;
@@ -39,18 +38,16 @@ public class ShopRepository {
     private MutableLiveData<List<Products>> mProductsByCategoryLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Products>> mSortProductsLiveData = new MutableLiveData<>();
 
-    private Context mContext;
 
 
-    private ShopRepository(Context context) {
-        mContext = context.getApplicationContext();
+    private ShopRepository() {
         Retrofit retrofit = RetrofitInstance.getInstance().getRetrofit();
         mShopService = retrofit.create(ShopService.class);
     }
 
-    public static ShopRepository getInstance(Context context) {
+    public static ShopRepository getInstance() {
         if (sInstance == null)
-            sInstance = new ShopRepository(context);
+            sInstance = new ShopRepository();
         return sInstance;
     }
 
@@ -153,7 +150,6 @@ public class ShopRepository {
         });
     }
 
-
     public void searchProductAndSortAsync(String whichList, String search, String sort, int categoryId) {
         Map<String, String> options = null;
         switch (whichList) {
@@ -222,7 +218,6 @@ public class ShopRepository {
         });
 
     }
-
 
     public void sortProductsAsync(String whichList, String sort, int categoryId) {
         Map<String, String> options = null;
@@ -294,6 +289,12 @@ public class ShopRepository {
     }
 
 
+    @NotNull
+    private String TAG() {
+        return "shopRepository";
+    }
+
+
     public LiveData<List<Products>> getLastProductsLiveData() {
         return mLastProductsLiveData;
     }
@@ -325,4 +326,6 @@ public class ShopRepository {
     public LiveData<List<Products>> getSortProductsLiveData() {
         return mSortProductsLiveData;
     }
+
+
 }

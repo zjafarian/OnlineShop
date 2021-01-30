@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.data.repository.ShopRepository;
@@ -13,16 +14,15 @@ import com.example.onlineshop.data.repository.ShopRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDetailViewModel extends AndroidViewModel {
+public class ProductDetailViewModel extends ViewModel {
     private ShopRepository mShopRepository;
     private LiveData<List<Products>> mProductsLiveData;
     private LiveData<List<Products>> mRatingLiveData;
     private List<Products> mProducts = new ArrayList<>();
     private MutableLiveData<Products> mProductLiveData = new MutableLiveData<>();
 
-    public ProductDetailViewModel(@NonNull Application application) {
-        super(application);
-        mShopRepository = ShopRepository.getInstance(application);
+    public ProductDetailViewModel() {
+        mShopRepository = ShopRepository.getInstance();
         mProductsLiveData = mShopRepository.getAllProductsLiveData();
         mRatingLiveData = mShopRepository.getRatingProductsLiveData();
         mProducts = new ArrayList<Products>();

@@ -14,6 +14,7 @@
     <string name="text_search_hint">جست‌وجو در %s</string>
     <string name="text_view_filter">فیلترها</string>
     <string name="text_view_sort">مرتب‌سازی</string>
+    <string name="text_username_hint">ایمیل خود را وارد کنید</string>
 
     <string name="text_category_one"> دسته‌بندی یک</string>
     <string name="text_card_view_login">ورود یا ثبت نام</string>
@@ -21,7 +22,7 @@
     <string name="text_empty_basket">سبد خرید شما خالی است.</string>
     <string name="text_empty_list_shop">شما می‌توانید لیست محصولاتی را که خریداری کرده‌اید در لیست خرید مشاهده کنید</string>
     <string name="text_empty_list">لیست خرید شما خالی است!</string>
-    <string name="text_description_login">برای ورود و یا ثبت نام در فروشگاه آنلاین، نام کاربری و پسوردتان را وارد نمایید</string>
+    <string name="text_description_login">برای ورود و یا ثبت نام در فروشگاه آنلاین، پست الکترونیکی، نام کاربری و پسوردتان را وارد نمایید</string>
     <string name="text_hint_user_name_login">نام کاربری</string>
     <string name="text_hint_password_login">رمز عبور</string>
     <string name="text_button_login">ورود به فروشگاه آنلاین</string>

@@ -54,44 +54,43 @@
             app:layout_constraintLeft_toRightOf="@id/guideline_vertical_end"
             android:src="@drawable/ic_down" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_input_sign_up"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/img_view_down"
+            app:layout_constraintStart_toEndOf="@+id/guideline_vertical_start"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_end"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:hint="@string/text_username_hint"
+            app:errorEnabled="true">
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/user_name_input_sign_up"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email_sign_up"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8sp"
+                android:fontFamily="@font/iran_sans_mobile"
+                android:paddingLeft="15sp"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
-                app:layout_constraintTop_toBottomOf="@+id/img_view_down"
-                app:layout_constraintStart_toEndOf="@+id/guideline_vertical_start"
-                app:layout_constraintEnd_toStartOf="@+id/password_input_sign_up"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="1"
-                android:hint="@string/text_hint_user_name_login"
-                app:errorEnabled="true">
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/user_name_sign_up"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8sp"
-                    android:fontFamily="@font/iran_sans_mobile"
-                    android:inputType="number"
-                    android:maxLength="10"
-                    android:paddingLeft="15sp"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/password_input_sign_up"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/img_view_down"
+                app:layout_constraintTop_toBottomOf="@+id/email_input_sign_up"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_end"
-                app:layout_constraintStart_toEndOf="@+id/user_name_input_sign_up"
+                app:layout_constraintStart_toEndOf="@+id/guideline_vertical_start"
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:hint="@string/text_hint_password_login"
@@ -103,7 +102,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8sp"
                     android:fontFamily="@font/iran_sans_mobile"
-                    android:inputType="number"
                     android:maxLength="10"
                     android:paddingLeft="15sp"
                     android:textColor="@color/black"
@@ -130,7 +128,5 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:backgroundTint="@color/online_shop_red" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
