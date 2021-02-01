@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        tools:context=".view.activity.SplashActivity">
+
+
+        <ImageView
+            android:id="@+id/online_shop_logo"
+            android:layout_width="232dp"
+            android:layout_height="104dp"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:contentDescription="TODO"
+            android:layout_marginTop="60dp"
+            app:srcCompat="@drawable/online_shop_logo" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/splash_online_shop"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal"
+            app:lottie_fileName="loading.json"
+            app:lottie_loop="true"
+            app:lottie_speed="1"/>
+
+        <LinearLayout
+            android:id="@+id/layout_no_internet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="46dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_no_net" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/iran_sans_mobile"
+                android:gravity="center"
+                android:text="@string/no_internet"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_retry_connection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/online_shop_red"
+                android:fontFamily="@font/iran_sans_mobile"
+                android:text="@string/retry"
+                android:textColor="@color/online_shop_white"
+                android:textSize="12dp"
+                app:cornerRadius="0dp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

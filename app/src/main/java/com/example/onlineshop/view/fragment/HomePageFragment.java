@@ -29,7 +29,7 @@ import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.databinding.FragmentHomePageBinding;
 import com.example.onlineshop.databinding.SearchBarBinding;
-import com.example.onlineshop.view.activity.SearchActivity;
+
 import com.example.onlineshop.viewmodel.HomePageViewModel;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;

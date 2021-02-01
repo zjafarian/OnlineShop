@@ -1,5 +1,7 @@
 package com.example.onlineshop.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,11 @@ import com.example.onlineshop.databinding.ActivitySingleFragmentBinding;
 import com.example.onlineshop.viewmodel.SingleFragmentActivityViewModel;
 
 public class OnlineShoppingMainActivity extends AppCompatActivity {
+
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, OnlineShoppingMainActivity.class);
+        return intent;
+    }
 
 
     private ActivitySingleFragmentBinding mBinding;
