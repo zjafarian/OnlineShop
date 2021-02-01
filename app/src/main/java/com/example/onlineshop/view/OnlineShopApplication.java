@@ -11,6 +11,8 @@ import com.example.onlineshop.data.repository.CustomerRepository;
 import com.example.onlineshop.data.repository.ShopRepository;
 import com.example.onlineshop.utils.SharedPreferencesOnlineShop;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -31,12 +33,13 @@ public class OnlineShopApplication extends Application {
         mShopRepository.getAllProductsAsync();
 
 
-
         int id = SharedPreferencesOnlineShop.getCustomerId(getApplicationContext());
         boolean isLogin = SharedPreferencesOnlineShop.getStatusLogin(getApplicationContext());
         Set<String> productsShopping = SharedPreferencesOnlineShop.getShoppingProducts(getApplicationContext());
-        if(productsShopping != null){
-            mShopRepository.setProductsShoppingFromDataBase(productsShopping);
+        if (productsShopping != null) {
+            //mShopRepository.setProductsShoppingFromDataBase(productsShopping);
+            requestServer(productsShopping);
+            mShopRepository.setShoppingProductsLiveData();
         }
 
         mCustomerRepository.setIsLogin(isLogin);
@@ -46,6 +49,18 @@ public class OnlineShopApplication extends Application {
         }
 
 
+    }
+
+    public void requestServer(Set<String> productsId) {
+        List<Integer> intIds = new ArrayList<>();
+
+        for (Iterator<String> ids = productsId.iterator(); ids.hasNext(); ) {
+            String id = ids.next();
+            intIds.add(Integer.valueOf(id));
+        }
+        for (int i = 0; i < intIds.size(); i++) {
+            mShopRepository.setProductsShoppingFromDataBase((int)intIds.get(i));
+        }
     }
 
 

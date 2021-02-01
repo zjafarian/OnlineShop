@@ -30,10 +30,8 @@ public interface ShopService {
     @GET(NetworkParams.PRODUCT_PATH + NetworkParams.CATEGORY_PATH + NetworkParams.API_KEY)
     Call<List<Categories>> getCategories();
 
-    @GET("products/{id}")
-    Call<Products> getOneProduct(@Path("id") int id,
-                                 @Query("consumer_key") String consumerKey,
-                                 @Query("consumer_secret") String consumerSecret);
+    @GET("products/{id}" + NetworkParams.API_KEY)
+    Call<Products> getOneProduct(@Path("id") int id);
 
     @POST
     Call<Customer> createCustomer(@Url String address, @Body Customer customer,

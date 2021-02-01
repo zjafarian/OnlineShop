@@ -353,37 +353,25 @@ public class ShopRepository {
 
     }
 
-    public void setProductsShoppingFromDataBase(Set<String> productsId) {
-        List<Integer> intIds = new ArrayList<>();
+    public void setProductsShoppingFromDataBase(int id) {
 
-        for (Iterator<String> ids = productsId.iterator(); ids.hasNext(); ) {
-            String id = ids.next();
-            intIds.add(Integer.valueOf(id));
-        }
+        Call<Products> call = mShopService.getOneProduct(id);
 
+        call.enqueue(new Callback<Products>() {
+            @Override
+            public void onResponse(Call<Products> call, Response<Products> response) {
+                mProductsListShopping.add(response.body());
+            }
 
-        mProductsListShopping = new ArrayList<>();
-        for (int i = 0; i < intIds.size(); i++) {
-            Call<Products> call = mShopService.getOneProduct(
-                    intIds.get(i),
-                    NetworkParams.CONSUMER_KEY,
-                    NetworkParams.CONSUMER_SECRET);
+            @Override
+            public void onFailure(Call<Products> call, Throwable t) {
 
-            call.enqueue(new Callback<Products>() {
-                @Override
-                public void onResponse(Call<Products> call, Response<Products> response) {
-                    mProductsListShopping.add(response.body());
+            }
+        });
 
-                }
+    }
 
-                @Override
-                public void onFailure(Call<Products> call, Throwable t) {
-
-                }
-            });
-        }
-
-
+    public void setShoppingProductsLiveData() {
         if (mProductsListShopping.size() != 0 && mProductsListShopping != null) {
             Runnable runnable = new Runnable() {
                 @Override
@@ -394,8 +382,6 @@ public class ShopRepository {
             Thread thread = new Thread(runnable);
             thread.start();
         }
-
-
     }
 
 
