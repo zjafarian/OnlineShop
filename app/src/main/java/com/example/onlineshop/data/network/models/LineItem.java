@@ -4,45 +4,71 @@ import com.google.gson.annotations.SerializedName;
 
 public class LineItem {
 
+    @SerializedName("id")
+    private int id;
+
     @SerializedName("product_id")
-    private String productId;
+    private int productId;
 
     @SerializedName("quantity")
-    private String quantity;
+    private int quantity;
 
     @SerializedName("variation_id")
-    private String variationId;
+    private int variationId;
+
+    @SerializedName("name")
+    private String name;
 
     public LineItem() {
     }
 
-    public LineItem(String productId, String quantity, String variationId) {
+    public LineItem(int id, int productId, int quantity, int variationId, String name) {
+        this.id = id;
         this.productId = productId;
         this.quantity = quantity;
         this.variationId = variationId;
+        this.name = name;
     }
 
-    public void setProductId(String productId) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public void setVariationId(String variationId) {
+    public void setVariationId(int variationId) {
         this.variationId = variationId;
     }
 
-    public String getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public String getVariationId() {
+    public int getVariationId() {
         return variationId;
     }
 }

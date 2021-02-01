@@ -100,6 +100,10 @@
             android:id="@+id/action_shopping_list_login_fragment_des_to_login_sign_up_fragment_des"
             app:destination="@id/login_sign_up_fragment_des"
             app:popUpTo="@id/shopping_list_fragment_des" />
+        <action
+            android:id="@+id/action_shopping_list_fragment_des_to_list_products_fragment_des"
+            app:destination="@id/list_products_fragment_des"
+            app:popUpTo="@id/shopping_list_fragment_des" />
     </fragment>
     <fragment
         android:id="@+id/sign_up_fragment_des"

@@ -23,11 +23,8 @@ public class SingleFragmentActivityViewModel extends ViewModel {
         Log.d(TAG, "SingleFragmentActivityViewModel: " );
         mShopRepository = ShopRepository.getInstance();
 
-        mShopRepository.getLastProductsAsync();
-        mShopRepository.getPopularityProductsAsync();
-        mShopRepository.getRatingProductsAsync();
-        mShopRepository.getCategoriesAsync();
-        mShopRepository.getAllProductsAsync();
+
+
     }
 
 

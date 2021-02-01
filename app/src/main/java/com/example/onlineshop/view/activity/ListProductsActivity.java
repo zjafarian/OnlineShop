@@ -12,11 +12,13 @@ public class ListProductsActivity extends SingleFragmentActivity {
 
     public static final String EXTRA_SELECT_LIST_PRODUCTS = "com.example.onlineshop.selectListProducts";
     public static final String EXTRA_CATEGORY_ID = "com.example.onlineshop.categoryId";
+    public static final String EXTRA_ORDER_ID = "orderId";
 
-    public static Intent newIntent (Context context, String selectListsProducts, int categoryId) {
+    public static Intent newIntent (Context context, String selectListsProducts, int categoryId,int orderId) {
         Intent intent = new Intent(context, ListProductsActivity.class);
         intent.putExtra(EXTRA_SELECT_LIST_PRODUCTS,selectListsProducts);
         intent.putExtra(EXTRA_CATEGORY_ID,categoryId);
+        intent.putExtra(EXTRA_ORDER_ID, orderId );
 
 
         return intent;
@@ -27,8 +29,9 @@ public class ListProductsActivity extends SingleFragmentActivity {
     public Fragment createFragment() {
         String selectListProducts = getIntent().getStringExtra(EXTRA_SELECT_LIST_PRODUCTS);
         int categoryId = getIntent().getIntExtra(EXTRA_CATEGORY_ID,0);
+        int orderId = getIntent().getIntExtra(EXTRA_ORDER_ID,0);
         ListProductsFragment listProductsFragment =
-                ListProductsFragment.newInstance(selectListProducts,categoryId);
+                ListProductsFragment.newInstance(selectListProducts,categoryId,orderId);
 
         return listProductsFragment;
     }

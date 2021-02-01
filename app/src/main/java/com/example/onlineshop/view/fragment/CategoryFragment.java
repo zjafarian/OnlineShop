@@ -31,6 +31,7 @@ import java.util.List;
 public class CategoryFragment extends Fragment {
     public static final String ARGS_SELECT_LIST_PRODUCTS = "selectListProducts";
     public static final String ARGS_CATEGORY_ID = "categoryId";
+    public static final String ARGS_ORDER_ID = "orderId";
     public static final String ARGS_PAGE_NAME = "pageName";
     public static final String ARGS_SEARCH_TEXT = "searchText";
 
@@ -123,6 +124,7 @@ public class CategoryFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString(ARGS_SELECT_LIST_PRODUCTS, selectFilter);
         bundle.putInt(ARGS_CATEGORY_ID, categoryId);
+        bundle.putInt(ARGS_ORDER_ID,0);
 
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (R.id.list_products_fragment_des, bundle);

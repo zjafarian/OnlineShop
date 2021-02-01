@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.onlineshop.R;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.databinding.RowProduntInShopCartBinding;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,14 @@ public class ListProductsShoppingCartAdapter extends RecyclerView.Adapter<Recycl
     public void setData(List<Products> products) {
         mProductsList = products;
         notifyDataSetChanged();
+    }
+
+    public void onItemClicked( OnItemClickProduct onItemClick){
+        this.mOnItemClick = onItemClick;
+    }
+
+    public void onDeleteSelect(onItemClickDeleteProductFromList onItemClick){
+        this.mOnDeleteProduct= onItemClick;
     }
 
     @NonNull
@@ -75,8 +84,15 @@ public class ListProductsShoppingCartAdapter extends RecyclerView.Adapter<Recycl
             mBinding = inShopCartBinding;
         }
 
-        public void bindHolder(Products products) {
-            mBinding.setProduct(products);
+        public void bindHolder(Products product) {
+            mBinding.setProduct(product);
+            mBinding.executePendingBindings();
+            if (product.getImages().size() != 0 ) {
+                Picasso.get()
+                        .load(product.getImages().get(0).getSrc())
+                        .placeholder(R.drawable.place_holder_online_shop)
+                        .into(mBinding.productImage);
+            }
         }
 
 

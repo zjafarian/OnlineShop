@@ -32,8 +32,11 @@ public class SignUpViewModel extends AndroidViewModel {
 
 
     public void fetchCreateCustomer(Customer customer) {
-        if (customer.getEmail().length() != 0 && !customer.getEmail().equals("") && customer.getEmail() != null &&
-                customer.getPassword().length() != 0 && !customer.getPassword().equals("") && customer.getPassword() != null) {
+        if (customer.getEmail().length() != 0 && !customer.getEmail().equals("")
+                && customer.getEmail() != null && customer.getPassword().length() != 0 &&
+                !customer.getPassword().equals("") && customer.getPassword() != null) {
+
+
            mCustomerRepository.postCustomer(customer);
 
             //mCustomerRepository.postCustomer(email);

@@ -17,6 +17,7 @@ public class NetworkParams {
     public static final String POPULARITY = "popularity";
     public static final String RATING = "rating";
     public static final String CATEGORIES = "categories";
+    public static final String ORDER ="order";
     public static final String LAST = "last";
     public static final String ORDER_STATUS_DESC = "desc";
     public static final String ORDER_STATUS_ASC = "asc";

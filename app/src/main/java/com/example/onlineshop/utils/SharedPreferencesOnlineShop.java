@@ -2,12 +2,22 @@ package com.example.onlineshop.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.util.ArraySet;
+
+import androidx.annotation.RequiresApi;
+
+import com.example.onlineshop.data.network.models.Customer;
+import com.example.onlineshop.data.network.models.Products;
+
+import java.util.List;
+import java.util.Set;
 
 public class SharedPreferencesOnlineShop {
 
     private static final String STATUS_LOGIN = "statusLogin";
-    private static final String USER_NAME_CUSTOMER = "userNameCustomer";
-    private static final String PASSWORD_CUSTOMER = "passwordCustomer";
+    private static final String ID_CUSTOMER = "IdCustomer";
+    private static final String PRODUCTS_IDS = "productsIds";
 
 
     private static SharedPreferences getSharedPreferences(Context context) {
@@ -25,27 +35,36 @@ public class SharedPreferencesOnlineShop {
         return getSharedPreferences(context).getBoolean(STATUS_LOGIN, false);
     }
 
-    public static void setUserNameCustomer(Context context, String username) {
+    public static void setCustomerId(Context context, int customerId) {
         getSharedPreferences(context)
                 .edit()
-                .putString(USER_NAME_CUSTOMER, username)
+                .putInt(ID_CUSTOMER, customerId)
                 .apply();
     }
 
-    public static String getUserNameCustomer(Context context) {
-        return getSharedPreferences(context).getString(USER_NAME_CUSTOMER, null);
+    public static int getCustomerId(Context context) {
+        return getSharedPreferences(context).getInt(ID_CUSTOMER, 0);
     }
 
-    public static void setPasswordCustomer(Context context, String password) {
-        getSharedPreferences(context)
-                .edit()
-                .putString(PASSWORD_CUSTOMER, password)
-                .apply();
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void setShoppingProducts(Context context, List<Products> products) {
+
+        if (products.size() != 0 && products != null) {
+            Set<String> set = new ArraySet<>();
+            for (int i = 0; i < products.size(); i++) {
+                set.add(String.valueOf(products.get(i).getId()));
+
+            }
+            getSharedPreferences(context)
+                    .edit()
+                    .putStringSet(PRODUCTS_IDS, set)
+                    .apply();
+        }
+
+
     }
 
-    public String getPasswordCustomer (Context context){
-       return getSharedPreferences(context).getString(PASSWORD_CUSTOMER,null);
+    public static Set<String> getShoppingProducts(Context context) {
+        return getSharedPreferences(context).getStringSet(PRODUCTS_IDS,null);
     }
-
-
 }

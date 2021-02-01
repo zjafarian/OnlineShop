@@ -47,11 +47,19 @@ public class Order{
 	public Order() {
 	}
 
-	public Order(String orderKey, List<LineItem> lineItems, String total, int id, int customerId) {
+	public Order(String orderKey, List<LineItem> lineItems, Billing billing, String number, String total, Shipping shipping, String paymentMethodTitle, String currency, int id, String paymentMethod, String shippingTotal, List<ShippingLine> shippingLines, int customerId) {
 		this.orderKey = orderKey;
 		this.lineItems = lineItems;
+		this.billing = billing;
+		this.number = number;
 		this.total = total;
+		this.shipping = shipping;
+		this.paymentMethodTitle = paymentMethodTitle;
+		this.currency = currency;
 		this.id = id;
+		this.paymentMethod = paymentMethod;
+		this.shippingTotal = shippingTotal;
+		this.shippingLines = shippingLines;
 		this.customerId = customerId;
 	}
 

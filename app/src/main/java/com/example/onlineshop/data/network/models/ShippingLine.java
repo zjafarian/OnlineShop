@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class ShippingLine {
 
+    @SerializedName("id")
+    private int id;
+
     @SerializedName("method_id")
     private String methodId="";
 
@@ -16,7 +19,8 @@ public class ShippingLine {
     public ShippingLine() {
     }
 
-    public ShippingLine(String methodId, String methodTitle, String total) {
+    public ShippingLine(int id, String methodId, String methodTitle, String total) {
+        this.id = id;
         this.methodId = methodId;
         this.methodTitle = methodTitle;
         this.total = total;
@@ -44,5 +48,13 @@ public class ShippingLine {
 
     public String getTotal() {
         return total;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

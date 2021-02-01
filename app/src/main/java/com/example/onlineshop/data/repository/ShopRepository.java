@@ -14,11 +14,14 @@ import com.example.onlineshop.data.network.remote.retrofit.ShopService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,8 +42,8 @@ public class ShopRepository {
     private MutableLiveData<List<Products>> mProductsByCategoryLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Products>> mSortProductsLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Products>> mProductsShoppingCartLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Products>> mProductsOrderCustomer = new MutableLiveData<>();
     private List<Products> mProductsListShopping = new ArrayList<>();
-
 
 
     private ShopRepository() {
@@ -291,8 +294,7 @@ public class ShopRepository {
 
     }
 
-
-    public void setProductsShopping(Products products){
+    public void setProductsShopping(Products products) {
         mProductsListShopping.add(products);
         Runnable runnable = new Runnable() {
             @Override
@@ -304,6 +306,97 @@ public class ShopRepository {
         thread.start();
     }
 
+    public void removeProductAndLoadNewListProductsShoppingCart(Products products) {
+        mProductsListShopping = mProductsShoppingCartLiveData.getValue();
+        mProductsListShopping.remove(products);
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                mProductsShoppingCartLiveData.postValue(mProductsListShopping);
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
+    public void removeAllProductsShoppingCart() {
+        mProductsListShopping.clear();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                mProductsShoppingCartLiveData.postValue(mProductsListShopping);
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
+    public void setProductsByOrder(int[] productsId) {
+        getAllProductsAsync();
+        List<Products> products = mAllProductsLiveData.getValue();
+        List<Products> productsOrder = new ArrayList<>();
+        for (int i = 0; i < productsId.length; i++) {
+            for (Products productFind : products) {
+                if (productFind.getId() == productsId[i])
+                    productsOrder.add(productFind);
+            }
+        }
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                mProductsOrderCustomer.postValue(productsOrder);
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+    }
+
+    public void setProductsShoppingFromDataBase(Set<String> productsId) {
+        List<Integer> intIds = new ArrayList<>();
+
+        for (Iterator<String> ids = productsId.iterator(); ids.hasNext(); ) {
+            String id = ids.next();
+            intIds.add(Integer.valueOf(id));
+        }
+
+
+        mProductsListShopping = new ArrayList<>();
+        for (int i = 0; i < intIds.size(); i++) {
+            Call<Products> call = mShopService.getOneProduct(
+                    intIds.get(i),
+                    NetworkParams.CONSUMER_KEY,
+                    NetworkParams.CONSUMER_SECRET);
+
+            call.enqueue(new Callback<Products>() {
+                @Override
+                public void onResponse(Call<Products> call, Response<Products> response) {
+                    mProductsListShopping.add(response.body());
+
+                }
+
+                @Override
+                public void onFailure(Call<Products> call, Throwable t) {
+
+                }
+            });
+        }
+
+
+        if (mProductsListShopping.size() != 0 && mProductsListShopping != null) {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    mProductsShoppingCartLiveData.setValue(mProductsListShopping);
+                }
+            };
+            Thread thread = new Thread(runnable);
+            thread.start();
+        }
+
+
+    }
 
 
     public LiveData<List<Products>> getLastProductsLiveData() {
@@ -340,5 +433,9 @@ public class ShopRepository {
 
     public LiveData<List<Products>> getProductsShoppingCartLiveData() {
         return mProductsShoppingCartLiveData;
+    }
+
+    public LiveData<List<Products>> getProductsOrderCustomer() {
+        return mProductsOrderCustomer;
     }
 }

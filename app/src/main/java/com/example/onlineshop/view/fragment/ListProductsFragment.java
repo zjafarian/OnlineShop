@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ListProductsAdapter;
 
+import com.example.onlineshop.data.network.models.Order;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.databinding.FragmentListProductsBinding;
 import com.example.onlineshop.viewmodel.ListProductsViewModel;
@@ -34,6 +35,7 @@ public class ListProductsFragment extends Fragment {
     public static final String ARGS_SELECT_LIST_PRODUCTS = "selectListProducts";
     public static final String ARGS_CATEGORY_ID = "categoryId";
     public static final String ARGS_PRODUCT_ID = "productId";
+    public static final String ARGS_ORDER_ID = "orderId";
     public static final String ARGS_PAGE_NAME = "pageName";
     public static final String ARGS_SEARCH_TEXT = "searchText";
     private FragmentListProductsBinding mBinding;
@@ -43,17 +45,20 @@ public class ListProductsFragment extends Fragment {
     private int mCategoryId;
     private ArrayAdapter<CharSequence> mAdapterSpinner;
     private boolean mClickSort = false;
+    private int mOrderId;
 
 
     public ListProductsFragment() {
         // Required empty public constructor
     }
 
-    public static ListProductsFragment newInstance(String selectListProducts, int categoryId) {
+    public static ListProductsFragment newInstance(String selectListProducts, int categoryId, int orderId) {
         ListProductsFragment fragment = new ListProductsFragment();
         Bundle args = new Bundle();
         args.putString(ARGS_SELECT_LIST_PRODUCTS, selectListProducts);
         args.putInt(ARGS_CATEGORY_ID, categoryId);
+        args.putInt(ARGS_ORDER_ID,orderId);
+
 
         fragment.setArguments(args);
         return fragment;
@@ -65,6 +70,7 @@ public class ListProductsFragment extends Fragment {
         if (getArguments() != null) {
             mSelectListProducts = getArguments().getString(ARGS_SELECT_LIST_PRODUCTS);
             mCategoryId = getArguments().getInt(ARGS_CATEGORY_ID);
+            mOrderId = getArguments().getInt(ARGS_ORDER_ID);
         }
         setRetainInstance(true);
 
@@ -98,6 +104,7 @@ public class ListProductsFragment extends Fragment {
 
         mListProductsViewModel.setSelectListProducts(mSelectListProducts);
         mListProductsViewModel.setCategoryId(mCategoryId);
+        mListProductsViewModel.setOrderId(mOrderId);
         mListProductsViewModel.setProductsList();
 
         setObservers();
@@ -122,6 +129,8 @@ public class ListProductsFragment extends Fragment {
                 updateUI(products);
             }
         });
+
+
     }
 
     private void initRecycler() {

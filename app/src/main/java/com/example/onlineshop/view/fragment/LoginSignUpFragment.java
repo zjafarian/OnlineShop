@@ -57,12 +57,15 @@ public class LoginSignUpFragment extends Fragment {
             mWhichPage = getArguments().getString(ARGS_WHICH_PAGE);
 
         mViewModel = new ViewModelProvider(requireActivity()).get(LoginSingUpViewModel.class);
+
+
         mViewModel.getIsLoginLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                if(aBoolean){
+                if (aBoolean) {
                     mBinding.layoutLogin.setVisibility(View.GONE);
                     mBinding.layoutAccount.setVisibility(View.VISIBLE);
+                    mViewModel.findCustomerBeLogin();
                 } else {
                     mBinding.layoutLogin.setVisibility(View.VISIBLE);
                     mBinding.layoutAccount.setVisibility(View.GONE);
@@ -70,6 +73,7 @@ public class LoginSignUpFragment extends Fragment {
 
             }
         });
+
 
     }
 
@@ -83,40 +87,11 @@ public class LoginSignUpFragment extends Fragment {
                 false);
 
 
-
-
         listener();
 
         return mBinding.getRoot();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-        mViewModel.getCustomerListLiveData().observe(getViewLifecycleOwner(), new Observer<List<Customer>>() {
-            @Override
-            public void onChanged(List<Customer> customers) {
-
-                if (customers.size() != 0 && customers != null) {
-                    for (Customer customerFind : customers) {
-                        if (customerFind.getEmail().equals(mEmail)) {
-                            mViewModel.setCustomerLogin(customerFind);
-                            if (mWhichPage.equals("shopping"))
-                                goToShoppingPage();
-                            else loadAccountLayout();
-
-                        }
-
-                    }
-                }
-
-            }
-        });
-
-
-    }
 
     private void listener() {
 
@@ -132,7 +107,15 @@ public class LoginSignUpFragment extends Fragment {
             public void onClick(View v) {
                 mEmail = mBinding.emailLogin.getText().toString().trim();
                 mPassword = mBinding.passwordLogin.getText().toString().trim();
-                mViewModel.getFetchCustomers();
+                mViewModel.findCustomerGetLogin(mEmail);
+                if (mViewModel.isFindCustomer()){
+                    if (mWhichPage == null)
+                        loadAccountLayout();
+                    else if (mWhichPage.equals("shopping"))
+                        goToShoppingPage();
+
+                }
+
             }
         });
 
@@ -155,7 +138,7 @@ public class LoginSignUpFragment extends Fragment {
         mBinding.layoutAccount.setVisibility(View.VISIBLE);
     }
 
-    private void goToShoppingPage(){
+    private void goToShoppingPage() {
         NavBackStackEntry navBackStackEntry = Navigation.findNavController
                 (mBinding.getRoot()).getPreviousBackStackEntry();
         Navigation.findNavController(mBinding.getRoot()).navigate

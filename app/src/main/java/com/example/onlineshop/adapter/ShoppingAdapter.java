@@ -30,7 +30,7 @@ public class ShoppingAdapter extends FragmentStateAdapter {
         switch (position) {
             case 0:
                 ShoppingCartFragment shoppingCartLoginFragment =
-                        ShoppingCartFragment.newInstance();
+                        ShoppingCartFragment.newInstance(null);
                 return shoppingCartLoginFragment;
             case 1:
 
