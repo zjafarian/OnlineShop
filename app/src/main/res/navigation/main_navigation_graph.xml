@@ -119,6 +119,11 @@
         android:id="@+id/setting_fragment_des"
         android:name="com.example.onlineshop.view.fragment.SettingFragment"
         android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_setting_fragment_des_to_login_sign_up_fragment_des"
+            app:destination="@id/login_sign_up_fragment_des"
+            app:popUpTo="@id/login_sign_up_fragment_des" />
+    </fragment>
 
 </navigation>

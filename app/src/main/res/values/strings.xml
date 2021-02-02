@@ -37,6 +37,7 @@
     <string name="product_count_category_label">تعداد:</string>
     <string name="product_price_category_label">قیمت:</string>
     <string name="pay_products">پرداخت نهایی</string>
+    <string name="text_save_setting">ذخیره تنظیمات</string>
 
 
     // Persian
@@ -103,9 +104,11 @@
     <string name="new_product_text">You have a new product in OnlineShop.</string>
     <string name="channel_name">OnlineShop Channel</string>
     <string name="channel_description">This is notification channel for OnlineShop</string>
-
-
-
+    <string name="text_show_new_products">از محصولات جدید باخبر شوم</string>
+    <string name="text_choose_hour">انتخاب ساعت دلخواه</string>
+    <string name="text_hint_select_custom_time">یک ساعت وارد کنید</string>
+    <string name="text_active_show_new_product">فعال</string>
+    <string name="text_de_active_show_new_product">غیرفعال</string>
 
 
     <string-array name="sort_array">

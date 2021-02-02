@@ -36,7 +36,7 @@ public class PollWorker extends Worker {
         return Result.success();
     }
 
-    public static void enqueueWork(Context context, boolean isOn) {
+    public static void enqueueWork(Context context, boolean isOn,int time) {
         WorkManager workManager = WorkManager.getInstance(context);
 
         if (isOn) {
@@ -47,7 +47,7 @@ public class PollWorker extends Worker {
 
             PeriodicWorkRequest periodicWorkRequest =
 //                    new PeriodicWorkRequest.Builder(PollWorker.class, 3, TimeUnit.HOURS)
-                    new PeriodicWorkRequest.Builder(PollWorker.class, 15, TimeUnit.MINUTES)
+                    new PeriodicWorkRequest.Builder(PollWorker.class, time, TimeUnit.MINUTES)
                             .setConstraints(constraints)
                             .build();
             workManager.enqueueUniquePeriodicWork(
