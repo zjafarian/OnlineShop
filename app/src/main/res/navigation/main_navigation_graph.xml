@@ -79,7 +79,20 @@
         tools:layout="@layout/fragment_login_sign_up">
         <action
             android:id="@+id/action_login_sign_up_fragment_des_to_sign_up_fragment_des"
-            app:destination="@id/sign_up_fragment_des" />
+            app:destination="@id/sign_up_fragment_des"
+            app:popUpTo="@id/login_sign_up_fragment_des" />
+        <action
+            android:id="@+id/action_login_sign_up_fragment_des_to_address_fragment_des"
+            app:destination="@id/address_fragment_des"
+            app:popUpTo="@id/login_sign_up_fragment_des" />
+        <action
+            android:id="@+id/action_login_sign_up_fragment_des_to_information_fragment_des"
+            app:destination="@id/information_fragment_des"
+            app:popUpTo="@id/login_sign_up_fragment_des" />
+        <action
+            android:id="@+id/action_login_sign_up_fragment_des_to_setting_fragment_des"
+            app:destination="@id/setting_fragment_des"
+            app:popUpTo="@id/login_sign_up_fragment_des" />
     </fragment>
     <fragment
         android:id="@+id/shopping_cart_fragment_des"
@@ -119,11 +132,26 @@
         android:id="@+id/setting_fragment_des"
         android:name="com.example.onlineshop.view.fragment.SettingFragment"
         android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" >
+        tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/address_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.AddressFragment"
+        android:label="fragment_address"
+        tools:layout="@layout/fragment_address" >
         <action
-            android:id="@+id/action_setting_fragment_des_to_login_sign_up_fragment_des"
-            app:destination="@id/login_sign_up_fragment_des"
-            app:popUpTo="@id/login_sign_up_fragment_des" />
+            android:id="@+id/action_address_fragment_des_to_add_address_fragment_des"
+            app:destination="@id/add_address_fragment_des"
+            app:popUpTo="@id/address_fragment_des" />
     </fragment>
+    <fragment
+        android:id="@+id/information_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.InformationFragment"
+        android:label="fragment_information"
+        tools:layout="@layout/fragment_information" />
+    <fragment
+        android:id="@+id/add_address_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.AddAddressFragment"
+        android:label="fragment_add_adress"
+        tools:layout="@layout/fragment_add_address" />
 
 </navigation>

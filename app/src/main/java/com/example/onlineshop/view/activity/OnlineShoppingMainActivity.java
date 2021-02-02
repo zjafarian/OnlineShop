@@ -1,6 +1,8 @@
 package com.example.onlineshop.view.activity;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -13,9 +15,14 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.onlineshop.R;
 import com.example.onlineshop.databinding.ActivitySingleFragmentBinding;
 import com.example.onlineshop.viewmodel.SingleFragmentActivityViewModel;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.navigation.NavigationView;
 
 public class OnlineShoppingMainActivity extends AppCompatActivity {
+    private static final int REQUEST_ERROR = 0;
+
+
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, OnlineShoppingMainActivity.class);
@@ -47,6 +54,25 @@ public class OnlineShoppingMainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int errorCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (errorCode != ConnectionResult.SUCCESS) {
+            //todo
+           /* Dialog errorDialog = apiAvailability.getErrorDialog(this, errorCode, REQUEST_ERROR,
+                    new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+// Leave if services are unavailable.
+                            finish();
+                        }
+                    });
+            errorDialog.show();*/
+        }
+    }
 
     @Override
     public void onBackPressed() {

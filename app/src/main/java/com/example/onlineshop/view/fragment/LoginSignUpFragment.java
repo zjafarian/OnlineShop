@@ -92,6 +92,7 @@ public class LoginSignUpFragment extends Fragment {
         });
 
 
+
     }
 
     @SuppressLint("ResourceType")
@@ -108,8 +109,6 @@ public class LoginSignUpFragment extends Fragment {
         activity.setSupportActionBar(mBinding.toolbar);
         mBinding.toolbar.setTitle(R.string.user_item_navigation_menu);
         mBinding.toolbar.inflateMenu(R.menu.account_nav_main);
-
-
 
 
         listener();
@@ -163,6 +162,20 @@ public class LoginSignUpFragment extends Fragment {
             }
         });
 
+        mBinding.layoutAddresses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToAddressPage();
+            }
+        });
+
+        mBinding.layoutInformation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToInformationPage();
+            }
+        });
+
 
     }
 
@@ -187,6 +200,15 @@ public class LoginSignUpFragment extends Fragment {
                 (mBinding.getRoot()).getPreviousBackStackEntry();
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (navBackStackEntry.getDestination().getId());
+    }
+
+    private void goToAddressPage(){
+        Navigation.findNavController(mBinding.getRoot()).navigate(R.id.address_fragment_des);
+
+    }
+
+    private void goToInformationPage(){
+        Navigation.findNavController(mBinding.getRoot()).navigate(R.id.information_fragment_des);
     }
 
 

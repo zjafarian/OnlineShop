@@ -38,6 +38,15 @@
     <string name="product_price_category_label">قیمت:</string>
     <string name="pay_products">پرداخت نهایی</string>
     <string name="text_save_setting">ذخیره تنظیمات</string>
+    <string name="text_hint_first_name_last_name">نام و نام خانوادگی خود را وارد کنید!</string>
+    <string name="text_view_addresses">آدرس‌ها</string>
+    <string name="text_view_edit_information_user">اطلاعات حساب کاربری</string>
+    <string name="text_view_score">امتیاز</string>
+    <string name="text_view_wallet">تومان</string>
+    <string name="text_view_add_address">اضافه کردن آدرس جدید</string>
+    <string name="text_hint_name_receiver">نام و نام خانوادگی گیرنده</string>
+    <string name="text_full_address">آدرس پستی</string>
+    <string name="text_save_address">ثبت آدرس</string>
 
 
     // Persian

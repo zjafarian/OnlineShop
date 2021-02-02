@@ -20,6 +20,7 @@ public class LoginSingUpViewModel extends AndroidViewModel {
     private LiveData<Boolean> mIsLoginLiveData;
     private boolean mFindCustomer;
 
+
     public LoginSingUpViewModel(@NonNull Application application) {
         super(application);
         mCustomerRepository = CustomerRepository.getInstance();
@@ -52,9 +53,23 @@ public class LoginSingUpViewModel extends AndroidViewModel {
             mFindCustomer = true;
         } else mFindCustomer = false;
 
+
+       /* mCustomerRepository.getAllCustomers();
+        List<Customer> customers = mCustomerRepository.getListCustomerLiveData().getValue();
+
+        for (Customer customerFind: customers) {
+            if(customerFind.getEmail().equals(email)) {
+                mCustomerRepository.setLoginCustomer(customerFind);
+                mFindCustomer = true;
+            }
+
+        }*/
+
     }
 
     public boolean isFindCustomer() {
         return mFindCustomer;
     }
+
+
 }
