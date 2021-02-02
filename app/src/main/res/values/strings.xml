@@ -94,6 +94,9 @@
     <string name="name_tab_one">سبد خرید</string>
     <string name="name_tab_two">لیست خریدها</string>
     <string name="todo">TODO</string>
+    <string name="drawer_open">باز</string>
+    <string name="drawer_close">بسته</string>
+    <string name="item_setting">تنظیمات</string>
 
 
     <string-array name="sort_array">

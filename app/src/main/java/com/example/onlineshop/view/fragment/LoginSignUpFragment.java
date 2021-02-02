@@ -1,17 +1,30 @@
 package com.example.onlineshop.view.fragment;
 
+import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.annotation.NavigationRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +32,7 @@ import com.example.onlineshop.R;
 import com.example.onlineshop.data.network.models.Customer;
 import com.example.onlineshop.databinding.FragmentLoginSignUpBinding;
 import com.example.onlineshop.viewmodel.LoginSingUpViewModel;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
@@ -53,8 +67,11 @@ public class LoginSignUpFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
+
         if (getArguments() != null)
             mWhichPage = getArguments().getString(ARGS_WHICH_PAGE);
+
 
         mViewModel = new ViewModelProvider(requireActivity()).get(LoginSingUpViewModel.class);
 
@@ -77,6 +94,7 @@ public class LoginSignUpFragment extends Fragment {
 
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,12 +104,38 @@ public class LoginSignUpFragment extends Fragment {
                 container,
                 false);
 
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mBinding.toolbar);
+        mBinding.toolbar.setTitle(R.string.user_item_navigation_menu);
+        mBinding.toolbar.inflateMenu(R.menu.account_nav_main);
+
+
+
 
         listener();
 
         return mBinding.getRoot();
     }
 
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.account_nav_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.fragment_setting_des:
+                Navigation.findNavController(mBinding.getRoot()).navigate(R.id.setting_fragment_des);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+
+    }
 
     private void listener() {
 
@@ -108,7 +152,7 @@ public class LoginSignUpFragment extends Fragment {
                 mEmail = mBinding.emailLogin.getText().toString().trim();
                 mPassword = mBinding.passwordLogin.getText().toString().trim();
                 mViewModel.findCustomerGetLogin(mEmail);
-                if (mViewModel.isFindCustomer()){
+                if (mViewModel.isFindCustomer()) {
                     if (mWhichPage == null)
                         loadAccountLayout();
                     else if (mWhichPage.equals("shopping"))

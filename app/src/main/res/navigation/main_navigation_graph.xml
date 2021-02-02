@@ -115,5 +115,10 @@
         android:name="com.example.onlineshop.view.fragment.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search"/>
+    <fragment
+        android:id="@+id/setting_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 
 </navigation>

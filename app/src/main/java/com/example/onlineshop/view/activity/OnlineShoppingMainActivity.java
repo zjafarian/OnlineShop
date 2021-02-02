@@ -13,6 +13,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.onlineshop.R;
 import com.example.onlineshop.databinding.ActivitySingleFragmentBinding;
 import com.example.onlineshop.viewmodel.SingleFragmentActivityViewModel;
+import com.google.android.material.navigation.NavigationView;
 
 public class OnlineShoppingMainActivity extends AppCompatActivity {
 
@@ -42,6 +43,7 @@ public class OnlineShoppingMainActivity extends AppCompatActivity {
         mNavController = Navigation.findNavController(this, R.id.fragment_container_navigation);
 
         NavigationUI.setupWithNavController(mBinding.onlineShopNavigationBar, mNavController);
+
 
     }
 
