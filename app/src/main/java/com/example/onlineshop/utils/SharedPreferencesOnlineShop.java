@@ -18,6 +18,7 @@ public class SharedPreferencesOnlineShop {
     private static final String STATUS_LOGIN = "statusLogin";
     private static final String ID_CUSTOMER = "IdCustomer";
     private static final String PRODUCTS_IDS = "productsIds";
+    private static final String LAST_PRODUCT_ID ="lastProductId";
 
 
     private static SharedPreferences getSharedPreferences(Context context) {
@@ -66,5 +67,18 @@ public class SharedPreferencesOnlineShop {
 
     public static Set<String> getShoppingProducts(Context context) {
         return getSharedPreferences(context).getStringSet(PRODUCTS_IDS,null);
+
+    }
+
+    public static void setLastProductId (Context context,int productId){
+        getSharedPreferences(context)
+                .edit()
+                .putInt(LAST_PRODUCT_ID,productId)
+                .apply();
+
+    }
+
+    public static int getIdLastProduct(Context context){
+        return getSharedPreferences(context).getInt(LAST_PRODUCT_ID,0);
     }
 }

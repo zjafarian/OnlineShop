@@ -98,6 +98,15 @@
     <string name="drawer_close">بسته</string>
     <string name="item_setting">تنظیمات</string>
 
+    <string name="channel_id">online_shop_channel_id</string>
+    <string name="new_product_title">New Product in Online Shop</string>
+    <string name="new_product_text">You have a new product in OnlineShop.</string>
+    <string name="channel_name">OnlineShop Channel</string>
+    <string name="channel_description">This is notification channel for OnlineShop</string>
+
+
+
+
 
     <string-array name="sort_array">
         <item>جدیدترین</item>

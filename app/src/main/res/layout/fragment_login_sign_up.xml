@@ -20,7 +20,7 @@
             android:layoutDirection="rtl"
             android:orientation="vertical"
             android:textDirection="rtl"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_vertical_start"
@@ -161,7 +161,7 @@
             android:id="@+id/layout_account"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="gone">
 
 
             <androidx.constraintlayout.widget.Guideline
@@ -202,6 +202,8 @@
                 android:fitsSystemWindows="true"
                 android:minHeight="?attr/actionBarSize"
                 app:layout_constraintTop_toTopOf="parent"
+                app:titleTextColor="@color/white"
+
 
                 app:theme="@style/Widget.MaterialComponents.ActionBar.Primary"
                 android:background="@color/online_shop_red"
