@@ -19,6 +19,7 @@ public class AddressRepository implements IRepositoryAddress {
     private static AddressRepository sInstance;
     private AddressDAO mAddressDAO;
     private MutableLiveData<List<Address>> mListAddressesCustomerLiveData = new MutableLiveData<>();
+    private MutableLiveData<Address> mSelectAddress = new MutableLiveData<>();
 
     private AddressRepository(Context context) {
         mContext = context.getApplicationContext();
@@ -74,5 +75,13 @@ public class AddressRepository implements IRepositoryAddress {
 
     public LiveData<List<Address>> getListAddressesCustomerLiveData() {
         return mListAddressesCustomerLiveData;
+    }
+
+    public void setSelectAddress(Address address){
+        mSelectAddress.setValue(address);
+    }
+
+    public LiveData<Address> getSelectAddress() {
+        return mSelectAddress;
     }
 }

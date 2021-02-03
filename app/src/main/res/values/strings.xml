@@ -47,6 +47,8 @@
     <string name="text_hint_name_receiver">نام و نام خانوادگی گیرنده</string>
     <string name="text_full_address">آدرس پستی</string>
     <string name="text_save_address">ثبت آدرس</string>
+    <string name="text_error_address_field">لطفا تمام فیلدها را پر کنید</string>
+    <string name="text_purchasing_process">ادامه فرآیند خرید</string>
 
 
     // Persian
@@ -127,4 +129,5 @@
         <item>گران‌ترین</item>
 
     </string-array>
+    <string name="title_activity_maps">Map</string>
 </resources>

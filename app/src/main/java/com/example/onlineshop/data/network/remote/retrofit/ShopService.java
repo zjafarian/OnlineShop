@@ -2,6 +2,7 @@ package com.example.onlineshop.data.network.remote.retrofit;
 
 
 import com.example.onlineshop.data.network.models.Categories;
+import com.example.onlineshop.data.network.models.Coupon;
 import com.example.onlineshop.data.network.models.Customer;
 import com.example.onlineshop.data.network.models.Order;
 import com.example.onlineshop.data.network.models.Products;
@@ -32,6 +33,11 @@ public interface ShopService {
 
     @GET("products/{id}" + NetworkParams.API_KEY)
     Call<Products> getOneProduct(@Path("id") int id);
+
+    @POST("coupons")
+    Call<Coupon> createCoupon(@Query("consumer_key") String consumerKey,
+                              @Query("consumer_secret") String consumerSecret,
+                              @Body Coupon coupon);
 
 
 

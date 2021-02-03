@@ -115,6 +115,7 @@ public class SplashActivity extends AppCompatActivity {
         mShopRepository.getRatingProductsAsync();
         mShopRepository.getCategoriesAsync();
         mShopRepository.getAllProductsAsync();
+        mShopRepository.fetchCreateCoupon();
     }
 
     public void getDataSavedByRequestServer(Set<String> productsId) {

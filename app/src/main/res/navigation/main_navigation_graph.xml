@@ -103,6 +103,10 @@
             android:id="@+id/action_shopping_cart_login_fragment_des_to_login_sign_up_fragment_des"
             app:destination="@id/login_sign_up_fragment_des"
             app:popUpTo="@id/shopping_cart_fragment_des" />
+        <action
+            android:id="@+id/action_shopping_cart_fragment_des_to_order_fragment_des"
+            app:destination="@id/order_fragment_des"
+            app:popUpTo="@id/shopping_cart_fragment_des" />
     </fragment>
     <fragment
         android:id="@+id/shopping_list_fragment_des"
@@ -153,5 +157,21 @@
         android:name="com.example.onlineshop.view.fragment.AddAddressFragment"
         android:label="fragment_add_adress"
         tools:layout="@layout/fragment_add_address" />
+    <fragment
+        android:id="@+id/list_address_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.ListAddressFragment"
+        android:label="ListAddressFragment"
+        tools:layout="@layout/fragment_list_address"/>
+    <fragment
+        android:id="@+id/order_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.OrderFragment"
+        android:label="fragment_order"
+        tools:layout="@layout/fragment_order" >
+        <action
+            android:id="@+id/action_order_fragment_des_to_list_address_fragment_des"
+            app:destination="@id/list_address_fragment_des"
+            app:popUpTo="@id/order_fragment_des" />
+    </fragment>
+
 
 </navigation>

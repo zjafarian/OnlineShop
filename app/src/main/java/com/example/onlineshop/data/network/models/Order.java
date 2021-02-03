@@ -44,10 +44,23 @@ public class Order{
 	@SerializedName("customer_id")
 	private int customerId;
 
+	@SerializedName("discount_total")
+	private String discountTotal;
+
+	@SerializedName("address_1")
+
+
+	private String addressOne;
+	@SerializedName("address_2")
+	private String addressTwo;
+
+
+
+
 	public Order() {
 	}
 
-	public Order(String orderKey, List<LineItem> lineItems, Billing billing, String number, String total, Shipping shipping, String paymentMethodTitle, String currency, int id, String paymentMethod, String shippingTotal, List<ShippingLine> shippingLines, int customerId) {
+	public Order(String orderKey, List<LineItem> lineItems, Billing billing, String number, String total, Shipping shipping, String paymentMethodTitle, String currency, String paymentMethod, String shippingTotal, List<ShippingLine> shippingLines, int customerId, String discountTotal, String addressOne, String addressTwo) {
 		this.orderKey = orderKey;
 		this.lineItems = lineItems;
 		this.billing = billing;
@@ -56,115 +69,137 @@ public class Order{
 		this.shipping = shipping;
 		this.paymentMethodTitle = paymentMethodTitle;
 		this.currency = currency;
-		this.id = id;
 		this.paymentMethod = paymentMethod;
 		this.shippingTotal = shippingTotal;
 		this.shippingLines = shippingLines;
 		this.customerId = customerId;
+		this.discountTotal = discountTotal;
+		this.addressOne = addressOne;
+		this.addressTwo = addressTwo;
+
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getOrderKey() {
+		return orderKey;
 	}
 
 	public void setOrderKey(String orderKey) {
 		this.orderKey = orderKey;
 	}
 
+	public List<LineItem> getLineItems() {
+		return lineItems;
+	}
+
 	public void setLineItems(List<LineItem> lineItems) {
 		this.lineItems = lineItems;
+	}
+
+	public Billing getBilling() {
+		return billing;
 	}
 
 	public void setBilling(Billing billing) {
 		this.billing = billing;
 	}
 
+	public String getNumber() {
+		return number;
+	}
+
 	public void setNumber(String number) {
 		this.number = number;
+	}
+
+	public String getTotal() {
+		return total;
 	}
 
 	public void setTotal(String total) {
 		this.total = total;
 	}
 
+	public Shipping getShipping() {
+		return shipping;
+	}
+
 	public void setShipping(Shipping shipping) {
 		this.shipping = shipping;
+	}
+
+	public String getPaymentMethodTitle() {
+		return paymentMethodTitle;
 	}
 
 	public void setPaymentMethodTitle(String paymentMethodTitle) {
 		this.paymentMethodTitle = paymentMethodTitle;
 	}
 
+	public String getCurrency() {
+		return currency;
+	}
+
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public String getPaymentMethod() {
+		return paymentMethod;
 	}
 
 	public void setPaymentMethod(String paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
 
+	public String getShippingTotal() {
+		return shippingTotal;
+	}
+
 	public void setShippingTotal(String shippingTotal) {
 		this.shippingTotal = shippingTotal;
+	}
+
+	public List<ShippingLine> getShippingLines() {
+		return shippingLines;
 	}
 
 	public void setShippingLines(List<ShippingLine> shippingLines) {
 		this.shippingLines = shippingLines;
 	}
 
+	public int getCustomerId() {
+		return customerId;
+	}
+
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
 	}
 
-	public String getOrderKey(){
-		return orderKey;
+	public String getDiscountTotal() {
+		return discountTotal;
 	}
 
-	public List<LineItem> getLineItems(){
-		return lineItems;
+	public void setDiscountTotal(String discountTotal) {
+		this.discountTotal = discountTotal;
 	}
 
-	public Billing getBilling(){
-		return billing;
+	public String getAddressOne() {
+		return addressOne;
 	}
 
-	public String getNumber(){
-		return number;
+	public void setAddressOne(String addressOne) {
+		this.addressOne = addressOne;
 	}
 
-	public String getTotal(){
-		return total;
+	public String getAddressTwo() {
+		return addressTwo;
 	}
 
-	public Shipping getShipping(){
-		return shipping;
+	public void setAddressTwo(String addressTwo) {
+		this.addressTwo = addressTwo;
 	}
-
-	public String getPaymentMethodTitle(){
-		return paymentMethodTitle;
-	}
-
-	public String getCurrency(){
-		return currency;
-	}
-
-	public int getId(){
-		return id;
-	}
-
-	public String getPaymentMethod(){
-		return paymentMethod;
-	}
-
-	public String getShippingTotal(){
-		return shippingTotal;
-	}
-
-	public List<ShippingLine> getShippingLines(){
-		return shippingLines;
-	}
-
-	public int getCustomerId(){
-		return customerId;
-	}
-
 }

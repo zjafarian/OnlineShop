@@ -25,6 +25,7 @@ public class NetworkParams {
     public static final String AllProducts= "allProducts";
     public static final String DATE="date";
     public static final String DATE_CUSTOMER="registered_date";
+    public static final String COUPON_CODE = "code10";
 
 
 

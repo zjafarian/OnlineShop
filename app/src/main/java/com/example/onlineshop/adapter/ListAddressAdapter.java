@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.onlineshop.R;
 import com.example.onlineshop.data.database.Address;
+import com.example.onlineshop.data.network.models.Categories;
 import com.example.onlineshop.databinding.ItemProductListBinding;
 import com.example.onlineshop.databinding.RowAddressItemBinding;
 
@@ -18,13 +19,18 @@ import java.util.List;
 
 public class ListAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Address> mAddressList = new ArrayList<>();
+    private OnItemClick mOnItemClick;
 
     public ListAddressAdapter() {
     }
 
-    public void setData(List<Address> addresses){
+    public void setData(List<Address> addresses) {
         mAddressList = addresses;
         notifyDataSetChanged();
+    }
+
+    public void onItemClicked(OnItemClick onItemClick) {
+        this.mOnItemClick = onItemClick;
     }
 
     @NonNull
@@ -45,7 +51,6 @@ public class ListAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 false);
 
 
-
         return new AddressHolder(rowAddressItemBinding);
     }
 
@@ -54,7 +59,9 @@ public class ListAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         Address item = mAddressList.get(position);
         ((ListAddressAdapter.AddressHolder) holder).bindHolder(item);
 
-
+        if (mOnItemClick != null)
+            ((AddressHolder) holder).itemView.findViewById(R.id.card_view_one_address)
+                    .setOnClickListener(v -> mOnItemClick.onItemClicked(item));
     }
 
     @Override
@@ -62,7 +69,7 @@ public class ListAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return mAddressList.size();
     }
 
-    class AddressHolder extends RecyclerView.ViewHolder{
+    class AddressHolder extends RecyclerView.ViewHolder {
         private RowAddressItemBinding mBinding;
 
         public AddressHolder(RowAddressItemBinding rowAddressItemBinding) {
@@ -70,9 +77,13 @@ public class ListAddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mBinding = rowAddressItemBinding;
         }
 
-        public void bindHolder (Address address){
+        public void bindHolder(Address address) {
             mBinding.setAddress(address);
 
         }
+    }
+
+    public interface OnItemClick {
+        void onItemClicked(Address address);
     }
 }

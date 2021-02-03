@@ -66,7 +66,6 @@ public class ShoppingCartFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,39 +90,27 @@ public class ShoppingCartFragment extends Fragment {
     private void setObservers() {
 
 
-            mViewModel.getIsLoginLiveData().observe(this, new Observer<Boolean>() {
-                @Override
-                public void onChanged(Boolean aBoolean) {
-                    if (aBoolean) {
-                        mBinding.layoutNotLogin.setVisibility(View.GONE);
-                        mBinding.layoutShoppingCart.setVisibility(View.VISIBLE);
-                    } else {
-                        mBinding.layoutNotLogin.setVisibility(View.VISIBLE);
-                        mBinding.layoutShoppingCart.setVisibility(View.GONE);
-                    }
+        mViewModel.getIsLoginLiveData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    mBinding.layoutNotLogin.setVisibility(View.GONE);
+                    mBinding.layoutShoppingCart.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.layoutNotLogin.setVisibility(View.VISIBLE);
+                    mBinding.layoutShoppingCart.setVisibility(View.GONE);
                 }
-            });
+            }
+        });
 
         mViewModel.getProductsShoppingCartLiveData().observe(this, new Observer<List<Products>>() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onChanged(List<Products> products) {
                 if (products.size() != 0 && products != null) {
-                    mBinding.btnPayProducts.setVisibility(View.VISIBLE);
-                    mBinding.sumShoppingLabel.setVisibility(View.VISIBLE);
-                    mBinding.sumShopping.setVisibility(View.VISIBLE);
-                    mBinding.currencyShopping.setVisibility(View.VISIBLE);
-                    long sum = 0;
-                    for (int i = 0; i <products.size() ; i++) {
-                        sum += Integer.valueOf(products.get(i).getPrice());
-                    }
-                    mBinding.sumShopping.setText(String.valueOf(sum));
-                }
-                else {
-                    mBinding.btnPayProducts.setVisibility(View.GONE);
-                    mBinding.sumShoppingLabel.setVisibility(View.GONE);
-                    mBinding.sumShopping.setVisibility(View.GONE);
-                    mBinding.currencyShopping.setVisibility(View.GONE);
+                    mBinding.btnPurchaseProcess.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.btnPurchaseProcess.setVisibility(View.GONE);
                 }
                 mViewModel.setProductsInSharedPreferences(products);
                 updateUI(products);
@@ -162,10 +149,10 @@ public class ShoppingCartFragment extends Fragment {
             }
         });
 
-        mBinding.btnPayProducts.setOnClickListener(new View.OnClickListener() {
+        mBinding.btnPurchaseProcess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewModel.submitOrder();
+                goToOrderPage();
             }
         });
     }
@@ -176,6 +163,13 @@ public class ShoppingCartFragment extends Fragment {
 
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (R.id.login_sign_up_fragment_des, bundle);
+    }
+
+    private void goToOrderPage() {
+        Bundle bundle = new Bundle();
+
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (R.id.order_fragment_des, bundle);
     }
 
     private void setBackNavigation() {

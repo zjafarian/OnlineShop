@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.onlineshop.data.network.models.Categories;
+import com.example.onlineshop.data.network.models.Coupon;
 import com.example.onlineshop.data.network.models.Customer;
 import com.example.onlineshop.data.network.models.Products;
 import com.example.onlineshop.data.network.remote.NetworkParams;
@@ -44,6 +45,7 @@ public class ShopRepository {
     private MutableLiveData<List<Products>> mProductsShoppingCartLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Products>> mProductsOrderCustomer = new MutableLiveData<>();
     private List<Products> mProductsListShopping = new ArrayList<>();
+    private MutableLiveData<Coupon> mCouponLiveData = new MutableLiveData<>();
 
 
     private ShopRepository() {
@@ -384,6 +386,35 @@ public class ShopRepository {
         }
     }
 
+    public void fetchCreateCoupon(){
+        Coupon coupon  = new Coupon("code10",
+                "20000",
+                false,
+                false,
+                "10",
+                "percent");
+
+        Call<Coupon> call = mShopService.createCoupon(NetworkParams.CONSUMER_KEY,
+                NetworkParams.CONSUMER_SECRET,
+                coupon);
+
+        call.enqueue(new Callback<Coupon>() {
+            @Override
+            public void onResponse(Call<Coupon> call, Response<Coupon> response) {
+                mCouponLiveData.setValue(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<Coupon> call, Throwable t) {
+
+            }
+        });
+
+
+
+    }
+
 
     public LiveData<List<Products>> getLastProductsLiveData() {
         return mLastProductsLiveData;
@@ -423,5 +454,9 @@ public class ShopRepository {
 
     public LiveData<List<Products>> getProductsOrderCustomer() {
         return mProductsOrderCustomer;
+    }
+
+    public LiveData<Coupon> getCouponLiveData() {
+        return mCouponLiveData;
     }
 }

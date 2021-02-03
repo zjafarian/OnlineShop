@@ -54,51 +54,8 @@ public class ShoppingCartViewModel extends AndroidViewModel {
         mProductsShoppingCartLiveData = mShopRepository.getProductsShoppingCartLiveData();
     }
 
-    public void submitOrder() {
-        mProductsShoppingCartLiveData = mShopRepository.getProductsShoppingCartLiveData();
-        List<Products> products = mProductsShoppingCartLiveData.getValue();
 
-        int idCustomer = 0;
-        if (mCustomerLiveData != null)
-            idCustomer = mCustomerLiveData.getValue().getId();
 
-        List<LineItem> lineItems = new ArrayList<>();
-        if (products.size() != 0 && products != null) {
-            for (Products productBuy : products) {
-                LineItem lineItem = new LineItem();
-                lineItem.setProductId(productBuy.getId());
-                lineItem.setQuantity(1);
-
-                lineItems.add(lineItem);
-            }
-        }
-
-        Order order = new Order();
-        order.setLineItems(lineItems);
-        order.setCustomerId(idCustomer);
-
-        mCustomerRepository.createOrder(order);
-        afterSubmit();
-        fetchGetOrders();
-    }
-
-    private void afterSubmit() {
-        if (mCustomerRepository.getMessageOrder()!= null && mCustomerRepository.getMessageOrder().equals("successful")) {
-            showToast("ثبت سفارش با موفقیت انجام شد");
-            mShopRepository.removeAllProductsShoppingCart();
-        } else showToast("ثبت سفارش با موفقیت انجام نشد");
-    }
-
-    private void showToast(String message) {
-        Toast toast = Toast.makeText(getApplication(),message,Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.BOTTOM,0,0);
-        toast.show();
-    }
-
-    private void fetchGetOrders(){
-        mCustomerLiveData = mCustomerRepository.getCustomerLogin();
-        mCustomerRepository.getOrdersCustomer(mCustomerLiveData.getValue().getId());
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void setProductsInSharedPreferences(List<Products> products){
