@@ -94,6 +94,8 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-location:17.1.0'
 
+    implementation 'org.jsoup:jsoup:1.10.2'
+
 }
 repositories {
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }

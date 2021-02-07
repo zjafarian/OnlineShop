@@ -70,7 +70,12 @@
         android:id="@+id/product_detail_fragment_des"
         android:name="com.example.onlineshop.view.fragment.ProductDetailFragment"
         android:label="ProductDetailFragment"
-        tools:layout="@layout/fragment_product_detail" />
+        tools:layout="@layout/fragment_product_detail" >
+        <action
+            android:id="@+id/action_product_detail_fragment_des_to_review_fragment_des"
+            app:destination="@id/review_fragment_des"
+            app:popUpTo="@id/product_detail_fragment_des" />
+    </fragment>
 
     <fragment
         android:id="@+id/login_sign_up_fragment_des"
@@ -106,7 +111,8 @@
         <action
             android:id="@+id/action_shopping_cart_fragment_des_to_order_fragment_des"
             app:destination="@id/order_fragment_des"
-            app:popUpTo="@id/shopping_cart_fragment_des" />
+            app:popUpTo="@id/shopping_cart_fragment_des"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/shopping_list_fragment_des"
@@ -146,6 +152,10 @@
             android:id="@+id/action_address_fragment_des_to_add_address_fragment_des"
             app:destination="@id/add_address_fragment_des"
             app:popUpTo="@id/address_fragment_des" />
+        <action
+            android:id="@+id/action_address_fragment_des_to_show_map_per_address_fragment_des"
+            app:destination="@id/show_map_per_address_fragment_des"
+            app:popUpTo="@id/address_fragment_des" />
     </fragment>
     <fragment
         android:id="@+id/information_fragment_des"
@@ -168,10 +178,20 @@
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" >
         <action
-            android:id="@+id/action_order_fragment_des_to_list_address_fragment_des"
+            android:id="@+id/action_order_fragment_des_to_list_address_fragment_des2"
             app:destination="@id/list_address_fragment_des"
             app:popUpTo="@id/order_fragment_des" />
     </fragment>
+    <fragment
+        android:id="@+id/review_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.ReviewFragment"
+        android:label="fragment_review"
+        tools:layout="@layout/fragment_review" />
+    <fragment
+        android:id="@+id/show_map_per_address_fragment_des"
+        android:name="com.example.onlineshop.view.fragment.ShowMapPerAddressFragment"
+        android:label="ShowMapPerAddressFragment"
+        tools:layout="@layout/fragment_show_map_per_address"/>
 
 
 </navigation>

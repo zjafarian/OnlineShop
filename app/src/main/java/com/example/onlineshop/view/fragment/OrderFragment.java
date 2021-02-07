@@ -143,8 +143,12 @@ public class OrderFragment extends Fragment {
     private void setBackNavigation() {
         NavBackStackEntry navBackStackEntry = Navigation.findNavController
                 (mBinding.getRoot()).getPreviousBackStackEntry();
+
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (navBackStackEntry.getDestination().getId());
+/*
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (R.id.shopping_list_fragment_des);*/
     }
 
 

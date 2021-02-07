@@ -1,28 +1,21 @@
 package com.example.onlineshop.data.repository;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.onlineshop.data.network.models.Categories;
 import com.example.onlineshop.data.network.models.Coupon;
-import com.example.onlineshop.data.network.models.Customer;
 import com.example.onlineshop.data.network.models.Products;
+import com.example.onlineshop.data.network.models.Review;
 import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.data.network.remote.retrofit.RetrofitInstance;
 import com.example.onlineshop.data.network.remote.retrofit.ShopService;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,6 +39,10 @@ public class ShopRepository {
     private MutableLiveData<List<Products>> mProductsOrderCustomer = new MutableLiveData<>();
     private List<Products> mProductsListShopping = new ArrayList<>();
     private MutableLiveData<Coupon> mCouponLiveData = new MutableLiveData<>();
+    private MutableLiveData<Products> mProductLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Review>> mListReviewsLiveData = new MutableLiveData<>();
+    private MutableLiveData<Review> mReviewLiveData = new MutableLiveData<>();
+    private boolean mIsDelete;
 
 
     private ShopRepository() {
@@ -355,14 +352,25 @@ public class ShopRepository {
 
     }
 
-    public void setProductsShoppingFromDataBase(int id) {
+    public void getProductById(int id, String page) {
 
-        Call<Products> call = mShopService.getOneProduct(id);
+        Call<Products> call = mShopService.getOneProduct(id,
+                NetworkParams.CONSUMER_KEY,
+                NetworkParams.CONSUMER_SECRET);
 
         call.enqueue(new Callback<Products>() {
             @Override
             public void onResponse(Call<Products> call, Response<Products> response) {
-                mProductsListShopping.add(response.body());
+                switch (page) {
+                    case "splash":
+                        mProductsListShopping.add(response.body());
+                        break;
+                    case "detail":
+                        mProductLiveData.setValue(response.body());
+                        break;
+                }
+
+
             }
 
             @Override
@@ -373,21 +381,17 @@ public class ShopRepository {
 
     }
 
-    public void setShoppingProductsLiveData() {
-        if (mProductsListShopping.size() != 0 && mProductsListShopping != null) {
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    mProductsShoppingCartLiveData.setValue(mProductsListShopping);
-                }
-            };
-            Thread thread = new Thread(runnable);
-            thread.start();
-        }
+    public void clearShoppingList() {
+        mProductsListShopping.clear();
     }
 
-    public void fetchCreateCoupon(){
-        Coupon coupon  = new Coupon("code10",
+    public void setShoppingProductsLiveData() {
+        if (mProductsListShopping.size() != 0 && mProductsListShopping != null)
+            mProductsShoppingCartLiveData.setValue(mProductsListShopping);
+    }
+
+    public void fetchCreateCoupon() {
+        Coupon coupon = new Coupon("code10",
                 "20000",
                 false,
                 false,
@@ -412,6 +416,105 @@ public class ShopRepository {
         });
 
 
+    }
+
+    public void getCouponByCode(String code) {
+
+        Call<Coupon> call = mShopService.getCouponByCode(NetworkParams.CONSUMER_KEY,
+                NetworkParams.CONSUMER_SECRET, code);
+
+        call.enqueue(new Callback<Coupon>() {
+            @Override
+            public void onResponse(Call<Coupon> call, Response<Coupon> response) {
+                mCouponLiveData.setValue(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<Coupon> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public void fetchListReviewByProductId(int id) {
+        Call<List<Review>> call = mShopService.getReviewsProduct(
+                NetworkParams.CONSUMER_KEY,
+                NetworkParams.CONSUMER_SECRET,
+                id);
+
+        call.enqueue(new Callback<List<Review>>() {
+            @Override
+            public void onResponse(Call<List<Review>> call, Response<List<Review>> response) {
+                mListReviewsLiveData.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Review>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void fetchCreateReview(Review review) {
+        Call<Review> call = mShopService.createReview(
+                NetworkParams.CONSUMER_KEY,
+                NetworkParams.CONSUMER_SECRET,
+                review);
+
+        call.enqueue(new Callback<Review>() {
+            @Override
+            public void onResponse(Call<Review> call, Response<Review> response) {
+                mReviewLiveData.setValue(review);
+
+            }
+
+            @Override
+            public void onFailure(Call<Review> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public void fetchEditReview(Review review) {
+        Call<Review> call = mShopService.editReview(review.getId(),
+                NetworkParams.CONSUMER_KEY,
+                NetworkParams.CONSUMER_SECRET,
+                review);
+        call.enqueue(new Callback<Review>() {
+            @Override
+            public void onResponse(Call<Review> call, Response<Review> response) {
+                mReviewLiveData.setValue(review);
+            }
+
+            @Override
+            public void onFailure(Call<Review> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+    public void fetchDeleteReview(Review review) {
+        Call<Review> call = mShopService.deleteReview(
+                review.getId(),true,
+                NetworkParams.CONSUMER_KEY,
+                NetworkParams.CONSUMER_SECRET);
+        call.enqueue(new Callback<Review>() {
+            @Override
+            public void onResponse(Call<Review> call, Response<Review> response) {
+               if (response.isSuccessful())
+                   mIsDelete = true;
+            }
+
+            @Override
+            public void onFailure(Call<Review> call, Throwable t) {
+
+            }
+        });
 
     }
 
@@ -458,5 +561,25 @@ public class ShopRepository {
 
     public LiveData<Coupon> getCouponLiveData() {
         return mCouponLiveData;
+    }
+
+    public LiveData<Products> getProductLiveData() {
+        return mProductLiveData;
+    }
+
+    public LiveData<List<Review>> getListReviewsLiveData() {
+        return mListReviewsLiveData;
+    }
+
+    public List<Products> getProductsListShopping() {
+        return mProductsListShopping;
+    }
+
+    public LiveData<Review> getReviewLiveData() {
+        return mReviewLiveData;
+    }
+
+    public boolean isDelete() {
+        return mIsDelete;
     }
 }

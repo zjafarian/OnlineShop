@@ -237,7 +237,7 @@ public class HomePageFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString(ARGS_SELECT_LIST_PRODUCTS, selectFilter);
         bundle.putInt(ARGS_CATEGORY_ID, categoryId);
-        bundle.putInt(ARGS_CATEGORY_ID, 0);
+        bundle.putInt(ARGS_ORDER_ID, 0);
 
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (R.id.list_products_fragment_des, bundle);

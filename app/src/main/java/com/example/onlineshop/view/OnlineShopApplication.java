@@ -35,15 +35,18 @@ public class OnlineShopApplication extends Application {
     public static final String TAG_EVENT_BUS = "PGEventBus";
 
 
+
     @Override
     public void onCreate() {
         super.onCreate();
+
 
         Log.d("PGEventBus", "App onCreate");
 
         createNotificationChannel();
 
         EventBus.getDefault().register(this);
+
 
 
     }
@@ -55,6 +58,7 @@ public class OnlineShopApplication extends Application {
         Log.d("PGEventBus", "App onCreate");
 
         EventBus.getDefault().unregister(this);
+
     }
 
     private void createNotificationChannel() {
@@ -84,4 +88,6 @@ public class OnlineShopApplication extends Application {
                 notificationEvent.getNotificationId(),
                 notificationEvent.getNotification());
     }
+
+
 }

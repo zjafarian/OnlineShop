@@ -18,10 +18,7 @@ import android.view.ViewGroup;
 
 import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ListAddressAdapter;
-import com.example.onlineshop.adapter.ListCategoriesAdapter;
 import com.example.onlineshop.data.database.Address;
-import com.example.onlineshop.data.network.models.Categories;
-import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.databinding.FragmentListAddressBinding;
 import com.example.onlineshop.viewmodel.AddressViewModel;
 

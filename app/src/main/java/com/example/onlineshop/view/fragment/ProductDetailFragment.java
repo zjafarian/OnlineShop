@@ -1,5 +1,6 @@
 package com.example.onlineshop.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,14 +11,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.onlineshop.R;
+import com.example.onlineshop.adapter.ListReviewAdapter;
 import com.example.onlineshop.adapter.SliderAdapter;
 import com.example.onlineshop.data.network.models.Products;
+import com.example.onlineshop.data.network.models.Review;
 import com.example.onlineshop.databinding.FragmentProductDetailBinding;
 import com.example.onlineshop.viewmodel.HomePageViewModel;
 import com.example.onlineshop.viewmodel.ProductDetailViewModel;
@@ -29,8 +33,7 @@ import java.util.List;
 
 
 public class ProductDetailFragment extends Fragment {
-
-
+    public static final String ARGS_ID_PRODUCT_REVIEW = "idProductReview";
     public static final String ARGS_PRODUCT_ID = "productId";
     public static final String ARGS_WHICH_PAGE_SHOPPING = "whichPageShopping";
     private int mProductId;
@@ -38,6 +41,7 @@ public class ProductDetailFragment extends Fragment {
     private FragmentProductDetailBinding mBinding;
     private SliderAdapter mSliderAdapter;
     private Products mProduct;
+    private boolean mShowDescription = false;
 
 
     public ProductDetailFragment() {
@@ -64,6 +68,7 @@ public class ProductDetailFragment extends Fragment {
         mViewModel = new ViewModelProvider(requireActivity()).get(ProductDetailViewModel.class);
         mViewModel.findProduct(mProductId);
 
+
     }
 
     @Override
@@ -74,6 +79,8 @@ public class ProductDetailFragment extends Fragment {
                 R.layout.fragment_product_detail,
                 container,
                 false);
+
+
 
         listener();
 
@@ -110,6 +117,35 @@ public class ProductDetailFragment extends Fragment {
 
             }
         });
+
+        mBinding.productCommentsUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToReviewPage();
+
+
+            }
+        });
+
+        mBinding.productOtherDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mShowDescription = !mShowDescription;
+
+                if(mShowDescription)
+                    mBinding.productDescription.setVisibility(View.VISIBLE);
+                else  mBinding.productDescription.setVisibility(View.GONE);
+
+            }
+        });
+
+        mBinding.btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareReportIntent(mViewModel.getProductLiveData().getValue());
+            }
+        });
+
     }
 
     private void setLiveDataObserver() {
@@ -129,6 +165,8 @@ public class ProductDetailFragment extends Fragment {
                 mBinding.textViewNumberProductsShopping.setText(count);
             }
         });
+
+
     }
 
     public void initSlider() {
@@ -159,4 +197,29 @@ public class ProductDetailFragment extends Fragment {
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (R.id.shopping_cart_fragment_des, bundle);
     }
+
+    private void goToReviewPage() {
+        Bundle bundle = new Bundle();
+        bundle.putInt( ARGS_ID_PRODUCT_REVIEW,mViewModel.getProductLiveData().getValue().getId());
+
+
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (R.id.review_fragment_des,bundle);
+    }
+
+    private void shareReportIntent(Products product) {
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, product.getName());
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, product.getPermalink());
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent =
+                Intent.createChooser(sendIntent, getString(R.string.send_report));
+
+        //we prevent app from crash if the intent has no destination.
+        if (sendIntent.resolveActivity(getActivity().getPackageManager()) != null)
+            startActivity(shareIntent);
+    }
+
+
 }

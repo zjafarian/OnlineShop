@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="review"
+            type="com.example.onlineshop.data.network.models.Review" />
+        <variable
+            name="src"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl"
+        android:textDirection="rtl">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_start"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.04" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.004" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.99" />
+
+        <ImageView
+            android:layout_marginTop="3dp"
+            android:id="@+id/img_view_reviewer_avatar"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:layout_constraintStart_toEndOf="@+id/guideline_vertical_start"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_user_full" />
+
+        <TextView
+            android:id="@+id/reviewer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            app:layout_constraintBottom_toBottomOf="@+id/img_view_reviewer_avatar"
+            app:layout_constraintRight_toLeftOf="@+id/img_view_reviewer_avatar"
+            app:layout_constraintTop_toTopOf="@+id/img_view_reviewer_avatar"
+            android:padding="10dp"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/iran_sans_mobile"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="@{review.reviewer}"
+            tools:text="نام کاربر" />
+
+        <TextView
+            android:id="@+id/text_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{review.review}"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/iran_sans_mobile"
+            app:layout_constraintStart_toEndOf="@+id/guideline_vertical_start"
+            app:layout_constraintTop_toBottomOf="@id/img_view_reviewer_avatar"
+            tools:text="نظر کاربر" />
+
+        <View
+            android:id="@+id/divider_10"
+            android:layout_width="match_parent"
+            android:layout_height="7dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/online_shop_light_gray"
+            app:layout_constraintTop_toBottomOf="@id/text_review"
+            android:layout_marginBottom="5dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -76,6 +76,7 @@ public class ListOrdersCustomerAdapter extends RecyclerView.Adapter<RecyclerView
 
         public void bindHolder(Order order) {
             mBinding.setOrder(order);
+            mBinding.executePendingBindings();
             List<LineItem> lineItems = order.getLineItems();
             for (int i = 0; i < lineItems.size(); i++) {
                 for (Products productOrder : mProductsList) {

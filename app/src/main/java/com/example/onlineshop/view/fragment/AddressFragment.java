@@ -2,6 +2,8 @@ package com.example.onlineshop.view.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -28,6 +30,7 @@ public class AddressFragment extends Fragment {
     private FragmentAddressBinding mBinding;
     private AddressViewModel mViewModel;
     private ListAddressAdapter mAdapter;
+    public static final String ARGS_ADDRESS_ID = "addressId";
 
 
 
@@ -76,6 +79,8 @@ public class AddressFragment extends Fragment {
         return mBinding.getRoot();
     }
 
+
+
     private void initRecycle() {
         mBinding.recycleViewListAddresses.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new ListAddressAdapter();
@@ -83,6 +88,8 @@ public class AddressFragment extends Fragment {
     }
 
     private void listener() {
+        onItemClick();
+
         mBinding.cardViewAddAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,13 +115,40 @@ public class AddressFragment extends Fragment {
 
     private void setBackNavigation() {
         NavBackStackEntry navBackStackEntry = Navigation.findNavController
-                (mBinding.getRoot()).getPreviousBackStackEntry();
+                (mBinding.getRoot()).getBackStackEntry(R.id.login_sign_up_fragment_des);
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (navBackStackEntry.getDestination().getId());
     }
 
     private void updateUI(List<Address> addresses){
         mAdapter.setData(addresses);
+    }
+
+
+    private void onItemClick() {
+     mAdapter.onItemEditClicked(new ListAddressAdapter.OnItemEditClick() {
+         @Override
+         public void onItemEditClicked(Address address) {
+             setToShowAddressInMap(address.getIdAddress());
+         }
+     });
+
+     mAdapter.onItemDeleteClicked(new ListAddressAdapter.OnItemDeleteClick() {
+         @Override
+         public void onItemDeleteClicked(Address address) {
+             mViewModel.deleteAddress(address);
+         }
+     });
+
+
+    }
+
+
+    private void setToShowAddressInMap(int id) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARGS_ADDRESS_ID,id);
+        Navigation.findNavController(mBinding.getRoot()).navigate
+                (R.id.show_map_per_address_fragment_des, bundle);
     }
 
 }

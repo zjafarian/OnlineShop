@@ -6,6 +6,7 @@ import android.os.Build;
 import android.util.ArraySet;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 import com.example.onlineshop.data.network.models.Customer;
 import com.example.onlineshop.data.network.models.Products;
@@ -93,5 +94,12 @@ public class SharedPreferencesOnlineShop {
 
     public static int getSaveTimeNotification(Context context) {
         return getSharedPreferences(context).getInt(SAVE_TIME_NOTIFICATION, 0);
+    }
+
+    public static void removeProductsIds(Context context){
+        getSharedPreferences(context)
+                .edit().
+                putStringSet(PRODUCTS_IDS,null).
+                apply();
     }
 }

@@ -48,11 +48,15 @@ public class Order{
 	private String discountTotal;
 
 	@SerializedName("address_1")
-
-
 	private String addressOne;
+
 	@SerializedName("address_2")
 	private String addressTwo;
+
+	@SerializedName("coupon_lines")
+	private List<Coupon> coupons;
+
+
 
 
 
@@ -60,7 +64,7 @@ public class Order{
 	public Order() {
 	}
 
-	public Order(String orderKey, List<LineItem> lineItems, Billing billing, String number, String total, Shipping shipping, String paymentMethodTitle, String currency, String paymentMethod, String shippingTotal, List<ShippingLine> shippingLines, int customerId, String discountTotal, String addressOne, String addressTwo) {
+	public Order(String orderKey, List<LineItem> lineItems, Billing billing, String number, String total, Shipping shipping, String paymentMethodTitle, String currency, String paymentMethod, String shippingTotal, List<ShippingLine> shippingLines, int customerId, String discountTotal, String addressOne, String addressTwo, List<Coupon> coupons) {
 		this.orderKey = orderKey;
 		this.lineItems = lineItems;
 		this.billing = billing;
@@ -76,7 +80,7 @@ public class Order{
 		this.discountTotal = discountTotal;
 		this.addressOne = addressOne;
 		this.addressTwo = addressTwo;
-
+		this.coupons = coupons;
 	}
 
 	public int getId() {
@@ -201,5 +205,13 @@ public class Order{
 
 	public void setAddressTwo(String addressTwo) {
 		this.addressTwo = addressTwo;
+	}
+
+	public List<Coupon> getCoupons() {
+		return coupons;
+	}
+
+	public void setCoupons(List<Coupon> coupons) {
+		this.coupons = coupons;
 	}
 }

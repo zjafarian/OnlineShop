@@ -1,26 +1,18 @@
 package com.example.onlineshop.view.fragment;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.Navigation;
 
-import android.os.Looper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,43 +20,42 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.onlineshop.R;
-import com.example.onlineshop.databinding.FragmentAddAddressBinding;
+import com.example.onlineshop.data.database.Address;
+import com.example.onlineshop.databinding.FragmentShowMapPerAddressBinding;
 import com.example.onlineshop.viewmodel.AddAddressViewModel;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
+import com.example.onlineshop.viewmodel.AddressViewModel;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.internal.$Gson$Types;
 
 
-public class AddAddressFragment extends Fragment {
+public class ShowMapPerAddressFragment extends Fragment {
     public static final int REQUEST_CODE_LOCATION_PERMISSION = 0;
-    private FragmentAddAddressBinding mBinding;
+    public static final String ARGS_ADDRESS_ID = "addressId";
+    private FragmentShowMapPerAddressBinding mBinding;
     private AddAddressViewModel mViewModel;
+    private int mAddressId;
     private GoogleMap mMap;
     private LatLng mDragPosition;
 
 
-    public AddAddressFragment() {
+
+
+    public ShowMapPerAddressFragment() {
         // Required empty public constructor
     }
 
 
-    public static AddAddressFragment newInstance() {
-        AddAddressFragment fragment = new AddAddressFragment();
+    public static ShowMapPerAddressFragment newInstance(int addressId) {
+        ShowMapPerAddressFragment fragment = new ShowMapPerAddressFragment();
         Bundle args = new Bundle();
+        args.putInt(ARGS_ADDRESS_ID, addressId);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,21 +63,25 @@ public class AddAddressFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
-        }
-
+        if (getArguments() != null)
+            mAddressId = getArguments().getInt(ARGS_ADDRESS_ID);
 
         mViewModel = new ViewModelProvider(requireActivity()).get(AddAddressViewModel.class);
+        mViewModel.findAddress(mAddressId);
+
         if (mViewModel.hasLocationAccess()) {
-            mViewModel.requestLocation();
+            mViewModel.getAddressLiveData().observe(this, new Observer<Address>() {
+                @Override
+                public void onChanged(Address address) {
+                    updateLocation(address);
+                }
+            });
         } else {
             requestLocationAccessPermission();
         }
 
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,9 +89,9 @@ public class AddAddressFragment extends Fragment {
         // Inflate the layout for this fragment
 
         mBinding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_add_address,
+                R.layout.fragment_show_map_per_address,
                 container,
-                false);
+                false );
 
 
         SupportMapFragment supportMapFragment =
@@ -105,30 +100,26 @@ public class AddAddressFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-                updateLocation(mViewModel.getMyLocation().getValue());
+                updateLocation(mViewModel.getAddressLiveData().getValue());
 
 
             }
         });
 
+        listener();
 
 
         return mBinding.getRoot();
     }
 
     private void listener() {
-
-
-
-
-        mBinding.btnSaveInformationAddress.setOnClickListener(new View.OnClickListener() {
+        mBinding.btnEditInformationAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String address = mBinding.fullAddress.getText().toString();
-                String receiver = mBinding.nameReceiver.getText().toString();
 
-                if (address != null && !address.equals("") && receiver != null &&
-                        !receiver.equals("")) {
+
+                if (address != null && !address.equals("")) {
 
                     mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
                         @Override
@@ -148,11 +139,8 @@ public class AddAddressFragment extends Fragment {
                         }
                     });
 
+                    mViewModel.editAddress(mBinding.fullAddress.getText().toString(),mDragPosition);
 
-
-                    mViewModel.submitAddress(
-                            mBinding.fullAddress.getText().toString(),
-                            mBinding.nameReceiver.getText().toString(),mDragPosition );
                     setBackNavigation();
 
                 } else {
@@ -162,6 +150,7 @@ public class AddAddressFragment extends Fragment {
                     toast.setGravity(Gravity.BOTTOM, 0, 0);
                     toast.show();
                 }
+
 
             }
         });
@@ -174,24 +163,15 @@ public class AddAddressFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void updateLocation(Address address) {
 
-        mViewModel.getMyLocation().observe(getViewLifecycleOwner(), new Observer<Location>() {
-            @Override
-            public void onChanged(Location location) {
-                updateLocation(location);
-            }
-        });
-
-        listener();
-    }
-
-    private void updateLocation(Location location) {
-        if (location == null || mMap == null)
+        if (address == null || mMap == null)
             return;
-        LatLng myLatLong = new LatLng(location.getLatitude(), location.getLongitude());
+
+        double latitude = Double.parseDouble(address.getLatitude());
+        double longitude = Double.parseDouble(address.getLongitude());
+
+        LatLng myLatLong = new LatLng(latitude, longitude);
         mDragPosition = myLatLong;
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(myLatLong)
@@ -217,15 +197,6 @@ public class AddAddressFragment extends Fragment {
         });
 
 
-
-    }
-
-    private void requestLocationAccessPermission() {
-        String[] permissions = new String[]{
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-        };
-        requestPermissions(permissions, REQUEST_CODE_LOCATION_PERMISSION);
     }
 
 
@@ -234,6 +205,7 @@ public class AddAddressFragment extends Fragment {
             int requestCode,
             @NonNull String[] permissions,
             @NonNull int[] grantResults) {
+
 
         switch (requestCode) {
             case REQUEST_CODE_LOCATION_PERMISSION:
@@ -245,9 +217,17 @@ public class AddAddressFragment extends Fragment {
                 return;
         }
 
-
     }
 
+
+
+    private void requestLocationAccessPermission() {
+        String[] permissions = new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        };
+        requestPermissions(permissions, REQUEST_CODE_LOCATION_PERMISSION);
+    }
 
     private void setBackNavigation() {
         NavBackStackEntry navBackStackEntry = Navigation.findNavController
@@ -255,6 +235,4 @@ public class AddAddressFragment extends Fragment {
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (navBackStackEntry.getDestination().getId());
     }
-
-
 }

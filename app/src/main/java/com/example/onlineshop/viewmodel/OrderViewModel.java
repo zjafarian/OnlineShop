@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.onlineshop.data.database.Address;
+import com.example.onlineshop.data.network.models.Coupon;
 import com.example.onlineshop.data.network.models.LineItem;
 import com.example.onlineshop.data.network.models.Order;
 import com.example.onlineshop.data.network.models.Products;
@@ -31,6 +32,9 @@ public class OrderViewModel extends AndroidViewModel {
     private long mTotal = 0L;
     private boolean mCorrectCode;
     private String mFullAddress;
+    private LiveData <Coupon> mCouponLiveData;
+    private LiveData<List<Order>> mOrderCustomerLiveData;
+
 
 
     public OrderViewModel(@NonNull Application application) {
@@ -38,8 +42,11 @@ public class OrderViewModel extends AndroidViewModel {
         mAddressRepository = AddressRepository.getInstance(application);
         mShopRepository = ShopRepository.getInstance();
         mCustomerRepository = CustomerRepository.getInstance();
+        mOrderCustomerLiveData = mCustomerRepository.getOrdersCustomerLiveData();
         mAddressLiveData = mAddressRepository.getSelectAddress();
         mShoppingCartCustomer = mShopRepository.getProductsShoppingCartLiveData();
+        mCouponLiveData = mShopRepository.getCouponLiveData();
+
     }
 
     public void checkCouponCode(String code) {
@@ -50,9 +57,10 @@ public class OrderViewModel extends AndroidViewModel {
             if (!code.equals(NetworkParams.COUPON_CODE)) {
                 showToast("کد تخفیف اشتباه است");
             } else if (code.equals(NetworkParams.COUPON_CODE)) {
+                mShopRepository.getCouponByCode(code);
+                mCouponLiveData = mShopRepository.getCouponLiveData();
                 mDiscountTotal = mTotal / 100.0;
                 mDiscountTotal = mDiscountTotal * 10;
-
                 mCorrectCode = true;
             }
         }
@@ -97,8 +105,16 @@ public class OrderViewModel extends AndroidViewModel {
         Order order = new Order();
         order.setLineItems(lineItems);
         order.setCustomerId(idCustomer);
-        if (mCorrectCode && mDiscountTotal != 0)
-            order.setDiscountTotal(String.valueOf(mDiscountTotal));
+        if (mCorrectCode && mDiscountTotal != 0) {
+            List<Coupon> coupons = new ArrayList<>();
+            if (mCouponLiveData.getValue() != null && mCouponLiveData !=null){
+                coupons.add(mCouponLiveData.getValue());
+                order.setCoupons(coupons);
+            } else {
+                order.setDiscountTotal(String.valueOf(mDiscountTotal));
+            }
+        }
+
 
         if (mFullAddress == null || mFullAddress.equals(""))
             showToast("لطفا آدرس را وارد کنید");
@@ -115,6 +131,7 @@ public class OrderViewModel extends AndroidViewModel {
     private void afterSubmit() {
         showToast("ثبت سفارش با موفقیت انجام شد");
         mShopRepository.removeAllProductsShoppingCart();
+        SharedPreferencesOnlineShop.removeProductsIds(getApplication());
     }
 
     private void showToast(String message) {
@@ -126,6 +143,7 @@ public class OrderViewModel extends AndroidViewModel {
     private void fetchGetOrders() {
         int idCustomer = SharedPreferencesOnlineShop.getCustomerId(getApplication());
         mCustomerRepository.getOrdersCustomer(idCustomer);
+        mOrderCustomerLiveData = mCustomerRepository.getOrdersCustomerLiveData();
     }
 
 

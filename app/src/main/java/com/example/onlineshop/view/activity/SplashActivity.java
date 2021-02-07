@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.example.onlineshop.R;
 import com.example.onlineshop.data.repository.CustomerRepository;
 import com.example.onlineshop.data.repository.ShopRepository;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class SplashActivity extends AppCompatActivity {
     private ActivitySplashBinding mBinding;
@@ -43,6 +41,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         getStatusNetwork();
 
         if (mIsConnect) {
@@ -67,6 +67,7 @@ public class SplashActivity extends AppCompatActivity {
 
         mIsConnect = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
+
 
     private void startOnlineShoppingMainActivity() {
         new Handler().postDelayed(new Runnable() {
@@ -96,8 +97,11 @@ public class SplashActivity extends AppCompatActivity {
         boolean isLogin = SharedPreferencesOnlineShop.getStatusLogin(getApplicationContext());
         Set<String> productsShopping = SharedPreferencesOnlineShop.getShoppingProducts(getApplicationContext());
         if (productsShopping != null) {
-            getDataSavedByRequestServer(productsShopping);
-            mShopRepository.setShoppingProductsLiveData();
+            //mShopRepository.clearShoppingList();
+            if (mShopRepository.getProductsListShopping().size() == 0) {
+                getDataSavedByRequestServer(productsShopping);
+
+            } else  mShopRepository.setShoppingProductsLiveData();
         }
 
         mCustomerRepository.setIsLogin(isLogin);
@@ -126,8 +130,10 @@ public class SplashActivity extends AppCompatActivity {
             intIds.add(Integer.valueOf(id));
         }
         for (int i = 0; i < intIds.size(); i++) {
-            mShopRepository.setProductsShoppingFromDataBase((int) intIds.get(i));
+            mShopRepository.getProductById((int) intIds.get(i),"splash");
         }
+
+        mShopRepository.setShoppingProductsLiveData();
     }
 
 

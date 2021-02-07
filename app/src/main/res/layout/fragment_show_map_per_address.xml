@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="rtl"
+        android:textDirection="rtl"
+        tools:context=".view.fragment.ShowMapPerAddressFragment">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_start"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.04" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.96" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_horizontal_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.004" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_horizontal_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.90" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view_back_page"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:textDirection="rtl"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <ImageButton
+                    android:id="@+id/img_btn_back"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/ic_back_dark" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <View
+                android:id="@+id/divider_back"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/online_shop_light_gray"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_back_page" />
+
+
+            <fragment xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="340dp"
+                app:layout_constraintBottom_toTopOf="@+id/input_layout_edit_full_address"
+                app:layout_constraintTop_toBottomOf="@id/divider_back" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_edit_full_address"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:hint="آدرس پستی جدید"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:errorEnabled="true"
+                app:layout_constraintBottom_toTopOf="@+id/btn_edit_information_address"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_end"
+                app:layout_constraintStart_toEndOf="@+id/guideline_vertical_start">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/full_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iran_sans_mobile"
+                    android:paddingLeft="15sp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_edit_information_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:fontFamily="@font/iran_sans_mobile"
+                android:text="ویرایش آدرس"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/online_shop_red"
+                app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_end" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

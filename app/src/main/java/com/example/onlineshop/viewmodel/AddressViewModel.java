@@ -16,14 +16,15 @@ public class AddressViewModel extends AndroidViewModel {
 
     private LiveData<List<Address>> mListAddressLiveData;
     private AddressRepository mRepositoryAddress;
+    private int mIdCustomer;
 
 
 
     public AddressViewModel(@NonNull Application application) {
         super(application);
         mRepositoryAddress = AddressRepository.getInstance(application);
-        int customerId = SharedPreferencesOnlineShop.getCustomerId(getApplication());
-        mRepositoryAddress.getAddressByCustomerId(customerId);
+        mIdCustomer = SharedPreferencesOnlineShop.getCustomerId(getApplication());
+        mRepositoryAddress.getAddressByCustomerId(mIdCustomer);
         mListAddressLiveData = mRepositoryAddress.getListAddressesCustomerLiveData();
     }
 
@@ -33,6 +34,13 @@ public class AddressViewModel extends AndroidViewModel {
 
     public void getSelectAddressCustomer(Address address){
         mRepositoryAddress.setSelectAddress(address);
+
+    }
+
+    public void deleteAddress(Address address){
+        mRepositoryAddress.deleteAddress(address);
+        mRepositoryAddress.getAddressByCustomerId(mIdCustomer);
+        mListAddressLiveData = mRepositoryAddress.getListAddressesCustomerLiveData();
 
     }
 

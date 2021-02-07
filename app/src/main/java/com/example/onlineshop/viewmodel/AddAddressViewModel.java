@@ -25,17 +25,23 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
+
 public class AddAddressViewModel extends AndroidViewModel {
 
     public static final String TAG = "Locator";
     private FusedLocationProviderClient mFusedLocationClient;
     private AddressRepository mAddressRepository;
     private MutableLiveData<Location> mMyLocation = new MutableLiveData<>();
+    private MutableLiveData<Address> mAddressLiveData = new MutableLiveData<>();
+    private LiveData<List<Address>> mListAddressLiveData;
+    private int mCustomerId;
 
     public AddAddressViewModel(@NonNull Application application) {
         super(application);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplication());
         mAddressRepository = AddressRepository.getInstance(getApplication());
+        mListAddressLiveData = mAddressRepository.getListAddressesCustomerLiveData();
     }
 
     @SuppressLint("MissingPermission")
@@ -82,12 +88,42 @@ public class AddAddressViewModel extends AndroidViewModel {
 
 
     public void submitAddress(String fullAddress, String receiverName, LatLng latLng) {
-        int customerId = SharedPreferencesOnlineShop.getCustomerId(getApplication());
+        mCustomerId = SharedPreferencesOnlineShop.getCustomerId(getApplication());
         String latitude = String.valueOf(latLng.latitude);
         String longitude = String.valueOf(latLng.longitude);
-        Address address = new Address(customerId,receiverName,fullAddress,latitude,longitude);
+        Address address = new Address(mCustomerId, receiverName, fullAddress, latitude, longitude);
         mAddressRepository.insertAddress(address);
-        mAddressRepository.getAddress(customerId);
+        mAddressRepository.getListAddressesCustomerLiveData().getValue().clear();
+        mAddressRepository.getAddress(mCustomerId);
+        mListAddressLiveData = mAddressRepository.getListAddressesCustomerLiveData();
 
     }
+
+    public void findAddress(int id) {
+        Address address = mAddressRepository.getAddress(id);
+        mAddressLiveData.setValue(address);
+    }
+
+    public LiveData<Address> getAddressLiveData() {
+        return mAddressLiveData;
+    }
+
+    public void editAddress(String newAddress,LatLng latLng){
+        Address address = mAddressLiveData.getValue();
+        address.setFullAddress(newAddress);
+        String latitude = String.valueOf(latLng.latitude);
+        String longitude = String.valueOf(latLng.longitude);
+        address.setLatitude(latitude);
+        address.setLongitude(longitude);
+
+
+        mAddressRepository.updateAddress(address);
+        mAddressRepository.getAddress(mCustomerId);
+        mListAddressLiveData = mAddressRepository.getListAddressesCustomerLiveData();
+
+
+
+    }
+
+
 }

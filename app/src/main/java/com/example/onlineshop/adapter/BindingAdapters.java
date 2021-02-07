@@ -16,7 +16,7 @@ public class BindingAdapters {
 
     @BindingAdapter("app:src")
     public static void loadImage(ImageView imageView, String url){
-        if(!url.equals("")){
+        if(!url.equals("") && url != null){
            Picasso.get()
                    .load(url)
                    .placeholder(R.drawable.place_holder_online_shop)
