@@ -1,5 +1,6 @@
 package com.example.onlineshop.data.repository;
 
+import androidx.databinding.Bindable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -10,6 +11,10 @@ import com.example.onlineshop.data.network.models.Review;
 import com.example.onlineshop.data.network.remote.NetworkParams;
 import com.example.onlineshop.data.network.remote.retrofit.RetrofitInstance;
 import com.example.onlineshop.data.network.remote.retrofit.ShopService;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -361,6 +366,7 @@ public class ShopRepository {
         call.enqueue(new Callback<Products>() {
             @Override
             public void onResponse(Call<Products> call, Response<Products> response) {
+
                 switch (page) {
                     case "splash":
                         mProductsListShopping.add(response.body());
@@ -500,14 +506,14 @@ public class ShopRepository {
 
     public void fetchDeleteReview(Review review) {
         Call<Review> call = mShopService.deleteReview(
-                review.getId(),true,
+                review.getId(), true,
                 NetworkParams.CONSUMER_KEY,
                 NetworkParams.CONSUMER_SECRET);
         call.enqueue(new Callback<Review>() {
             @Override
             public void onResponse(Call<Review> call, Response<Review> response) {
-               if (response.isSuccessful())
-                   mIsDelete = true;
+                if (response.isSuccessful())
+                    mIsDelete = true;
             }
 
             @Override
@@ -582,4 +588,7 @@ public class ShopRepository {
     public boolean isDelete() {
         return mIsDelete;
     }
+
+
+
 }

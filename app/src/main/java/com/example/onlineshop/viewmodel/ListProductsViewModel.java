@@ -32,6 +32,7 @@ public class ListProductsViewModel extends ViewModel {
     private LiveData<List<Categories>> mCategoriesLiveData;
     private LiveData<List<Products>> mSortProducts;
     private LiveData<List<Order>> mOrdersCustomerLiveData;
+    private MutableLiveData<String> mListName = new MutableLiveData<>();
     private String mWhichList;
     private int mCategoryId;
     private String mCategoryName;
@@ -61,6 +62,7 @@ public class ListProductsViewModel extends ViewModel {
 
     public void setSelectListProducts(String selectListProducts) {
         mSelectListProducts = selectListProducts;
+        mListName.setValue(selectListProducts);
     }
 
     public void setProductsList() {
@@ -146,5 +148,7 @@ public class ListProductsViewModel extends ViewModel {
         return mOrdersCustomerLiveData;
     }
 
-
+    public LiveData<String> getListName() {
+        return mListName;
+    }
 }

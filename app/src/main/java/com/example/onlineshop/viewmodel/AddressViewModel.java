@@ -43,6 +43,10 @@ public class AddressViewModel extends AndroidViewModel {
         mListAddressLiveData = mRepositoryAddress.getListAddressesCustomerLiveData();
 
     }
+    public void fetchAddresses(){
+        mRepositoryAddress.getAddressByCustomerId(mIdCustomer);
+        mListAddressLiveData = mRepositoryAddress.getListAddressesCustomerLiveData();
+    }
 
 
 }

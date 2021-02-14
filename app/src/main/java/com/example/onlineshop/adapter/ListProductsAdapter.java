@@ -7,6 +7,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
@@ -101,4 +102,6 @@ public class ListProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public interface OnItemClickProduct{
         void onItemClicked(Products products);
     }
+
+
 }

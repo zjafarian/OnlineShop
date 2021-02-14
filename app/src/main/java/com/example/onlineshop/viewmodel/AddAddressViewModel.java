@@ -93,9 +93,8 @@ public class AddAddressViewModel extends AndroidViewModel {
         String longitude = String.valueOf(latLng.longitude);
         Address address = new Address(mCustomerId, receiverName, fullAddress, latitude, longitude);
         mAddressRepository.insertAddress(address);
-        mAddressRepository.getListAddressesCustomerLiveData().getValue().clear();
+        //mAddressRepository.getListAddressesCustomerLiveData().getValue().clear();
         mAddressRepository.getAddress(mCustomerId);
-        mListAddressLiveData = mAddressRepository.getListAddressesCustomerLiveData();
 
     }
 

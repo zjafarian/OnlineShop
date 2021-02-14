@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ListReviewAdapter;
@@ -24,6 +25,11 @@ import com.example.onlineshop.databinding.FragmentReviewBinding;
 import com.example.onlineshop.viewmodel.ProductDetailViewModel;
 import com.example.onlineshop.viewmodel.ReviewViewModel;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewFragment extends Fragment {
@@ -62,7 +68,14 @@ public class ReviewFragment extends Fragment {
         mViewModel.getListReviewLiveData().observe(this, new Observer<List<Review>>() {
             @Override
             public void onChanged(List<Review> reviews) {
-                updateUI(reviews);
+                List<Review> reviewList = new ArrayList<>();
+                for (Review review:reviews) {
+                    String r = parseReview(review.getReview());
+                    review.setReview(r);
+                    reviewList.add(review);
+
+                }
+                updateUI(reviewList);
             }
         });
 
@@ -147,6 +160,17 @@ public class ReviewFragment extends Fragment {
                 (mBinding.getRoot()).getPreviousBackStackEntry();
         Navigation.findNavController(mBinding.getRoot()).navigate
                 (navBackStackEntry.getDestination().getId());
+    }
+
+    public String parseReview( String review){
+        if (review == null)
+            return review;
+        Document document = Jsoup.parse(review);
+        document.outputSettings(new Document.OutputSettings().prettyPrint(false));
+        document.select("br").append("\\n");
+        document.select("p").prepend("\\n\\n");
+        String s = document.html().replaceAll("\\\\n", "\n");
+        return Jsoup.clean(s, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false));
     }
 
 

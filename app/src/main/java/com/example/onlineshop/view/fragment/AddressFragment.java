@@ -79,7 +79,11 @@ public class AddressFragment extends Fragment {
         return mBinding.getRoot();
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mViewModel.fetchAddresses();
+    }
 
     private void initRecycle() {
         mBinding.recycleViewListAddresses.setLayoutManager(new LinearLayoutManager(getActivity()));

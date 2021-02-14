@@ -84,6 +84,13 @@ public class AddAddressFragment extends Fragment {
             requestLocationAccessPermission();
         }
 
+        mViewModel.getMyLocation().observe(this, new Observer<Location>() {
+            @Override
+            public void onChanged(Location location) {
+                updateLocation(location);
+            }
+        });
+
 
     }
 
@@ -110,6 +117,8 @@ public class AddAddressFragment extends Fragment {
 
             }
         });
+
+        listener();
 
 
 
@@ -174,19 +183,7 @@ public class AddAddressFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
-        mViewModel.getMyLocation().observe(getViewLifecycleOwner(), new Observer<Location>() {
-            @Override
-            public void onChanged(Location location) {
-                updateLocation(location);
-            }
-        });
-
-        listener();
-    }
 
     private void updateLocation(Location location) {
         if (location == null || mMap == null)

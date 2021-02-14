@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.onlineshop.R;
 import com.example.onlineshop.adapter.ListReviewAdapter;
@@ -27,6 +29,10 @@ import com.example.onlineshop.viewmodel.HomePageViewModel;
 import com.example.onlineshop.viewmodel.ProductDetailViewModel;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +158,10 @@ public class ProductDetailFragment extends Fragment {
         mViewModel.getProductLiveData().observe(getViewLifecycleOwner(), new Observer<Products>() {
             @Override
             public void onChanged(Products products) {
+                String des = parseHtml(products.getDescription());
+                String desShort = parseHtml(products.getShortDescription());
+                products.setDescription(des);
+                products.setShortDescription(desShort);
                 mProduct = products;
                 mBinding.setProduct(products);
                 initSlider();
@@ -219,6 +229,18 @@ public class ProductDetailFragment extends Fragment {
         //we prevent app from crash if the intent has no destination.
         if (sendIntent.resolveActivity(getActivity().getPackageManager()) != null)
             startActivity(shareIntent);
+    }
+
+
+    public String parseHtml(String des) {
+        if (des == null)
+            return des;
+        Document document = Jsoup.parse(des);
+        document.outputSettings(new Document.OutputSettings().prettyPrint(false));
+        document.select("br").append("\\n");
+        document.select("p").prepend("\\n\\n");
+        String s = document.html().replaceAll("\\\\n", "\n");
+        return Jsoup.clean(s, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false));
     }
 
 

@@ -57,7 +57,7 @@ public class ListProductsFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString(ARGS_SELECT_LIST_PRODUCTS, selectListProducts);
         args.putInt(ARGS_CATEGORY_ID, categoryId);
-        args.putInt(ARGS_ORDER_ID,orderId);
+        args.putInt(ARGS_ORDER_ID, orderId);
 
 
         fragment.setArguments(args);
@@ -76,6 +76,17 @@ public class ListProductsFragment extends Fragment {
 
         mListProductsViewModel = new
                 ViewModelProvider(requireActivity()).get(ListProductsViewModel.class);
+
+        mListProductsViewModel.setSelectListProducts(mSelectListProducts);
+        mListProductsViewModel.setCategoryId(mCategoryId);
+        mListProductsViewModel.setOrderId(mOrderId);
+        mListProductsViewModel.getListName().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s != null && s.length() != 0)
+                    mListProductsViewModel.setProductsList();
+            }
+        });
 
 
     }
@@ -102,15 +113,19 @@ public class ListProductsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setObservers();
+        onClickItems();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         mListProductsViewModel.setSelectListProducts(mSelectListProducts);
         mListProductsViewModel.setCategoryId(mCategoryId);
         mListProductsViewModel.setOrderId(mOrderId);
         mListProductsViewModel.setProductsList();
-
-        setObservers();
-
-
-        onClickItems();
 
     }
 
